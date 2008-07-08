@@ -1,0 +1,5 @@
+XRE_GetStaticComponents
+XRE_LockProfileDirectory
+XRE_InitEmbedding
+XRE_NotifyProfile
+XRE_TermEmbedding

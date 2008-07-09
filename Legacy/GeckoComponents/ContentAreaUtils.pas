@@ -2,10 +2,10 @@ unit ContentAreaUtils;
 
 interface
 
-uses Classes, SysUtils, StrUtils, nsXPCOM, nsXPCOMGlue, nsGeckoStrings, nsDOM, nsNetUtil,
+uses Classes, SysUtils, StrUtils, nsXPCOM, nsInit, nsXPCOMGlue, nsGeckoStrings, nsDOM, nsNetUtil,
  nsImg, nsWebBrowserPersist, nsMIMEService, nsFilePicker, nsDownload,
  nsMIMEHeaderParam, nsTextToURI, nsStringBundle, nsMemory, nsLocale,
- SkRegExpW, nsMIMEInfo, nsStringEnumerator, nsHelperApp;
+ SkRegExpW, nsMIMEInfo, nsStringEnumerator, nsHelperApp, Dialogs, ShellAPI, SHlObj, ComObj, ActiveX;
 
 const
 // We have no DOM, and can only save the URL as is.
@@ -51,12 +51,12 @@ TFilePickerParams = record
   ContentType:String;
   SaveMode: Integer;
   SaveAsType: Integer;
-  _File: nsILocalFile;
+  FilePath: String;
   FileURL: nsIURI;
 end;
 PFilePickerParams = ^TFilePickerParams;
 
-procedure AppendFiltersForContentType(aFilePicker:nsIFilePicker; aContentType:String; aFileExtension:String; aSaveMode:Integer);
+procedure AppendFiltersForContentType(aFilePicker:TSaveDialog; aContentType:String; aFileExtension:String; aSaveMode:Integer);
 function GetMIMEService:nsIMIMEService;
 function GetLastDir(Path:String):String;
 function GetStringBundle:nsIStringBundle;
@@ -98,6 +98,22 @@ begin
   Result := istr.ToString;
 end;
 
+function File2Path(_File:nsILocalFile):String;
+var
+ istr:IInterfacedString;
+begin
+  istr := NewString;
+  if _File<>nil then
+    _File.GetPath(istr.AString);
+  Result := istr.ToString;
+end;
+
+function Path2File(Path:String):nsILocalFile;
+begin
+  NS_NewLocalFile(NewString(Path).AString,false,Result);
+end;
+
+
 function GetCharsetforSave(aDocument:nsIDOMDocument):String;
 var
   Charset:IInterfacedString;
@@ -108,6 +124,35 @@ begin
     Result := Charset.ToString;
   end
   else Result := '';
+end;
+
+//http://www2.big.or.jp/~osamu/Delphi/tips.cgi?index=0163.txt
+function GetDesktopFolder: string;
+
+  function GetDispName(shi: IShellFolder; pidl: PItemIDList): string;
+  var DispName: TStrRet;
+  begin
+    shi.GetDisplayNameOf(pidl, SHGDN_FORPARSING, DispName);
+
+    if DispName.uType = STRRET_CSTR then
+      Result := DispName.cStr
+    else if DispName.uType = STRRET_OFFSET then
+      Result := PCHAR(LongInt(pidl) + DispName.uOffset)
+    else
+      Result := WideCharToString(DispName.pOleStr);
+  end;
+
+  var Pidl: PItemIDList;
+      DesktopFolderI: IShellFolder;
+
+begin
+  OleCheck(SHGetSpecialFolderLocation(0, CSIDL_DESKTOPDIRECTORY, Pidl));
+  try
+    OleCheck(SHGetDesktopFolder(DesktopFolderI));
+    Result := GetDispName(DesktopFolderI, Pidl);
+  finally
+    CoTaskMemFree(Pidl);
+  end;
 end;
 
 // Given aFileName, find the fileName without the extension on the end.
@@ -347,14 +392,13 @@ var
   prefs : nsIPrefBranch;
   UseDownloadDir : Boolean;
   DnldMgr : nsIDownloadManager;
-  fp : nsIFilePicker;
-  Dir, LastDir, Directory, _File : nsILocalFile;
+  fp : TSaveDialog;
+  LastDir, Directory : nsILocalFile;
   FileLocator : nsIProperties;
   Title : String;
   Bundle : nsIStringBundle;
-  LeafName : IInterfacedString;
-  CollisionCount : Integer;
-  TmpLeafName : String;
+  LeafName, _File, Dir : String;
+  CollisionCount  : Integer;
   sk : TSkRegExp;
 begin
   Result := False;
@@ -377,39 +421,36 @@ begin
   try
     prefs.GetComplexValue('lastDir', nsILocalFile, LastDir);
     if (((not aSkipPrompt) and (not useDownloadDir)) and lastDir.exists()) then
-      Dir := LastDir
+      Dir := File2Path(LastDir)
     else
-      Dir := dnldMgr.userDownloadsDirectory;
+      Dir := FIle2Path(dnldMgr.userDownloadsDirectory);
   except
-    Dir := nil;
+    Dir := '';
     //Dir := dnldMgr.userDownloadsDirectory;
   end;
 
-  if ((not aSkipPrompt) or (not useDownloadDir) or (Dir=nil) or ((Dir<>nil) and (not Dir.Exists))) then begin
-    if ((Dir = nil) or ((Dir<>nil) and (not Dir.exists))) then begin
+  if (not aSkipPrompt) or (not useDownloadDir) or (Dir='') or ((Dir<>'') and (not DirectoryExists(Dir))) then begin
+    if ((Dir = '') or ((Dir<>'') and (not DirectoryExists(Dir)))) then begin
       // Default to desktop.
-      NS_GetService('@mozilla.org/file/directory_service;1',nsIProperties,FileLocator);
-      FileLocator.Get('Desk', nsILocalFile, Dir);
+      //NS_GetService('@mozilla.org/file/directory_service;1',nsIProperties,FileLocator);
+      //FileLocator.Get('Desk', nsILocalFile, Dir);
     end;
 
-    fp := MakeFilePicker();
+    fp := TSaveDialog.Create(nil); //MakeFilePicker();
     if aFpP^.fpTitle <> '' then
       Title := aFpP^.fpTitle
     else
       Title := '名前を付けて保存';
     Bundle := GetStringBundle;
-    //TODO:
-    fp.init(nil(*window*), NewString(Title).AString,
-            NS_IFILEPICKER_modeSave);
-
-    fp.SetDefaultExtension(NewString(aFpP^.fileInfo^.fileExt).AString);
-    fp.SetDefaultString(NewString(GetNormalizedLeafName(aFpP^.fileInfo^.fileName,
-                                             aFpP^.fileInfo^.fileExt)).AString);
+    fp.Title := Title;
+    fp.DefaultExt := aFpP^.fileInfo^.fileExt;
+    fp.FileName := GetNormalizedLeafName(aFpP^.fileInfo^.fileName,
+                                         aFpP^.fileInfo^.fileExt);
     AppendFiltersForContentType(fp, aFpP^.contentType, aFpP^.fileInfo^.fileExt,
                                 aFpP^.saveMode);
 
-    if Dir <> nil then
-      fp.DisplayDirectory := Dir;
+    if Dir <> '' then
+      fp.InitialDir := Dir;
 
     if (aFpP.IsDocument) then begin
       try
@@ -418,31 +459,28 @@ begin
       end;
     end;
 
-    if ((fp.Show = NS_IFILEPICKER_returnCancel) or (fp._File = nil)) then begin
+
+
+    if (not fp.Execute) or (fp.FileName = '') then begin
       Result := False;
       Exit;
     end;
 
-    Directory := fp._File.parent as nsILocalFile;
+    Directory := Path2File(ExtractFileDir(fp.FileName));
     prefs.SetComplexValue('lastDir', nsILocalFile, Directory);
 
-    LeafName := NewString;
-    fp._File.GetLeafName(LeafName.AString);
-    fp._File.SetLeafName(NewString(ValidateFileName(LeafName.ToString)).AString);
+    LeafName := ExtractFileName(fp.FileName);
+    fp.FileName := ExtractFilePath(fp.FileName) + ValidateFileName(LeafName);
     aFpP.SaveAsType := fp.FilterIndex;
-    aFpP._File := fp._File;
-    aFpP.FileURL := fp.FileURL;
+    aFpP.FilePath := fp.FileName;
+//    aFpP.FileURL := fp.FileURL;
 
     if (aFpP.IsDocument) then
       prefs.SetIntPref('save_converter_index', aFpP.SaveAsType);
   end
   else begin
     //ここはどう考えても効率的ではない(DelphiとXPCOMの往復)ので全面的にDelphiのコードに書き換える
-    Dir.Append(NewString(
-                 GetNormalizedLeafName(
-                     aFpP.fileInfo.FileName,
-                     aFpP.fileInfo.FileExt)).AString);
-    _File := Dir;
+    _File := IncludeTrailingPathDelimiter(Dir) + GetNormalizedLeafName(aFpP.fileInfo.FileName, aFpP.fileInfo.FileExt);
 
     // Since we're automatically downloading, we don't get the file picker's 
     // logic to check for existing files, so we need to do that here.
@@ -452,36 +490,34 @@ begin
     // If you are updating this code, update that code too! We can't share code
     // here since that code is called in a js component.
     CollisionCount := 0;
-    LeafName := NewString;
     sk := TSkRegExp.Create;
     try
-      while (_File.exists()) do begin
+      while (FileExists(_File)) do begin
         Inc(CollisionCount);
-        fp._File.GetLeafName(LeafName.AString);
-        TmpLeafName := LeafName.ToString;
+        LeafName := ExtractFileName(fp.FileName);
         if (CollisionCount = 1) then begin
           // Append '(2)' before the last dot in (or at the end of) the filename
           // special case .ext.gz etc files so we don't wind up with .tar(2).gz
           sk.Expression := '\.[^\.]{1,3}\.(gz|bz2|Z)$';
-          if sk.Exec(TmpLeafName) then
-            TmpLeafName := sk.Replace(TmpLeafName, '(2)$&', False)
+          if sk.Exec(LeafName) then
+            LeafName := sk.Replace(LeafName, '(2)$&', False)
           else begin
             sk.Expression := '(\.[^\.]*)?$';
-            TmpLeafName := sk.Replace(TmpLeafName, '(2)$&', False);
+            LeafName := sk.Replace(LeafName, '(2)$&', False);
           end;
 
         end
         else begin
           // replace the last (n) in the filename with (n+1)
           sk.Expression := '^(.*\()\d+\)';
-          TmpLeafName := sk.Replace(TmpLeafName, '$1' + IntToStr(CollisionCount+1) + ')');
+          LeafName := sk.Replace(LeafName, '$1' + IntToStr(CollisionCount+1) + ')');
         end;
-        _File.SetLeafName(NewString(TmpLeafName).AString);
+        _File := ExtractFilePath(_File) + LeafName;
       end;
     finally
       sk.Free;
     end;
-    aFpP._File := _File;
+    aFpP.FilePath := _File;
   end;
 
   Result := True;
@@ -557,7 +593,7 @@ begin
     fpParams.ContentType := aContentType;
     fpParams.SaveMode := SaveMode;
     fpParams.SaveAsType := SaveAsType;
-    fpParams._File := _File;
+    fpParams.FilePath := File2Path(_File);
     fpParams.FileURL := FileURL;
 
     if (not GetTargetFile(@fpParams, aSkipPrompt)) then
@@ -567,7 +603,7 @@ begin
 
     SaveAsType := fpParams.SaveAsType;
     SaveMode := fpParams.SaveMode;
-    _File := fpParams._File;
+    _File := Path2File(fpParams.FilePath);
     FileURL := fpParams.FileURL;
   end;
 
@@ -772,6 +808,14 @@ begin
                aShouldBypassCache, aFilePickerTitleKey, nil, aReferrer, aSkipPrompt);
 end;
 
+function AppendFilter(CurrentFilter:String;desc:String;ext:String):String;
+begin
+  if CurrentFilter<>'' then
+    CurrentFilter := CurrentFilter + '|';
+  CurrentFilter := CurrentFilter + desc + '|' + ext;
+  Result := CurrentFilter;
+end;
+
 //@cmpl
 function ValidateFileName(fileName:String):String;
 begin
@@ -790,7 +834,7 @@ end;
 // must be the first filter appended.  The 'save page only' counterpart
 // must be the second filter appended.  And the 'save as complete text'
 // filter must be the third filter appended.
-procedure AppendFiltersForContentType(aFilePicker:nsIFilePicker; aContentType:String; aFileExtension:String; aSaveMode:Integer);
+procedure AppendFiltersForContentType(aFilePicker:TSaveDialog; aContentType:String; aFileExtension:String; aSaveMode:Integer);
 var
   BundleName:String; // The bundle name for saving only a specific content type.
   FilterString:String; // The corresponding filter string for a specific content type.
@@ -806,19 +850,19 @@ begin
   // XXX all the cases that are handled explicitly here MUST be handled
   // in GetSaveModeForContentType to return a non-fileonly filter.
   if aContentType = 'text/html' then begin
-    bundleName   := 'WebPageHTMLOnlyFilter';
+    bundleName   := 'HTML';//'WebPageHTMLOnlyFilter';
     filterString := '*.htm; *.html';
   end
   else if aContentType = 'application/xhtml+xml' then begin
-    bundleName   := 'WebPageXHTMLOnlyFilter';
+    bundleName   := 'XHTML';//'WebPageXHTMLOnlyFilter';
     filterString := '*.xht; *.xhtml';
   end
   else if aContentType = 'image/svg+xml' then begin
-    bundleName   := 'WebPageSVGOnlyFilter';
+    bundleName   := 'SVG';//'WebPageSVGOnlyFilter';
     filterString := '*.svg; *.svgz';
   end
   else if (aContentType = 'text/xml') or (aContentType = 'application/xml') then begin
-    bundleName   := 'WebPageXMLOnlyFilter';
+    bundleName   := 'XML';//'WebPageXMLOnlyFilter';
     filterString := '*.xml';
   end
   else begin
@@ -843,24 +887,25 @@ begin
       if (extString<>'') then begin
         desc := NewString;
         MimeInfo.GetDescription(desc.AString);
-        aFilePicker.AppendFilter(desc.AString, NewString(extString).AString);
+        aFilePicker.Filter := AppendFilter(aFilePicker.Filter, desc.ToString, extString);
       end;
     end;
 
   end;
 
   if (aSaveMode and SAVEMODE_COMPLETE_DOM) <> 0 then begin
-    aFilePicker.AppendFilter(NewString(bundle.GetStringFromName('WebPageCompleteFilter')).AString, NewString(filterString).AString);
+    //desc := bundle.GetStringFromName('WebPageCompleteFilter');
+    aFilePicker.Filter := AppendFilter(aFilePicker.Filter, 'Webページ(完全)', filterString);
     // We should always offer a choice to save document only if
     // we allow saving as complete.
-    aFilePicker.AppendFilter(NewString(bundle.GetStringFromName(PWideChar(WideString(bundleName)))).AString, NewString(filterString).AString);
+    aFilePicker.Filter := AppendFilter(aFilePicker.Filter, BundleName, filterString);
   end;
 
   if (aSaveMode and SAVEMODE_COMPLETE_TEXT) <> 0 then
-    aFilePicker.AppendFilters(NS_IFILEPICKER_filterText);
+    aFilePicker.Filter := AppendFilter(aFilePicker.Filter, 'テキストファイル', '*.txt');
 
   // Always append the all files (*) filter
-  aFilePicker.AppendFilters(NS_IFILEPICKER_filterAll);
+  aFilePicker.Filter := AppendFilter(aFilePicker.Filter, 'すべてのファイル', '*.*');
 end;
 
 (*

@@ -4088,15 +4088,14 @@ begin
 //  MainCoolbar.Handle
 //REBARBANDINFO
 //  RB_GETBANDINFO                                                //  RBBS_BREAK or
-//DontPerformResizeCoolbar:=true;
 
     for i := 0 to MainCoolbar.Bands.Count - 1 do
-    begin 
-       FillChar(BandInfo, SizeOf(TReBarBandInfo), 0); 
-       BandInfo.cbSize := SizeOf(TReBarBandInfo); 
-       BandInfo.fMask := RBBIM_SIZE or RBBIM_CHILD or 
-                         RBBIM_CHILDSIZE or RBBIM_STYLE; 
-       MainCoolbar.Perform(RB_GETBANDINFO, i, Integer(@BandInfo)); 
+    begin
+       FillChar(BandInfo, SizeOf(TReBarBandInfo), 0);
+       BandInfo.cbSize := SizeOf(TReBarBandInfo);
+       BandInfo.fMask := RBBIM_SIZE or RBBIM_CHILD or
+                         RBBIM_CHILDSIZE or RBBIM_STYLE;
+       MainCoolbar.Perform(RB_GETBANDINFO, i, Integer(@BandInfo));
        //RBBS_GRIPPERALWAYS;
 
        if actToggleNoGripper.Checked then begin
@@ -4109,11 +4108,10 @@ begin
        end;
 
        //BandInfo.hwndChild := MainCoolbar.Bands[i].Control.Handle;
-       MainCoolbar.Perform(RB_SETBANDINFO, i, Integer(@BandInfo)); 
+       MainCoolbar.Perform(RB_SETBANDINFO, i, Integer(@BandInfo));
     end;
 
     Pref.FixToolbar:=actToggleNoGripper.Checked;
-//DontPerformResizeCoolbar:=false;
 end;
 
 procedure TBagelMainForm.actToggleURIbarVisibleExecute(Sender: TObject);
@@ -5864,7 +5862,7 @@ var
   regex:TSkRegExp;
   filteredSearchWord:String;
   searchWords:TStrArray;
-  i, len, st, cnt:Integer;
+  i, cnt:Integer;
   obj:TObject;
   //uri:String;
 begin
@@ -7457,7 +7455,6 @@ procedure TBagelMainForm.ViewPEncodeClick(Sender: TObject);
   procedure DoCheck(item:TBagelActionContainer;Charset:String);
   var
     i:Integer;
-    c:TBagelActionContainer;
   begin
     for i:=0 to item.Count-1 do begin
       if item.Item[i].Count>0 then begin
@@ -10241,8 +10238,6 @@ var
   rangestr:String;
   regex:TSkRegExp;
   findstr:WideString;
-  st:Integer;
-  len:Integer;
   doc:nsIDOMDocument;
   startnode:nsIDOMNode;
 begin
@@ -10549,11 +10544,8 @@ function TBagelMainForm.WildcardMatch(Exp:String;S:String):Boolean;
   function WildcardMatchInternal(Exp:String;S:String):Boolean;
   var
     RegExp:TSkRegExp;
-    st:Integer;
-    len:Integer;
     astr:Boolean;
   begin
-    Result:=false;
     astr := False; if Pos('*',Exp)>0 then astr := true;
     Exp:=StringReplace(Exp,'.','\.',[rfReplaceAll]);
     Exp:=StringReplace(Exp,'*','.+',[rfReplaceAll]);
@@ -11235,9 +11227,7 @@ end;
 
 procedure TBagelMainForm.BookmarkItemClick(Sender: TObject);
 var
-  i:Integer;
   b:TBkmkBase;
-  item:TBagelActionContainer;
   cbitem: TBagelBookmarkContainer;
 begin
   b := TBagelBookmarkContainer(Sender).Bookmark;

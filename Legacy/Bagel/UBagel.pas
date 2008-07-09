@@ -4527,7 +4527,7 @@ begin
   end
   else begin
   end;
-  
+
   FFont.Free;
        //	MenuToolBar.Buttons[0].AutoSize := False;
        //MenuToolbar.ButtonHeight:=30;
@@ -5024,50 +5024,50 @@ var
   i:Integer;
   tmpStr:String;
 begin
-    memoname:='New Memo';
-     //<>/\:*|"?
-    while InputQuery('新規メモ作成' ,'名前を入力してください'+#13#10+'(次の文字は使えませんので注意してください : <>/\:*|"? )',memoname) do begin
-      if (Pos('<',memoname)>0) or
-         (Pos('>',memoname)>0) or
-         (Pos('?',memoname)>0) or
-         (Pos('/',memoname)>0) or
-         (Pos('\',memoname)>0) or
-         (Pos('*',memoname)>0) or
-         (Pos(':',memoname)>0) or
-         (Pos('|',memoname)>0) or
-         (Pos('"',memoname)>0) then begin  //無効な名前
-        continue;
-      end
-      else if FileExists(GetSettingDir()+'memo\'+memoname+'.txt') then begin
-      //すでに存在する
-        continue;
-      end
-      else begin
-        memo:=TBagelMemo.Create;
-        memoitem:=TBagelMemoItem.Create(FormatDateTime('yyyy/mm/dd hh:nn',Now)+' 新規アイテム');
-        memo.Path := IncludeTrailingBackslash( GetSettingDir()+'memo')+memoname+'.txt';
-        memo.Add(memoitem);
-        TabControl2.Tabs.AddObject(memoname+'.txt',memo);
-        TabControl2.TabIndex:=TabControl2.Tabs.Count-1;
-        TabControl2Change(nil);
+  memoname:='New Memo';
+   //<>/\:*|"?
+  while InputQuery('新規メモ作成' ,'名前を入力してください'+#13#10+'(次の文字は使えませんので注意してください : <>/\:*|"? )',memoname) do begin
+    if (Pos('<',memoname)>0) or
+       (Pos('>',memoname)>0) or
+       (Pos('?',memoname)>0) or
+       (Pos('/',memoname)>0) or
+       (Pos('\',memoname)>0) or
+       (Pos('*',memoname)>0) or
+       (Pos(':',memoname)>0) or
+       (Pos('|',memoname)>0) or
+       (Pos('"',memoname)>0) then begin  //無効な名前
+      continue;
+    end
+    else if FileExists(GetSettingDir()+'memo\'+memoname+'.txt') then begin
+    //すでに存在する
+      continue;
+    end
+    else begin
+      memo:=TBagelMemo.Create;
+      memoitem:=TBagelMemoItem.Create(FormatDateTime('yyyy/mm/dd hh:nn',Now)+' 新規アイテム');
+      memo.Path := IncludeTrailingBackslash( GetSettingDir()+'memo')+memoname+'.txt';
+      memo.Add(memoitem);
+      TabControl2.Tabs.AddObject(memoname+'.txt',memo);
+      TabControl2.TabIndex:=TabControl2.Tabs.Count-1;
+      TabControl2Change(nil);
 
-        //TODO:復活
-        //pnlDropTarget.TargetList:=nil;
-        InternalTargetList.Clear;
-        InternalTargetList.Assign(Pref.DropTargetList);
-        if TabControl2.Tabs.Count>0 then
-          for i:=0 to TabControl2.Tabs.Count-1 do begin
-            memo:=TBagelMemo(TabControl2.Tabs.Objects[i]);
-            tmpStr:=ExtractFileName(memo.Path);
-            InternalTargetList.Add('text'+#9+'memo'+#9+memo.Title+#9+tmpStr);
-          end;
+      //TODO:復活
+      //pnlDropTarget.TargetList:=nil;
+      InternalTargetList.Clear;
+      InternalTargetList.Assign(Pref.DropTargetList);
+      if TabControl2.Tabs.Count>0 then
+        for i:=0 to TabControl2.Tabs.Count-1 do begin
+          memo:=TBagelMemo(TabControl2.Tabs.Objects[i]);
+          tmpStr:=ExtractFileName(memo.Path);
+          InternalTargetList.Add('text'+#9+'memo'+#9+memo.Title+#9+tmpStr);
+        end;
 
-        //TODO:復活
-        //pnlDropTarget.TargetList:=InternalTargetList;
+      //TODO:復活
+      //pnlDropTarget.TargetList:=InternalTargetList;
 
-        break;
-      end;
+      break;
     end;
+  end;
 end;
 
 procedure TBagelMainForm.CreateMemoItemClick(Sender: TObject);
@@ -5104,89 +5104,89 @@ var
   title:nsAString;
   Ititle:IInterfacedString;
 begin
-    if (Pref.TabMaxCount > 0) and (TabControl.Tabs.Count = Pref.TabMaxCount) then exit;
-    brwsr:=TBagelBrowser.Create(Self);
-    brwsr.Visible := false;
-    brwsr.Parent:=self.ViewPanel;
-    brwsr.Align := alClient;
-    if brwsr.DocShell<>nil then
-      brwsr.DocShell.UseErrorPages := True;
-    ApplyEvtHandlersToBrowser(brwsr);
+  if (Pref.TabMaxCount > 0) and (TabControl.Tabs.Count = Pref.TabMaxCount) then exit;
+  brwsr:=TBagelBrowser.Create(Self);
+  brwsr.Visible := false;
+  brwsr.Parent:=self.ViewPanel;
+  brwsr.Align := alClient;
+  if brwsr.DocShell<>nil then
+    brwsr.DocShell.UseErrorPages := True;
+  ApplyEvtHandlersToBrowser(brwsr);
 //    brwsr.DoubleBuffered:=true;
-    brwsr.TabStop:=true;
-    //TabControl1.Tabs.AddObject('',TObject(brwsr));
-    TabControl.Tabs.InsertObject(GetNewtabPos(0),'',TObject(brwsr));
-    TabZOrder.Insert(GetMDITabPos(0),TObject(brwsr));
+  brwsr.TabStop:=true;
+  //TabControl1.Tabs.AddObject('',TObject(brwsr));
+  TabControl.Tabs.InsertObject(GetNewtabPos(0),'',TObject(brwsr));
+  TabZOrder.Insert(GetMDITabPos(0),TObject(brwsr));
 
-    if loadFlags=1 then
+  if loadFlags=1 then
+  begin
+    i := TabControl.Tabs.IndexOfObject(TObject(brwsr));
+    TabControl.TabIndex:=i;
+    tabBarCtxTarget:=i;
+    brwsr.Visible := true;
+    if Application.Active then
     begin
-      i := TabControl.Tabs.IndexOfObject(TObject(brwsr));
-      TabControl.TabIndex:=i;
-      tabBarCtxTarget:=i;
-      brwsr.Visible := true;
-      if Application.Active then
-      begin
-              //brwsr.ShouldFocus:=true;
-              //(brwsr.WebBrowser as nsIWebBrowserFocus).SetFocusedElement(brwsr.LastFocused);
-              brwsr.SetFocus;
-      end;
-      if not Pref.AddTabCurrCopyHistory then
-        brwsr.LoadURI(b.URI)
-      else
-      begin
-        sh:=b.WebNavigation.SessionHistory;
-        sh.QueryInterface(NS_ISHISTORYINTERNAL_IID,shi);
-        histcount:=sh.Count;
-        newSH:=brwsr.WebNavigation.SessionHistory;
-        newSH.QueryInterface(NS_ISHISTORYINTERNAL_IID,newSHI);
-        for j:=0 to histCount-1 do
-        begin
-
-          NS_CreateInstance('@mozilla.org/browser/session-history-entry;1',NS_ISHENTRY_IID,newEntry);
-          newURI:=sh.GetEntryAtIndex(j,False).URI;
-          newEntry.SetURI(newURI);
-          Ititle:=NewString(sh.GetEntryAtIndex(j,False).Title);
-          title:=Ititle.AString;
-          newEntry.SetTitle(title);
-          newSHI.AddEntry(newEntry,true);
-        end;
-        brwsr.WebNavigation.GotoIndex(sh.Index);
-       end;
-    end
-    else if loadFlags=2 then
-    begin
-      brwsr.SendToBack;
-      brwsr.Visible := true;
-      //brwsr.ShouldFocus:=false;
-
-      //こぴぺ。後で変えよう。
-      if not Pref.AddTabCurrCopyHistory then
-        brwsr.LoadURI(b.URI)
-      else begin
-        sh := b.WebNavigation.SessionHistory;
-        sh.QueryInterface(NS_ISHISTORYINTERNAL_IID,shi);
-        histcount:=sh.Count;
-        newSH := brwsr.WebNavigation.SessionHistory;
-        newSH.QueryInterface(NS_ISHISTORYINTERNAL_IID,newSHI);
-
-        for j:=0 to histCount-1 do
-        begin
-
-          NS_CreateInstance('@mozilla.org/browser/session-history-entry;1',NS_ISHENTRY_IID,newEntry);
-          newURI:=sh.GetEntryAtIndex(j,False).URI;
-          newEntry.SetURI(newURI);
-          Ititle:=NewString(sh.GetEntryAtIndex(j,False).Title);
-          title:=Ititle.AString;
-          //newEntry.SetTitle(PWideChar(b.HistoryEntry[j].Title));
-          newEntry.SetTitle(title);
-          newSHI.AddEntry(newEntry,true);
-        end;
-        brwsr.WebNavigation.GotoIndex(sh.Index);
-      end;
-
-      //brwsr.Blur2;
-      //RestoreFocus(GetCurrentBrowser);
+            //brwsr.ShouldFocus:=true;
+            //(brwsr.WebBrowser as nsIWebBrowserFocus).SetFocusedElement(brwsr.LastFocused);
+            brwsr.SetFocus;
     end;
+    if not Pref.AddTabCurrCopyHistory then
+      brwsr.LoadURI(b.URI)
+    else
+    begin
+      sh:=b.WebNavigation.SessionHistory;
+      sh.QueryInterface(NS_ISHISTORYINTERNAL_IID,shi);
+      histcount:=sh.Count;
+      newSH:=brwsr.WebNavigation.SessionHistory;
+      newSH.QueryInterface(NS_ISHISTORYINTERNAL_IID,newSHI);
+      for j:=0 to histCount-1 do
+      begin
+
+        NS_CreateInstance('@mozilla.org/browser/session-history-entry;1',NS_ISHENTRY_IID,newEntry);
+        newURI:=sh.GetEntryAtIndex(j,False).URI;
+        newEntry.SetURI(newURI);
+        Ititle:=NewString(sh.GetEntryAtIndex(j,False).Title);
+        title:=Ititle.AString;
+        newEntry.SetTitle(title);
+        newSHI.AddEntry(newEntry,true);
+      end;
+      brwsr.WebNavigation.GotoIndex(sh.Index);
+     end;
+  end
+  else if loadFlags=2 then
+  begin
+    brwsr.SendToBack;
+    brwsr.Visible := true;
+    //brwsr.ShouldFocus:=false;
+
+    //こぴぺ。後で変えよう。
+    if not Pref.AddTabCurrCopyHistory then
+      brwsr.LoadURI(b.URI)
+    else begin
+      sh := b.WebNavigation.SessionHistory;
+      sh.QueryInterface(NS_ISHISTORYINTERNAL_IID,shi);
+      histcount:=sh.Count;
+      newSH := brwsr.WebNavigation.SessionHistory;
+      newSH.QueryInterface(NS_ISHISTORYINTERNAL_IID,newSHI);
+
+      for j:=0 to histCount-1 do
+      begin
+
+        NS_CreateInstance('@mozilla.org/browser/session-history-entry;1',NS_ISHENTRY_IID,newEntry);
+        newURI:=sh.GetEntryAtIndex(j,False).URI;
+        newEntry.SetURI(newURI);
+        Ititle:=NewString(sh.GetEntryAtIndex(j,False).Title);
+        title:=Ititle.AString;
+        //newEntry.SetTitle(PWideChar(b.HistoryEntry[j].Title));
+        newEntry.SetTitle(title);
+        newSHI.AddEntry(newEntry,true);
+      end;
+      brwsr.WebNavigation.GotoIndex(sh.Index);
+    end;
+
+    //brwsr.Blur2;
+    //RestoreFocus(GetCurrentBrowser);
+  end;
 end;
 
 procedure TBagelMainForm.DelayedSearchButtonCreatorTimer(Sender: TObject);
@@ -5824,12 +5824,12 @@ begin
 end;
 procedure TBagelMainForm.WebPanelDOMClick(Sender: TObject; event: nsIDOMMouseEvent);
 var
-{str:IInterfacedString;
-astr:nsAString;}
-curUri:nsIURI;
-clickedUri:nsIURI;
-cstr:IInterfacedCString;
-cstr2:IInterfacedCString;
+  {str:IInterfacedString;
+  astr:nsAString;}
+  curUri:nsIURI;
+  clickedUri:nsIURI;
+  cstr:IInterfacedCString;
+  cstr2:IInterfacedCString;
 begin
   cstr:=NewCString('');
   cstr2:=NewCString('');
@@ -5999,7 +5999,6 @@ var
   memo:TBagelMemo;
   i:Integer;
   inifile:TIniFile;
-
 begin
   //Bagel設定保存
   if Ord(Self.WindowState)=0 then
@@ -6057,15 +6056,15 @@ procedure TBagelMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 var
   M:String;
 begin
-    if FNowPrintPreviewing then begin
-      CanClose:=false;
-      btnPPClose.Click;
-    end
-    else if Pref.OnAppQuit=true then
-    begin
-      M := '終了してもよろしいですか？';
-      CanClose := MessageDlg(M, mtConfirmation,[mbYes, mbNo], 0) = mrYes;
-    end;
+  if FNowPrintPreviewing then begin
+    CanClose:=false;
+    btnPPClose.Click;
+  end
+  else if Pref.OnAppQuit=true then
+  begin
+    M := '終了してもよろしいですか？';
+    CanClose := MessageDlg(M, mtConfirmation,[mbYes, mbNo], 0) = mrYes;
+  end;
 end;
 
 procedure LoadIcon;
@@ -7147,10 +7146,10 @@ end;
 
 procedure TBagelMainForm.AReloadClick(Sender: TObject);
 var
-b:TBagelBrowser;
+  b:TBagelBrowser;
 begin
-b:=GetBrowser(tabBarCtxTarget);
-b.ReloadTime:=TMenuItem(Sender).Tag*1000;
+  b:=GetBrowser(tabBarCtxTarget);
+  b.ReloadTime:=TMenuItem(Sender).Tag*1000;
 end;
 
 procedure TBagelMainForm.TabPAutoReloadClick(Sender: TObject);
@@ -7244,7 +7243,7 @@ end;
 
 procedure TBagelMainForm.tbExtractReverseClick(Sender: TObject);
 var
-i:Integer;
+  i:Integer;
 begin
   for i:=0 to LinkListView.Items.Count-1 do begin
     LinkListView.Items[i].Checked := not LinkListView.Items[i].Checked;
@@ -7358,15 +7357,15 @@ end;
 
 procedure TBagelMainForm.tbDoExtractClick(Sender: TObject);
 begin
-//WebPanel1.Reload;
-LoadLinkSidebar;
+  //WebPanel1.Reload;
+  LoadLinkSidebar;
 end;
 
 procedure TBagelMainForm.tbGrepSearchBarTextClick(Sender: TObject);
 var
-s:TShiftState;
-r:Char;
-tmp:String;
+  s:TShiftState;
+  r:Char;
+  tmp:String;
 begin
   if SearchBox.Text='' then exit;
   if PageControl1.ActivePage <> GrepSheet then actGrepSidebar.Execute
@@ -7386,7 +7385,7 @@ end;
 
 procedure TBagelMainForm.tbOpenExtractClick(Sender: TObject);
 var
-i:Integer;
+  i:Integer;
 begin
   for i:=0 to LinkListView.Items.Count-1 do begin
     if LinkListView.Items[i].Checked then AddTab(LinkListView.Items[i].SubItems.Strings[0],2,0,'',Pref.DocShellDefault);
@@ -7575,17 +7574,17 @@ end;
 
 procedure TBagelMainForm.HistorySortByDateClick(Sender: TObject);
 begin
-HistoryTree.SortingType := hstDay;
+  HistoryTree.SortingType := hstDay;
 end;
 
 procedure TBagelMainForm.HistorySortBySiteClick(Sender: TObject);
 begin
-HistoryTree.SortingType := hstSite;
+  HistoryTree.SortingType := hstSite;
 end;
 
 procedure TBagelMainForm.HistorySortByVisitClick(Sender: TObject);
 begin
-HistoryTree.SortingType := hstLastVisited;
+  HistoryTree.SortingType := hstLastVisited;
 end;
 
 procedure TBagelMainForm.bbgSaveTimerTimer(Sender: TObject);
@@ -7595,8 +7594,8 @@ end;
 
 procedure TBagelMainForm.SearchByNickname(keyword:String;Nickname:String);
 var
-i:Integer;
-sl:TStringList;
+  i:Integer;
+  sl:TStringList;
 begin
   sl:=TStringList.Create;
   Pref.IniFile2.ReadSections(sl);
@@ -7701,10 +7700,10 @@ end;
 
 procedure TBagelMainForm.edtMemoSearchKeyPress(Sender: TObject; var Key: Char);
 var
- memo:TBagelMemo;
- mitem:TBagelMemoItem;
- litem:TListitem;
- i:Integer;
+  memo:TBagelMemo;
+  mitem:TBagelMemoItem;
+  litem:TListitem;
+  i:Integer;
 begin
   if TabControl2.Tabs.Count=0 then Exit;
   if Key = chr(VK_RETURN) then begin
@@ -7757,13 +7756,13 @@ end;
 {プリントプレビュー前のウィンドウの状態を復元}
 procedure TBagelMainForm.RestorePrePPState;
 begin
-    Panel12.Visible:=false;
-    MainCoolbar.Enabled:=True;
-    MainCoolbar.Visible:=True;
-    StatusBar.Visible:=FOldStatusbarVisible;
-    SidebarTogglePanel.Visible:=true;
-    SideBasePanel.Visible:=FOldSidebarVisible;
-    actionlist1.State:=asNormal;
+  Panel12.Visible:=false;
+  MainCoolbar.Enabled:=True;
+  MainCoolbar.Visible:=True;
+  StatusBar.Visible:=FOldStatusbarVisible;
+  SidebarTogglePanel.Visible:=true;
+  SideBasePanel.Visible:=FOldSidebarVisible;
+  actionlist1.State:=asNormal;
 end;
 procedure TBagelMainForm.RewindPopupPopup(Sender: TObject);
 var
@@ -8532,24 +8531,23 @@ end;
 
 procedure TBagelMainForm.DenyAllowCookieMenuClick(Sender: TObject);
 var
-cookieBehavior:Integer;
-p3plevel:Integer;
-p3pval: Array [ 0..2 ] of String;
-
-gp:TGeckoPref;
+  cookieBehavior:Integer;
+  p3plevel:Integer;
+  p3pval: Array [ 0..2 ] of String;
+  gp:TGeckoPref;
 begin
-//Tagの1の位がビヘイビア
-//10の位がp3pレベル
-gp:=TGeckoPref.Create;
-cookieBehavior:=TMenuItem(Sender).Tag mod 10;
-p3plevel:=TMenuItem(Sender).Tag div 10;
+  //Tagの1の位がビヘイビア
+  //10の位がp3pレベル
+  gp:=TGeckoPref.Create;
+  cookieBehavior:=TMenuItem(Sender).Tag mod 10;
+  p3plevel:=TMenuItem(Sender).Tag div 10;
 
-//	    = ( 'afafaaaa', 'ffffaaaa', 'frfradaa');
-p3pval[0]:='afafaaaa';
-p3pval[1]:='ffffaaaa';
-p3pval[2]:='frfradaa';
+  //	    = ( 'afafaaaa', 'ffffaaaa', 'frfradaa');
+  p3pval[0]:='afafaaaa';
+  p3pval[1]:='ffffaaaa';
+  p3pval[2]:='frfradaa';
 
-{692 pref("network.cookie.cookieBehavior",       0);
+{ pref("network.cookie.cookieBehavior",       0);
    0-Accept,
    1-dontAcceptForeign,
    2-dontUse,
@@ -8578,10 +8576,10 @@ p3pval[2]:='frfradaa';
   end;
 
 {
-699 // The following default value is for p3p medium mode.
-700 // See xpfe/components/permissions/content/cookieP3P.xul for the definitions of low/medium/hi
-701 pref("network.cookie.p3p",                  "ffffaaaa");
-702 pref("network.cookie.p3plevel",             1); // 0=low, 1=medium, 2=high, 3=custom
+  // The following default value is for p3p medium mode.
+  // See xpfe/components/permissions/content/cookieP3P.xul for the definitions of low/medium/hi
+  pref("network.cookie.p3p",                  "ffffaaaa");
+  pref("network.cookie.p3plevel",             1); // 0=low, 1=medium, 2=high, 3=custom
 }
 end;
 
@@ -8622,7 +8620,7 @@ end;
 
 procedure TBagelMainForm.OnGestureMessage(var Msg: TMsg; var Handled: boolean);
 var
-obj:TObject;
+  obj:TObject;
 begin
 
   case Msg.message of
@@ -8991,96 +8989,84 @@ begin
 
  //現在操作中のウインドウタイトルを取得(正確でない時があります。(^^;)
 // hWnd   := GetForegroundWindow;
- cnt:=0;
-// if GetWindowText(hWnd , WindowTitle,MAX_PATH)=0 then WindowTitle :='No Title';
- try
- //テキストがあったら
- if Clipboard.HasFormat(CF_TEXT) and (Clipboard.AsText<>'') then
- begin
-   if chkObserveClipboard.Checked then
-   begin
-     regex:=TSkRegExp.Create;
-     try
-     regex.Expression:='https?://[-_.!~*''()a-zA-Z0-9;/?:@&=+$,%#]+';
-     FindStr := Clipboard.AsText;
-      if regex.Exec (FindStr) then
-      begin
-        repeat
-          RetStr := regex.Match[0];
-          if not IsAlreadyOpened(RetStr) then begin
-            if ((cnt mod 15) = 0) and (cnt<>0) then begin
-              CanContinue := MessageDlg('すでにクリップボードから'+IntToStr(cnt)+'個のタブを開きました。まだクリップボードにはURI文字列が含まれています。これ以上開きますか？', mtConfirmation,[mbYes, mbNo], 0) = mrYes;
-              if not CanContinue then break;
-            end;
-            Inc(cnt);
-            ObserveClipList.AddItem(RetStr,nil);
-            AddTab(RetStr,Pref.OpenModeClipboard,0,'',Pref.DocShellDefault);
-          end;
-        until not regex.ExecNext;   //マッチした文字列の次から検索を再開します。
+  cnt:=0;
+//  if GetWindowText(hWnd , WindowTitle,MAX_PATH)=0 then WindowTitle :='No Title';
+  try
+  //テキストがあったら
+  if Clipboard.HasFormat(CF_TEXT) and (Clipboard.AsText<>'') then
+  begin
+    if chkObserveClipboard.Checked then
+    begin
+      regex:=TSkRegExp.Create;
+      try
+      regex.Expression:='https?://[-_.!~*''()a-zA-Z0-9;/?:@&=+$,%#]+';
+      FindStr := Clipboard.AsText;
+       if regex.Exec (FindStr) then
+       begin
+         repeat
+           RetStr := regex.Match[0];
+           if not IsAlreadyOpened(RetStr) then begin
+             if ((cnt mod 15) = 0) and (cnt<>0) then begin
+               CanContinue := MessageDlg('すでにクリップボードから'+IntToStr(cnt)+'個のタブを開きました。まだクリップボードにはURI文字列が含まれています。これ以上開きますか？', mtConfirmation,[mbYes, mbNo], 0) = mrYes;
+               if not CanContinue then break;
+             end;
+             Inc(cnt);
+             ObserveClipList.AddItem(RetStr,nil);
+             AddTab(RetStr,Pref.OpenModeClipboard,0,'',Pref.DocShellDefault);
+           end;
+         until not regex.ExecNext;   //マッチした文字列の次から検索を再開します。
+       end;
+      finally
+        regex.Free;
       end;
-     finally
-       regex.Free;
-     end;
-   end;
+    end;
     //StringList.Add(Clipboard.AsText) ;
     //タイトルと時間を入れてノードに追加
     //TreeView1.Items.Add(nil,WindowTitle + String('(') + DateTimeTostr(NOW)+string(')'));
- end;
- finally
+  end;
+  finally
 
  //次のビューワにメッセージを送る
  //(送らないと他のアプリケーションで影響が出る。気にしないならいいんだけどね ;Y^^Y; )
-   if hNextViewer<>0 then  SendMessage(hNextViewer, WM_DRAWCLIPBOARD, 0, 0);
- end;
+    if hNextViewer<>0 then  SendMessage(hNextViewer, WM_DRAWCLIPBOARD, 0, 0);
+  end;
 end;
 
 /////////○何らかのウィンドウがチェイン内から削除された○
 procedure TBagelMainForm.WMCHANGECBCHAIN( Var Msg :TWMCHANGECBCHAIN) ;
 begin
-   //自ウインドウの次のビューワが削除された場合はその次のビューワを設定する
-   if Msg.Remove = Cardinal(hNextViewer) then
-   begin
-     hNextViewer := Msg.Next;
-     Msg.Result := 0;
-     //↑このメッセージを処理をする時は戻り値に0を返さないといけないらしい
-     //(Win32 APIプログラマーズリファレンス参照)
-   end
-   else
-   begin
-    // 次のビューワにメッセージを送る
-    Msg.Result := SendMessage(hNextViewer, WM_CHANGECBCHAIN,Msg.Remove, Msg.Next);
-   end;
+  //自ウインドウの次のビューワが削除された場合はその次のビューワを設定する
+  if Msg.Remove = Cardinal(hNextViewer) then
+  begin
+   hNextViewer := Msg.Next;
+   Msg.Result := 0;
+   //↑このメッセージを処理をする時は戻り値に0を返さないといけないらしい
+   //(Win32 APIプログラマーズリファレンス参照)
+  end
+  else
+  begin
+  // 次のビューワにメッセージを送る
+  Msg.Result := SendMessage(hNextViewer, WM_CHANGECBCHAIN,Msg.Remove, Msg.Next);
+end;
 end;
 
 Procedure TBagelMainForm.WMSYSCOMMAND(var Msg : TWMSYSCOMMAND);
 begin
-
     //「メインツールバーの表示」を押した時
   If Msg.CmdType =1 Then
-  begin
-
      actToggleMainbarVisible.Execute;
-
-  end;
 
   //「メニューの表示」押した時
   If Msg.CmdType = 2 Then
-  begin
-
     actToggleMenubarVisible.Execute;
-
-  end;
 
   //「最小化ボタンを押した時」
   If Msg.CmdType = SC_MINIMIZE Then
-
-  //ウインドウを最小化する（これをしないとウインドウがタスクバーに入らない）
-  CloseWindow(Application.Handle)
-
+    //ウインドウを最小化する（これをしないとウインドウがタスクバーに入らない）
+    CloseWindow(Application.Handle)
   else
-
-  //残りの処理（「閉じる」など）をDelphiに任せる
-  DefaultHandler(Msg);
+    //残りの処理（「閉じる」など）をDelphiに任せる
+    DefaultHandler(Msg);
 
 end;
 
@@ -9670,8 +9656,8 @@ end;
 
 procedure TBagelMainForm.ToolPQuickPrefClick(Sender: TObject);
 var
-pB:nsIPrefBranch;
-tmpInt:Integer;
+  pB:nsIPrefBranch;
+  tmpInt:Integer;
 begin
 {PopupEnableDenyTitle.Checked:=Pref.EnableDenyTitle;
 
@@ -10049,78 +10035,78 @@ end;
 
 procedure TBagelMainForm.cmbGrepKeywordKeyPress(Sender: TObject; var Key: Char);
 var
-b:TBagelBrowser;
-i:Integer;
+  b:TBagelBrowser;
+  i:Integer;
 begin
-if (Key=chr(VK_RETURN)) and (TabControl.Tabs.Count>0) then
-begin
-
-  for i:=0 to GrepList.Items.Count-1 do
+  if (Key=chr(VK_RETURN)) and (TabControl.Tabs.Count>0) then
   begin
-    Dispose(GrepList.Items[i].Data);
-  end;
-  GrepList.Clear;
-  {
-現在のタブ
-左のタブ
-右のタブ
-すべてのタブ
-選択したタブ
-  }
-  
-  case cboGrepTarget.ItemIndex of
-    0:begin
-      b:=GetCurrentBrowser;
-      FireGrep(cmbGrepKeyword.Text,cmbGrepKind.ItemIndex,b);
-    end;
-    1:begin
-      for i:=0 to TabControl.Tabs.Count-1 do begin
-        if i>TabControl.TabIndex then break;
-        b:=GetBrowser(i);
-        FireGrep(cmbGrepKeyword.Text,cmbGrepKind.ItemIndex,b);
-      end;
-    end;
-    2:begin
-      for i:=0 to TabControl.Tabs.Count-1 do begin
-        if i<TabControl.TabIndex then continue;
-        b:=GetBrowser(i);
-        FireGrep(cmbGrepKeyword.Text,cmbGrepKind.ItemIndex,b);
-      end;
-    end;
-    3:begin
-      for i:=0 to TabControl.Tabs.Count-1 do begin
-        b:=GetBrowser(i);
-        FireGrep(cmbGrepKeyword.Text,cmbGrepKind.ItemIndex,b);
-      end;
-    end;
-    4:begin
-    end;
-  end;
 
-end;
+    for i:=0 to GrepList.Items.Count-1 do
+    begin
+      Dispose(GrepList.Items[i].Data);
+    end;
+    GrepList.Clear;
+    {
+  現在のタブ
+  左のタブ
+  右のタブ
+  すべてのタブ
+  選択したタブ
+    }
+
+    case cboGrepTarget.ItemIndex of
+      0:begin
+        b:=GetCurrentBrowser;
+        FireGrep(cmbGrepKeyword.Text,cmbGrepKind.ItemIndex,b);
+      end;
+      1:begin
+        for i:=0 to TabControl.Tabs.Count-1 do begin
+          if i>TabControl.TabIndex then break;
+          b:=GetBrowser(i);
+          FireGrep(cmbGrepKeyword.Text,cmbGrepKind.ItemIndex,b);
+        end;
+      end;
+      2:begin
+        for i:=0 to TabControl.Tabs.Count-1 do begin
+          if i<TabControl.TabIndex then continue;
+          b:=GetBrowser(i);
+          FireGrep(cmbGrepKeyword.Text,cmbGrepKind.ItemIndex,b);
+        end;
+      end;
+      3:begin
+        for i:=0 to TabControl.Tabs.Count-1 do begin
+          b:=GetBrowser(i);
+          FireGrep(cmbGrepKeyword.Text,cmbGrepKind.ItemIndex,b);
+        end;
+      end;
+      4:begin
+      end;
+    end;
+
+  end;
 end;
 
 procedure TBagelMainForm.FireGrep(aWord:String; mode:Integer; Browser:TBagelBrowser);
 var
-//str:IInterfacedString;
-//astr:nsAString;
-pwWord:PWideChar;
-searchRange:nsIDOMRange;
-startPoint:nsIDOMRange;
-endPoint:nsIDOMRange;
-retRange:nsIDOMRange;
-domDoc:nsIDOMDocument;
-body:nsIDOMNode;
-mFind:nsIFind;
-nodeList:nsIDOMNOdeList;
-////childCount:Cardinal;
-node:nsIDOMNode;
-//node2:nsIDOMNode;
-nodeValue:IInterfacedString;
-offset:Integer;
-grepHit:PGrepResult;
-grepItem:TListItem;
-//i:Integer;
+  //str:IInterfacedString;
+  //astr:nsAString;
+  pwWord:PWideChar;
+  searchRange:nsIDOMRange;
+  startPoint:nsIDOMRange;
+  endPoint:nsIDOMRange;
+  retRange:nsIDOMRange;
+  domDoc:nsIDOMDocument;
+  body:nsIDOMNode;
+  mFind:nsIFind;
+  nodeList:nsIDOMNOdeList;
+  ////childCount:Cardinal;
+  node:nsIDOMNode;
+  //node2:nsIDOMNode;
+  nodeValue:IInterfacedString;
+  offset:Integer;
+  grepHit:PGrepResult;
+  grepItem:TListItem;
+  //i:Integer;
 begin
 
   domDoc:=Browser.ContentDocument;
@@ -10628,7 +10614,7 @@ procedure TBagelMainForm.bkmkSearchEditKeyDown(Sender: TObject; var Key: Word;
 
 function GetNext(Current:TBkmkBase):TBkmkBase;
 var
-Index:Integer;
+  Index:Integer;
 begin
   Result:=nil;
   Index:=TBookmarkList(Current.parent).IndexOf(Current);

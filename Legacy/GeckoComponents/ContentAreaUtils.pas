@@ -516,7 +516,7 @@ begin
 
     if (aFpP.IsDocument) then begin
       try
-        fp.FilterIndex := prefs.getIntPref('save_converter_index');
+        fp.FilterIndex := prefs.getIntPref('save_converter_index') + 1;
       except
       end;
     end;
@@ -533,7 +533,7 @@ begin
 
     LeafName := ExtractFileName(fp.FileName);
     fp.FileName := ExtractFilePath(fp.FileName) + ValidateFileName(LeafName);
-    aFpP.SaveAsType := fp.FilterIndex;
+    aFpP.SaveAsType := fp.FilterIndex - 1;
     aFpP.FilePath := fp.FileName;
     aFpP.FileURL := MakeFileURI(fp.FileName);
 

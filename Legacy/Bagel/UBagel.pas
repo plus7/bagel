@@ -4125,30 +4125,18 @@ procedure TBagelMainForm.actTaskTrayExecute(Sender: TObject);
 begin
   if actTaskTray.Checked then
   begin
-
-    {// uTaskBarRecrate は TBagelMainForm の private に UINT 型で宣言
-    // 新しい UtilWindow を作成し、ブロードキャストメッセージのみを受け取らせる
-    uTaskBarRecreate := RegisterWindowMessage('TaskbarCreated');
-    // hWndTrayIcon は TBagelMainForm の private に HWND 型で宣言
-    // メッセージ送信先を指定
-    hWndTrayIcon := AllocateHWnd(TaskTrayWndProc);
-
-    CreateTaskBarIcon; }
+    //トレイのアイコンを表示し、自身を隠す
     BagelTrayIcon.Icon.Assign(Application.Icon);
     BagelTrayIcon.Visible := True;
     ShowWindow(Application.Handle,SW_HIDE);
     Self.Hide;
-    //Application.ShowMainForm := False;
   end
   else
   begin
+    //トレイのアイコンを削除
     BagelTrayIcon.Visible := False;
     Visible := true;
     ShowWindow(Application.Handle,SW_SHOW);
-    //トレイのアイコンを削除
-    {
-    DeleteTaskBarIcon;
-    DeallocateHWnd(hWndTrayIcon);}
   end;
 end;
 

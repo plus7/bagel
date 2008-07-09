@@ -714,8 +714,9 @@ begin
   // We want to use cached data because the document is currently visible.
   ContentDisposition := NewString;
   try
-    ((aDocument as nsIDOMDocumentView).defaultView as nsIInterfaceRequestor)
-          .GetInterface(nsIDOMWindowUtils, WinUtil);
+    ((aDocument as nsIDOMDocumentView)
+    .defaultView as nsIInterfaceRequestor)
+    .GetInterface(nsIDOMWindowUtils, WinUtil);
     WinUtil.GetDocumentMetadata(NewString('content-disposition').AString, ContentDisposition.AString);
   except
     // Failure to get a content-disposition is ok

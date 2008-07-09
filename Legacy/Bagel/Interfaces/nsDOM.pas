@@ -38,8 +38,6 @@ const
 
   NS_IDOMNSDOCUMENT_IID: TGUID = '{533a8131-8d0c-4ebf-990b-7fad7cd514ee}';
 
-  NS_IDOMWINDOWUTILS_IID: TGUID = '{7a55fc2b-afb3-41c6-9e50-3fee341fa87c}';
-
   NS_IDOMNSHTMLDOCUMENT_IID: TGUID = '{79beb289-3644-4b54-9432-9fb993945629}';
 
 type
@@ -59,7 +57,6 @@ type
   nsIDOMPlugin = interface;
   nsIDOMNSHTMLElement = interface;
   nsIDOMNSDocument = interface;
-  nsIDOMWindowUtils = interface;
   nsIDOMNSHTMLDocument = interface;
   nsIDOMWindowInternal = interface(nsIDOMWindow2)
   ['{0d12a345-3fe2-491e-af0d-bcfd5c4baa03}']

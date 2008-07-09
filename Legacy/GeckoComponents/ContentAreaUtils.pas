@@ -366,7 +366,8 @@ begin
   // For information on download folder preferences, see
   // mozilla/browser/components/preferences/main.js
 
-  UseDownloadDir := prefs.GetBoolPref('useDownloadDir');
+  //TODO:
+  UseDownloadDir := False;//prefs.GetBoolPref('useDownloadDir');
 
   // Default to lastDir if useDownloadDir is false, and lastDir
   // is configured and valid. Otherwise, use the user's default

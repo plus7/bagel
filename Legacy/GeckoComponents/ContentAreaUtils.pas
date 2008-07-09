@@ -797,9 +797,9 @@ begin
 
 
     if aChosenData<>nil then
-      tr.init(aChosenData.uri, PersistArgs.target, NewString.AString, nil, 0, nil, Persist as nsICancelable)
+      tr.init(aChosenData.uri, PersistArgs.target, NewString.AString, nil, 0, nil, Persist)
     else
-      tr.init(fileInfo.uri, PersistArgs.target, NewString.AString, nil, 0, nil, Persist as nsICancelable);
+      tr.init(fileInfo.uri, PersistArgs.target, NewString.AString, nil, 0, nil, Persist);
 
     //Persist.progressListener = new DownloadListener(window, tr);
     Persist.SaveDocument((PersistArgs.source as nsIDOMDocument), PersistArgs.target, filesFolder,
@@ -807,9 +807,9 @@ begin
   end
   else begin
     if aChosenData<>nil then
-      tr.init(aChosenData.uri, PersistArgs.target, NewString.AString, nil, 0, nil, Persist as nsICancelable)
+      tr.init(aChosenData.uri, PersistArgs.target, NewString.AString, nil, 0, nil, Persist)
     else
-      tr.init(source as nsIURI, PersistArgs.target, NewString.AString, nil, 0, nil, Persist as nsICancelable);
+      tr.init(source as nsIURI, PersistArgs.target, NewString.AString, nil, 0, nil, Persist);
     //Persist.progressListener = new DownloadListener(window, tr);
     if aChosenData<>nil then
       Persist.SaveURI(aChosenData.uri,

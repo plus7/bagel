@@ -68,7 +68,8 @@ function InternalSave(aURL:String; aDocument:nsIDOMDocument;
                       aReferrer:nsIURI; aSkipPrompt:Boolean = False):Boolean;
 function MakeURI(aURL:String; aOriginCharset:String; aBaseURI:nsIURI):nsIURI;
 function MakeFilePicker:nsIFilePicker;
-function MakeFileURI(aFile:nsIFile):nsIURI;
+function MakeFileURI(aFile:nsIFile):nsIURI; overload;
+function MakeFileURI(aFile:String):nsIURI; overload;
 function MakeWebBrowserPersist:nsIWebBrowserPersist;
 procedure SaveDocument(aDocument:nsIDOMDocument; aSkipPrompt:Boolean);
 
@@ -536,13 +537,12 @@ begin
     fp.FileName := ExtractFilePath(fp.FileName) + ValidateFileName(LeafName);
     aFpP.SaveAsType := fp.FilterIndex;
     aFpP.FilePath := fp.FileName;
-//    aFpP.FileURL := fp.FileURL;
+    aFpP.FileURL := MakeFileURI(fp.FileName);
 
     if (aFpP.IsDocument) then
       prefs.SetIntPref('save_converter_index', aFpP.SaveAsType);
   end
   else begin
-    //ここはどう考えても効率的ではない(DelphiとXPCOMの往復)ので全面的にDelphiのコードに書き換える
     _File := IncludeTrailingPathDelimiter(Dir) + GetNormalizedLeafName(aFpP.fileInfo.FileName, aFpP.fileInfo.FileExt);
 
     // Since we're automatically downloading, we don't get the file picker's 
@@ -829,9 +829,17 @@ begin
   Result := NS_GetIOService.NewURI(NewCString(aURL).ACString, PAnsiChar(aOriginCharset), aBaseURI);
 end;
 
-function MakeFileURI(aFile:nsIFile):nsIURI;
+function MakeFileURI(aFile:nsIFile):nsIURI; overload;
 begin
   Result := NS_GetIOService.NewFileURI(aFile);
+end;
+
+function MakeFileURI(aFile:String):nsIURI; overload;
+var
+  LocalFile:nsILocalFile;
+begin
+  NS_NewLocalFile(NewString(aFile).AString, False, LocalFile);
+  Result := NS_GetIOService.NewFileURI(LocalFile);
 end;
 
 function MakeWebBrowserPersist:nsIWebBrowserPersist;

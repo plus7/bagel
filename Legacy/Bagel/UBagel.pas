@@ -10612,20 +10612,20 @@ end;
 procedure TBagelMainForm.bkmkSearchEditKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 
-function GetNext(Current:TBkmkBase):TBkmkBase;
-var
-  Index:Integer;
-begin
-  Result:=nil;
-  Index:=TBookmarkList(Current.parent).IndexOf(Current);
-  if Index = TBookmarkList(Current.parent).Count-1 then begin
-    if (Current.parent=bookmarks) then Exit;
-    Result:=GetNext(Current.parent);
-  end
-  else begin
-    Result:= TBookmarkList(Current.parent).Items[Index+1];
+  function GetNext(Current:TBkmkBase):TBkmkBase;
+  var
+    Index:Integer;
+  begin
+    Result:=nil;
+    Index:=TBookmarkList(Current.parent).IndexOf(Current);
+    if Index = TBookmarkList(Current.parent).Count-1 then begin
+      if (Current.parent=bookmarks) then Exit;
+      Result:=GetNext(Current.parent);
+    end
+    else begin
+      Result:= TBookmarkList(Current.parent).Items[Index+1];
+    end;
   end;
-end;
 
 var
   i:Integer;

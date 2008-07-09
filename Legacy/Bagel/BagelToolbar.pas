@@ -145,7 +145,7 @@ end;
 
 procedure TBagelPopupMenu.Refresh;
 var
-  i, j:Integer;
+  i:Integer;
 //  tb:TToolButton;
   mi:TMenuItem;
   Child:TBagelMenuItem;
@@ -282,8 +282,8 @@ begin
 end;
 
 procedure TBagelToolButton.SetContainer(Value:TBagelActionContainer);
-var
-  i:Integer;
+//var
+//  i:Integer;
 //  tb:TToolButton;
   //ParentMenu:TBagelMenuItem;
 begin
@@ -346,7 +346,7 @@ procedure TBagelToolbar.SetContainer(Value:TBagelActionContainer);
 var
   i:Integer;
   tb:TBagelToolButton;
-  ParentMenu:TBagelMenuItem;
+//  ParentMenu:TBagelMenuItem;
 begin
   Self.ShowHint := True;
   FContainer := Value;

@@ -1216,10 +1216,10 @@ end;
 
 function IsValidForFrame(Frame: nsIDOMWindow; Title: String):Boolean;
 var
-i:Integer;
-ssl:nsIDOMStyleSheetList;
-styleSheet:nsIDOMStyleSheet;
-str:IInterfacedstring;
+  i:Integer;
+  ssl:nsIDOMStyleSheetList;
+  styleSheet:nsIDOMStyleSheet;
+  str:IInterfacedstring;
 begin
   Result:=False;
   ssl := (frame.Document as nsIDOMDocumentStyle).StyleSheets;
@@ -1383,28 +1383,28 @@ end;
 
 function Range2String(range:nsIDOMRange):WideString;
 var
- doc:nsIDOMDocument;
- scrs:nsIDOMNodeList;
- scr:nsIDOMNode;
- trash:nsIDOMRange;
- noscrs:nsIDOMNodeList;
- noscr:nsIDOMNode;
- gp:TGeckoPref;
- tmp:nsIDOMRange;
- tmp2:nsIDOMRange;
- i:Integer;
- count:Cardinal;
- startContainer:nsIDOMNode;
- startOffset:Integer;
- endContainer:nsIDOMNode;
- endOffset:Integer;
- tagName:IInterfacedString;
- aTagName:nsAString;
- toStrRet:IInterfacedString;
- aToStrRet:nsAString;
- parent:nsIDOMNode;
- compare1:SmallInt;
- compare2:SmallInt;
+  doc:nsIDOMDocument;
+  scrs:nsIDOMNodeList;
+  scr:nsIDOMNode;
+  trash:nsIDOMRange;
+  noscrs:nsIDOMNodeList;
+  noscr:nsIDOMNode;
+  gp:TGeckoPref;
+  tmp:nsIDOMRange;
+  tmp2:nsIDOMRange;
+  i:Integer;
+  count:Cardinal;
+  startContainer:nsIDOMNode;
+  startOffset:Integer;
+  endContainer:nsIDOMNode;
+  endOffset:Integer;
+  tagName:IInterfacedString;
+  aTagName:nsAString;
+  toStrRet:IInterfacedString;
+  aToStrRet:nsAString;
+  parent:nsIDOMNode;
+  compare1:SmallInt;
+  compare2:SmallInt;
 begin
   Result:='';
   startContainer := range.StartContainer;
@@ -1643,7 +1643,7 @@ begin
 end;
 function GetRootWindowByDoc(document:nsIDOMDocument):nsIDOMWindow;
 var
-tmpWin,window:nsIDOMWindow;
+  tmpWin,window:nsIDOMWindow;
 begin
   Result:=nil;
   if document=nil then Exit;
@@ -1660,43 +1660,43 @@ end;
 
 function convertURIToFilePath(aURI:nsIURI):String;
 var
-ioService:nsIIOService;
-URI:nsIURI;
-spec:IInterfacedCString;
-isfile:LongBool;
-handler:nsIProtocolHandler;
-fileHandler:nsIFileProtocolHandler;
-filefile:nsIFile;
-path:IInterfacedString;
+  ioService:nsIIOService;
+  URI:nsIURI;
+  spec:IInterfacedCString;
+  isfile:LongBool;
+  handler:nsIProtocolHandler;
+  fileHandler:nsIFileProtocolHandler;
+  filefile:nsIFile;
+  path:IInterfacedString;
 begin
-    Result:='';
-    ioService := NS_GetIOService;
-    spec:=NewCString;
-    aURI.GetSpec(spec.ACString);
-    URI := NS_NewURI(spec.ToString);
-    isfile := URI.SchemeIs(PChar('file'));
-    path:=NewString;
-    if not isfile then Exit;
-    handler := ioService.GetProtocolHandler(PChar('file'));
-    handler.QueryInterface(nsIFileProtocolHandler,fileHandler);
-    filefile := fileHandler.GetFileFromURLSpec(spec.ACString);// 「 URL 文字列からファイルを得る」機能
-    filefile.GetPath(path.AString);
-    Result:=path.ToString;// ファイルのパスを帰す
+  Result:='';
+  ioService := NS_GetIOService;
+  spec:=NewCString;
+  aURI.GetSpec(spec.ACString);
+  URI := NS_NewURI(spec.ToString);
+  isfile := URI.SchemeIs(PChar('file'));
+  path:=NewString;
+  if not isfile then Exit;
+  handler := ioService.GetProtocolHandler(PChar('file'));
+  handler.QueryInterface(nsIFileProtocolHandler,fileHandler);
+  filefile := fileHandler.GetFileFromURLSpec(spec.ACString);// 「 URL 文字列からファイルを得る」機能
+  filefile.GetPath(path.AString);
+  Result:=path.ToString;// ファイルのパスを帰す
 end;
 
 function TBagelMainForm.GetLinkBkmkList:TBookmarkList;
 var
- i:Integer;
+  i:Integer;
 begin
-    for i := 0 to bookmarks.Count - 1 do
-    begin
-      if bookmarks.Items[i].name = 'リンク' then
-        break;
-    end;
-    if bookmarks.Items[i] is TBookmarkList then
-      Result:=TBookmarkList(bookmarks.Items[i])
-    else
-      Result := nil;
+  for i := 0 to bookmarks.Count - 1 do
+  begin
+    if bookmarks.Items[i].name = 'リンク' then
+      break;
+  end;
+  if bookmarks.Items[i] is TBookmarkList then
+    Result:=TBookmarkList(bookmarks.Items[i])
+  else
+    Result := nil;
 end;
 
 function TBagelMainForm.IsNodeInsideLink(node:nsIDOMNode):nsIDOMHTMLAnchorElement;
@@ -1808,7 +1808,7 @@ end;
 
 function TBagelMainForm.IsDenyTitle(Title:String):Boolean;
 var
-i:Integer;
+  i:Integer;
 begin
   Result := False;
   for i:=0 to Pref.DenyTitleList.Count-1 do
@@ -2026,12 +2026,11 @@ end;
 
 function TBagelMainForm.GetSelectionForDoc(doc:nsIDOMDocument):nsISelectionController;
 var
-ds:nsIDocShell;
-selCon:nsISelectionController;
-ir:nsIInterfaceRequestor;
-sd:nsISelectionDisplay;
-absView:nsIDOMAbstractView;
-
+  ds:nsIDocShell;
+  selCon:nsISelectionController;
+  ir:nsIInterfaceRequestor;
+  sd:nsISelectionDisplay;
+  absView:nsIDOMAbstractView;
 begin
   absView := (doc as nsIDOMDocumentView).DefaultView;
 
@@ -2048,8 +2047,8 @@ end;
 
 procedure TBagelMainForm.GoButtonExtMenuClick(Sender: TObject);
 var
-tag,barpos:Integer;
-str,uri:WideString;
+  tag,barpos:Integer;
+  str,uri:WideString;
 begin
   tag:=TMenuItem(Sender).Tag;
   str:=ExtGoList.Strings[tag];
@@ -2188,9 +2187,9 @@ end;
 
 function TBagelMainForm.GetDocShellForFrame(aFrame:nsIDOMAbstractView):nsIDocShell;
 var
-ir:nsIInterfaceRequestor;
-webNav:nsIWebNavigation;
-ds:nsIDocShell;
+  ir:nsIInterfaceRequestor;
+  webNav:nsIWebNavigation;
+  ds:nsIDocShell;
 begin
   aFrame.QueryInterface(NS_IInterfaceRequestor_IID,ir);
   ir.GetInterface(nsIWebNavigation,webNav);
@@ -2298,38 +2297,38 @@ var
 //  histcount:Integer;
   title:IInterfacedString;
 begin
-    if (Pref.TabMaxCount > 0) and (TabControl.Tabs.Count = Pref.TabMaxCount) then exit;
-    brwsr:=TBagelBrowser.Create(Self);
-    brwsr.Visible := false;
-    brwsr.Parent:=self.ViewPanel;
-    brwsr.Align := alClient;
-    ApplyEvtHandlersToBrowser(brwsr);
-    brwsr.TabStop:=true;
-    TabControl.Tabs.InsertObject(GetNewtabPos(0),'',TObject(brwsr));
-    TabZOrder.Insert(GetMDITabPos(0),TObject(brwsr));
+  if (Pref.TabMaxCount > 0) and (TabControl.Tabs.Count = Pref.TabMaxCount) then exit;
+  brwsr:=TBagelBrowser.Create(Self);
+  brwsr.Visible := false;
+  brwsr.Parent:=self.ViewPanel;
+  brwsr.Align := alClient;
+  ApplyEvtHandlersToBrowser(brwsr);
+  brwsr.TabStop:=true;
+  TabControl.Tabs.InsertObject(GetNewtabPos(0),'',TObject(brwsr));
+  TabZOrder.Insert(GetMDITabPos(0),TObject(brwsr));
 
-    i := TabControl.Tabs.IndexOfObject(TObject(brwsr));
-    TabControl.TabIndex:=i;
-    tabBarCtxTarget:=i;
-    brwsr.Visible := true;
-    if Application.Active then
-    begin
-      //brwsr.ShouldFocus:=true;
-      brwsr.SetFocus;
-      brwsr.IsRead:=true;
-    end;
-    brwsr.WebNavigation.SessionHistory.QueryInterface(NS_ISHISTORYINTERNAL_IID,newSHI);
+  i := TabControl.Tabs.IndexOfObject(TObject(brwsr));
+  TabControl.TabIndex:=i;
+  tabBarCtxTarget:=i;
+  brwsr.Visible := true;
+  if Application.Active then
+  begin
+    //brwsr.ShouldFocus:=true;
+    brwsr.SetFocus;
+    brwsr.IsRead:=true;
+  end;
+  brwsr.WebNavigation.SessionHistory.QueryInterface(NS_ISHISTORYINTERNAL_IID,newSHI);
 
-    for j:=0 to Pref.RecentClosedURL.Tabs[TBagelActionContainer(Sender).Tag].HistoryCount-1 do
-    begin
-      NS_CreateInstance('@mozilla.org/browser/session-history-entry;1',nsISHEntry,newEntry);
-      newURI := NS_NewURI(Pref.RecentClosedURL.Tabs[TBagelActionContainer(Sender).Tag].HistoryItem[j].URI);
-      newEntry.SetURI(newURI);
-      title:=NewString(Pref.RecentClosedURL.Tabs[TBagelActionContainer(Sender).Tag].HistoryItem[j].Title);
-      newEntry.SetTitle(title.AString);
-      newSHI.AddEntry(newEntry,true);
-    end;
-    brwsr.WebNavigation.GotoIndex(Pref.RecentClosedURL.Tabs[TBagelActionContainer(Sender).Tag].HistoryPosition);
+  for j:=0 to Pref.RecentClosedURL.Tabs[TBagelActionContainer(Sender).Tag].HistoryCount-1 do
+  begin
+    NS_CreateInstance('@mozilla.org/browser/session-history-entry;1',nsISHEntry,newEntry);
+    newURI := NS_NewURI(Pref.RecentClosedURL.Tabs[TBagelActionContainer(Sender).Tag].HistoryItem[j].URI);
+    newEntry.SetURI(newURI);
+    title:=NewString(Pref.RecentClosedURL.Tabs[TBagelActionContainer(Sender).Tag].HistoryItem[j].Title);
+    newEntry.SetTitle(title.AString);
+    newSHI.AddEntry(newEntry,true);
+  end;
+  brwsr.WebNavigation.GotoIndex(Pref.RecentClosedURL.Tabs[TBagelActionContainer(Sender).Tag].HistoryPosition);
 
 end;
 
@@ -2372,9 +2371,8 @@ end;
 
 function TBagelMainForm.GetCurrentBrowser:TBagelBrowser;
 var
- i:integer;
-b:TBagelBrowser;
-
+  i:integer;
+  b:TBagelBrowser;
 begin
     Result:=nil;
     i:=TabControl.TabIndex;
@@ -2385,26 +2383,26 @@ end;
 
 function TBagelMainForm.GetBrowser(Index:Integer):TBagelBrowser;
 var
-b:TBagelBrowser;
+  b:TBagelBrowser;
 begin
-    Result:=nil;
-    if (Index<0) or (index>TabControl.Tabs.Count-1) then exit;
-    b:=TBagelBrowser(TabControl.Tabs.Objects[Index]);
-    Result:=b;
+  Result:=nil;
+  if (Index<0) or (index>TabControl.Tabs.Count-1) then exit;
+  b:=TBagelBrowser(TabControl.Tabs.Objects[Index]);
+  Result:=b;
 end;
 
 function TBagelMainForm.GetBrowserById(Id:Cardinal):TBagelBrowser;
 var
-b:TBagelBrowser;
-i:Integer;
+  b:TBagelBrowser;
+  i:Integer;
 begin
-    //Result:=nil;
-    b := nil;
-    for i:=0 to TabControl.Tabs.Count-1 do begin
-      b:=GetBrowser(i);
-      if id=b.Id then break;
-    end;
-    Result:=b;
+  //Result:=nil;
+  b := nil;
+  for i:=0 to TabControl.Tabs.Count-1 do begin
+    b:=GetBrowser(i);
+    if id=b.Id then break;
+  end;
+  Result:=b;
 end;
 
 {Bagelについて}
@@ -2424,9 +2422,7 @@ end;
 
 procedure TBagelMainForm.actCloseTabExecute(Sender: TObject);
 begin
-
   CloseTab(tabBarCtxTarget);
-
 end;
 
 
@@ -2506,11 +2502,11 @@ end;
 
 procedure TBagelMainForm.actAddTabExecute(Sender: TObject);
 begin
-case Pref.NewTabMode of
-  0: actAddTabBlank.Execute;
-  1: actAddTabCurr.Execute;
-  2: actAddTabHome.Execute;
-end;
+  case Pref.NewTabMode of
+    0: actAddTabBlank.Execute;
+    1: actAddTabCurr.Execute;
+    2: actAddTabHome.Execute;
+  end;
 end;
 
 procedure TBagelMainForm.actClearCacheExecute(Sender: TObject);
@@ -2532,23 +2528,10 @@ end;
 
 procedure TBagelMainForm.actClearHistoryExecute(Sender: TObject);
 var
-//  globalHistory:nsIGlobalHistory;
   browserHistory:nsIBrowserHistory;
 begin
-//rv:=
-  //NS_GetService('@mozilla.org/browser/global-history;1',nsIGlobalHistory,globalHistory);
-//rv:=
   NS_GetService('@mozilla.org/browser/global-history;2',nsIBrowserHistory,browserHistory);
   browserHistory.RemoveAllPages;
-//globalHistory.QueryInterface(ns_IInterfaceRequestor_iid,ir);
-//ir.GetInterface(ns_IBrowserHistory_iid,browserHistory);
-//globalHIstory.IsVisited(PCHar('http://tkm.s31.xrea.com/'),isv);
-//ShowMessage(BoolToStr(isv));
-//globalHistory.QueryInterface(ns_IBROWSERHISTORY_IID,browserHIstory);
-//browserHistory.RemoveAllPages;
-//NS_GetService('@mozilla.org/rdf/rdf-service;1',nsIRDFService,RDF);
-//NS_GetService('@mozilla.org/rdf/datasource;1?name=history',nsIRDFDataSource,RDFDS);
-//rv:=RDFDS.QueryInterface(ns_IBrowserHistory_IID,globalHistory);
 end;
 
 procedure TBagelMainForm.actClipboardSidebarExecute(Sender: TObject);
@@ -2565,66 +2548,66 @@ end;
 
 procedure TBagelMainForm.actCloseAllExecute(Sender: TObject);
 var
-    i: Integer;
-    c: Integer;
-    M: String;
+  i: Integer;
+  c: Integer;
+  M: String;
 begin
-    if Pref.OnCloseAll=true then
+  if Pref.OnCloseAll=true then
+  begin
+    M := '全て閉じてもよろしいですか？';
+    if MessageDlg(M, mtConfirmation,[mbYes, mbNo], 0) = mrNo then
     begin
-      M := '全て閉じてもよろしいですか？';
-      if MessageDlg(M, mtConfirmation,[mbYes, mbNo], 0) = mrNo then
-      begin
-        exit;
-      end;
+      exit;
     end;
+  end;
 
-    c:=TabControl.Tabs.Count-1;
-    for i := 0 to c do
-    begin
-      CloseTab(0);
-    end;
+  c:=TabControl.Tabs.Count-1;
+  for i := 0 to c do
+  begin
+    CloseTab(0);
+  end;
 end;
 
 procedure TBagelMainForm.actCloseLeftExecute(Sender: TObject);
 var
-    i: Integer;
-    c: Integer;
+  i: Integer;
+  c: Integer;
 begin
-    //c:=TabControl1.TabIndex;
-    c:=tabBarCtxTarget;
-    for i := 0 to c-1 do
-    begin
-      CloseTab(0);
-    end;
+  //c:=TabControl1.TabIndex;
+  c:=tabBarCtxTarget;
+  for i := 0 to c-1 do
+  begin
+    CloseTab(0);
+  end;
 end;
 
 procedure TBagelMainForm.actCloseWithoutExecute(Sender: TObject);
-  var
-    i: Integer;
-    c: Integer;
-    c2:Integer;
-    M: String;
+var
+  i: Integer;
+  c: Integer;
+  c2:Integer;
+  M: String;
+begin
+  if Pref.OnCloseOther=true then
   begin
-    if Pref.OnCloseOther=true then
+    M := '他を全て閉じてもよろしいですか？';
+    if MessageDlg(M, mtConfirmation,[mbYes, mbNo], 0) = mrNo then
     begin
-      M := '他を全て閉じてもよろしいですか？';
-      if MessageDlg(M, mtConfirmation,[mbYes, mbNo], 0) = mrNo then
-      begin
-        exit;
-      end;
+      exit;
     end;
+  end;
 
 
-    c:=tabBarCtxTarget;//TabControl1.TabIndex;
-    c2:=TabControl.Tabs.Count;
-    for i := 0 to c-1 do
-    begin
-      CloseTab(0);
-    end;
-    for i := c to c2-2 do
-    begin
-      CloseTab(1);
-    end;
+  c:=tabBarCtxTarget;//TabControl1.TabIndex;
+  c2:=TabControl.Tabs.Count;
+  for i := 0 to c-1 do
+  begin
+    CloseTab(0);
+  end;
+  for i := c to c2-2 do
+  begin
+    CloseTab(1);
+  end;
 end;
 
 procedure TBagelMainForm.actCopyCtxURIExecute(Sender: TObject);
@@ -2804,12 +2787,12 @@ end;
 
 procedure TBagelMainForm.OpenAllBookmarksInternal(l:TBookmarkList);
 var
-c:Integer;//カウンタ
-CanContinue:Boolean;
-M:String;
+  c:Integer;//カウンタ
+  CanContinue:Boolean;
+  M:String;
 
-i:Integer;
-j:Integer;
+  i:Integer;
+  j:Integer;
 begin
   c:=0;
 
@@ -2887,8 +2870,8 @@ end;
 
 procedure TBagelMainForm.actEditTabMenuExecute(Sender: TObject);
 var
- f:TfrmMenuEdit;
- c:TBagelActionContainer;
+  f:TfrmMenuEdit;
+  c:TBagelActionContainer;
 begin
   f:=TfrmMenuEdit.Create(Self);
   f.Source:=Self.TabMenu;
@@ -2904,8 +2887,8 @@ end;
 
 procedure TBagelMainForm.actEditToolbarExecute(Sender: TObject);
 var
- f:TfrmMenuEdit;
- c:TBagelActionContainer;
+  f:TfrmMenuEdit;
+  c:TBagelActionContainer;
 begin
   f:=TfrmMenuEdit.Create(Self);
   f.Source:=Self.CtrlTbActionContainer;
@@ -2921,8 +2904,8 @@ end;
 
 procedure TBagelMainForm.actEditCtxMenuExecute(Sender: TObject);
 var
- f:TfrmMenuEdit;
- c:TBagelActionContainer;
+  f:TfrmMenuEdit;
+  c:TBagelActionContainer;
 begin
   f:=TfrmMenuEdit.Create(Self);
   f.Source:=Self.ContextMenu;
@@ -2938,8 +2921,8 @@ end;
 
 procedure TBagelMainForm.actEditMainMenuExecute(Sender: TObject);
 var
- f:TfrmMenuEdit;
- c:TBagelActionContainer;
+  f:TfrmMenuEdit;
+  c:TBagelActionContainer;
 begin
   f:=TfrmMenuEdit.Create(Self);
   f.Source:=Self.TestActionContainer2;
@@ -3149,16 +3132,16 @@ end;
 
 procedure TBagelMainForm.actCloseRightExecute(Sender: TObject);
 var
-    i: Integer;
-    c: Integer;
-    c2: Integer;
+  i: Integer;
+  c: Integer;
+  c2: Integer;
 begin
-    c:=tabBarCtxTarget+1;//TabControl1.TabIndex+1;
-    c2:=TabControl.Tabs.Count-1;
-    for i := c to c2 do
-    begin
-      CloseTab(c);
-    end;
+  c:=tabBarCtxTarget+1;//TabControl1.TabIndex+1;
+  c2:=TabControl.Tabs.Count-1;
+  for i := c to c2 do
+  begin
+    CloseTab(c);
+  end;
 end;
 
 
@@ -3230,8 +3213,8 @@ procedure TBagelMainForm.actIEViewExecute(Sender: TObject);
 var
   Buf: array[0..MAX_PATH] of char;
   IEPath:String;
- const
-CSIDL_PROGRAM_FILES = $0026;
+const
+  CSIDL_PROGRAM_FILES = $0026;
 begin
   SHGetSpecialFolderPath(Handle, Buf, CSIDL_PROGRAM_FILES, FALSE);
   IEPath:=String(Buf)+'\Internet Explorer\IEXPLORE.EXE';
@@ -3245,32 +3228,32 @@ begin
 end;
 
 procedure TBagelMainForm.actCopyBookmarkExecute(Sender: TObject);
-procedure WriteChildren(WR :TWriter; parent:TBookmarkList; level:Integer);
-var
-item:TBkmkBase;
-i:Integer;
-begin
-  for i:=0 to parent.Count-1 do begin
-    item:=parent.Items[i];
-    if item is TBookmark then
-    begin
-      WR.WriteInteger(1);
-      WR.WriteInteger(level);
-      WR.WriteString(TBookmark(item).name);
-      WR.WriteString(TBookmark(item).URI);
-      WR.WriteString(TBookmark(item).DocShell);
-      WR.WriteString(TBookmark(item).ReloadIntv);
-    end
-    else if item is TBookmarkList then
-    begin
-      WR.WriteInteger(0);
-      WR.WriteInteger(level);
-      WR.WriteString(TBookmarkList(item).name);
-      WR.WriteBoolean(TBookmarkList(item).expanded);
-      WriteChildren(WR,TBookmarkList(item),level+1);
+  procedure WriteChildren(WR :TWriter; parent:TBookmarkList; level:Integer);
+  var
+    item:TBkmkBase;
+    i:Integer;
+  begin
+    for i:=0 to parent.Count-1 do begin
+      item:=parent.Items[i];
+      if item is TBookmark then
+      begin
+        WR.WriteInteger(1);
+        WR.WriteInteger(level);
+        WR.WriteString(TBookmark(item).name);
+        WR.WriteString(TBookmark(item).URI);
+        WR.WriteString(TBookmark(item).DocShell);
+        WR.WriteString(TBookmark(item).ReloadIntv);
+      end
+      else if item is TBookmarkList then
+      begin
+        WR.WriteInteger(0);
+        WR.WriteInteger(level);
+        WR.WriteString(TBookmarkList(item).name);
+        WR.WriteBoolean(TBookmarkList(item).expanded);
+        WriteChildren(WR,TBookmarkList(item),level+1);
+      end;
     end;
   end;
-end;
 
 var
   node: TTreeNode;
@@ -3348,20 +3331,19 @@ end;
 procedure TBagelMainForm.actDeleteBookmarkExecute(Sender: TObject);
 	function DelOK:Boolean;
 	begin
-	 //
-	 Result:=True;
+	  Result:=True;
 	  if Pref.OnDeleteBookmark then
 	  begin
 	    Result:=(MessageDlg('削除します', mtWarning, mbOKCancel, -1) = mrOk);
 	  end;
 	end;
 begin
-      if (BookmarksTree.Selected <> nil) and
-         (BookmarksTree.Selected.Data <> bookmarks) and
-        DelOK then
-       begin
-         UnregisterBookmark(BookmarksTree.Selected.Data);
-       end;
+  if (BookmarksTree.Selected <> nil) and
+     (BookmarksTree.Selected.Data <> bookmarks) and
+    DelOK then
+  begin
+    UnregisterBookmark(BookmarksTree.Selected.Data);
+  end;
 end;
 
 procedure TBagelMainForm.actDeleteBookmarkUpdate(Sender: TObject);
@@ -3412,7 +3394,7 @@ end;
 
 procedure TBagelMainForm.actShowWebPanelEditorExecute(Sender: TObject);
 var
-f:TfrmWebPanelEditor;
+  f:TfrmWebPanelEditor;
 begin
   f:=TfrmWebPanelEditor.Create(Self);
   f.ShowModal;
@@ -3909,8 +3891,8 @@ end;
 
 procedure TBagelMainForm.actPrevTabExecute(Sender: TObject);
 var
-i:Integer;
-brwsr:TBagelBrowser;
+  i:Integer;
+  brwsr:TBagelBrowser;
 begin
   if TabControl.Tabs.Count > 1 then
   begin
@@ -3946,8 +3928,8 @@ end;
 
 procedure TBagelMainForm.actPrintPreviewExecute(Sender: TObject);
 begin
-    DoPrintPreview;
-    PrepareForPP;
+  DoPrintPreview;
+  PrepareForPP;
 end;
 
 procedure TBagelMainForm.actQuitExecute(Sender: TObject);
@@ -3957,9 +3939,9 @@ end;
 
 procedure TBagelMainForm.actPageEndExecute(Sender: TObject);
 var
-focusedwin:nsIDOMWindow;
+  focusedwin:nsIDOMWindow;
 begin
-if GetBrowser(tabBarCtxTarget)=nil then exit;
+  if GetBrowser(tabBarCtxTarget)=nil then exit;
   focusedwin:=(GetBrowser(tabBarCtxTarget).WebBrowser as nsIWebBrowserFocus).FocusedWindow;
   if focusedwin<>nil then begin
     getSelectionForDoc(focusedwin.Document)
@@ -3973,7 +3955,7 @@ end;
 
 procedure TBagelMainForm.actReloadAllExecute(Sender: TObject);
 var
-i:Integer;
+  i:Integer;
 begin
   for i:=0 to TabControl.Tabs.Count - 1 do
   begin
@@ -4045,7 +4027,7 @@ end;
 
 procedure TBagelMainForm.actStopAllExecute(Sender: TObject);
 var
-i:Integer;
+  i:Integer;
 begin
   for i:=0 to TabControl.Tabs.Count - 1 do
   begin
@@ -4100,8 +4082,8 @@ end;
 
 procedure TBagelMainForm.actToggleNoGripperExecute(Sender: TObject);
 var
-bandinfo:TREBARBANDINFO;
-i:Integer;
+  bandinfo:TREBARBANDINFO;
+  i:Integer;
 begin
 //  MainCoolbar.Handle
 //REBARBANDINFO
@@ -4293,7 +4275,7 @@ end;
 
 procedure TBagelMainForm.actWorkOfflineUpdate(Sender: TObject);
 var
-ioService:nsIIOService;
+  ioService:nsIIOService;
 begin
   ioService:=NS_GetIOService;
   actWorkOffline.Checked := ioService.Offline;
@@ -4438,9 +4420,9 @@ begin
 end;
 procedure TBagelMainForm.AddToMemoClick(Sender: TObject);
 var
-i:Integer;
-memo:TBagelMemo;
-mi:TMenuItem;
+  i:Integer;
+  memo:TBagelMemo;
+  mi:TMenuItem;
 begin
   if MemoSheet.Tag=0 then MemoSheetShow(nil);
   while AddToMemo.Count>1 do AddToMemo.Items[1].Free;
@@ -4762,6 +4744,7 @@ begin
   Browser.SetFocus;
   //Self.ActiveControl:=Browser;
 end;
+
 procedure TBagelMainForm.SearchBoxChange(Sender: TObject);
 begin
   if Pref.ShowSearchButtons then begin
@@ -4911,11 +4894,11 @@ begin
 end;
 procedure TBagelMainForm.CloseTab(Browser:TBagelBrowser);
 var
-Index:Integer;
-i,i2:integer;
-c,j:Integer;
-item:TTabListItem;
-entry:TTabHistoryItem;
+  Index:Integer;
+  i,i2:integer;
+  c,j:Integer;
+  item:TTabListItem;
+  entry:TTabHistoryItem;
 begin
   index := TabControl.Tabs.IndexOfObject(Browser);
   if (Index<0) or (index>=TabControl.Tabs.Count) then exit;
@@ -5089,9 +5072,9 @@ end;
 
 procedure TBagelMainForm.CreateMemoItemClick(Sender: TObject);
 var
-memo:TBagelMemo;
-item:TBagelMemoitem;
-litem:TListItem;
+  memo:TBagelMemo;
+  item:TBagelMemoitem;
+  litem:TListItem;
 begin
   if TabControl2.Tabs.Count>0 then begin
     memo:=TBagelmemo(TabCOntrol2.Tabs.Objects[TabControl2.TabIndex]);
@@ -5335,7 +5318,7 @@ end;
 
 procedure TBagelMainForm.ClearWordSearchButtons;
 var
-i:Integer;
+  i:Integer;
 begin
   for i:=SearchBar.ControlCount-1 downto 0 do
   begin
@@ -5370,9 +5353,9 @@ end;
 
 procedure TBagelMainForm.DeleteMemoClick(Sender: TObject);
 var
-memo:TBagelMemo;
-i:Integer;
-tmpStr:String;
+  memo:TBagelMemo;
+  i:Integer;
+  tmpStr:String;
 begin
   if (memoBarCtxTarget>=0) and (memoBarCtxTarget<TabControl2.Tabs.Count) then begin
     memo:=TBagelMemo(TabControl2.Tabs.Objects[memoBarCtxTarget]);
@@ -5404,9 +5387,9 @@ end;
 
 procedure TBagelMainForm.DeleteMemoItemClick(Sender: TObject);
 var
-mitem:TBagelMemoItem;
-memo:TBagelMemo;
-litem:TListItem;
+  mitem:TBagelMemoItem;
+  memo:TBagelMemo;
+  litem:TListItem;
 begin
   litem:=lvMemo.Selected;
   if litem=nil then exit;

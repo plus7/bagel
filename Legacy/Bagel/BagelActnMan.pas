@@ -234,7 +234,6 @@ end;
 procedure TBagelActionContainer.SaveToFile(const FileName:String);
 var
   sl:TStringList;
-  i:Integer;
 begin
   sl:=TStringList.Create;
   try

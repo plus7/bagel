@@ -2210,7 +2210,6 @@ var
   b:TGeckoBrowser;
   hostStr:IInterfacedCString;
   oldHost:String;
-  j:Integer;
   entry:nsIHistoryEntry;
   m:TMenuItem;
 begin

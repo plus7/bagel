@@ -129,12 +129,22 @@ function GetLastDir(Path:String):String;
 var
   idx:Integer;
   RevPath : String;
+  sk:TSkRegExp;
 begin
   Result := '';
-  RevPath := ReverseString(Path);
-  if StartsStr('/',Path) then Exit;
-  idx := PosEx('/', RevPath, 2);
-  Result := Copy(Path, 2, idx);
+  sk := TSkRegExp.Create;
+  try
+    sk.Expression := '\/([^\/]+)\/$';
+    if sk.Exec(Path) then
+      Result := sk.Match[1];
+  finally
+    sk.Free;
+  end;
+{
+   var path = aURI.path.match(//);
+   if (path && path.length > 1)
+     return validateFileName(path[1]);
+}
 end;
 
 function GetDefaultFileName(aDefaultFileName:String; aURI:nsIURI; aDocument:nsIDOMDocument;

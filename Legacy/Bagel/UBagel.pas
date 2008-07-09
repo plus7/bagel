@@ -28,7 +28,7 @@ uses
   StrUtils,         //AnsiEndsStr
   CommandAction,    //Bagel独自のアクション
   ScriptAction,
-  bmRegExp,         //正規表現
+  SkRegExpW,         //正規表現
   unique,           //二重起動防止
   NkMemIniFile,     //速いMemIniFile
   ShellAPI,         //ShellExecute
@@ -5890,7 +5890,7 @@ end;
 
 procedure TBagelMainForm.BrowserDownloadComplete(Sender: TObject; const aURI: String);
 var
-  regex:TAWKStr;
+  regex:TSkRegExp;
   filteredSearchWord:String;
   searchWords:TStrArray;
   i, len, st, cnt:Integer;
@@ -5922,7 +5922,8 @@ begin
   end;
 
   //UserScript
-  regex:=TAWKStr.Create(nil);
+  regex:=TSkRegExp.Create;
+  try
   for i:=0 to FAutoExec.Count-1 do begin
   case FAutoExec.Items[i].MatchType of
     0:begin //部分一致
@@ -5966,9 +5967,8 @@ begin
       end;
     end;
     4:begin //正規表現
-      regex.RegExp:=FAutoExec.Items[i].Pattern;
-      regex.Match(aURI,st,len);
-      if st>0 then begin
+      regex.Expression:=FAutoExec.Items[i].Pattern;
+      if regex.Exec(aURI) then begin
         obj:=FindAction(FAutoExec.Items[i].Commands);
         if obj is TScriptAction then
         begin
@@ -5979,7 +5979,9 @@ begin
     end;
   end;
   end;
-  regex.Free;
+  finally
+    regex.Free;
+  end;
 end;
 
 procedure TBagelMainForm.BrowserGoBack(Sender: TObject; aURI: nsIURI; out aContinue: LongBool; var Handled: Boolean);
@@ -8998,11 +9000,10 @@ Var
 //hWnd          : integer;
 //WindowTitle   : array[0..MAX_PATH] of char;
 //i:Integer;
-regex:TAWKStr;
-FindStr,RetStr:String;
-st,len:Integer;
-cnt:Integer;
-CanContinue:Boolean;
+  regex:TSkRegExp;
+  FindStr,RetStr:String;
+  cnt:Integer;
+  CanContinue:Boolean;
 begin
 
  //現在操作中のウインドウタイトルを取得(正確でない時があります。(^^;)
@@ -9015,26 +9016,28 @@ begin
  begin
    if chkObserveClipboard.Checked then
    begin
-     st:=0;
-     len:=0;
-     regex:=TAWKStr.Create(nil);
-     //(Pos('http://',Clipboard.AsText)=1)
-     regex.RegExp:='https?://[-_.!~*''()a-zA-Z0-9;/?:@&=+$,%#]+';
-     FindStr:=Clipboard.AsText;
-     while regex.Match(FindStr,st,len)<>0 do begin
-       RetStr:=Copy(findstr,st,len);
-       if not IsAlreadyOpened(RetStr) then begin
-         if ((cnt mod 15) = 0) and (cnt<>0) then begin
-           CanContinue := MessageDlg('すでにクリップボードから'+IntToStr(cnt)+'個のタブを開きました。まだクリップボードにはURI文字列が含まれています。これ以上開きますか？', mtConfirmation,[mbYes, mbNo], 0) = mrYes;
-           if not CanContinue then break;
-         end;
-         Inc(cnt);
-         ObserveClipList.AddItem(RetStr,nil);
-         AddTab(RetStr,Pref.OpenModeClipboard,0,'',Pref.DocShellDefault);
-       end;
-       Delete(FindStr,st,len);
+     regex:=TSkRegExp.Create;
+     try
+     regex.Expression:='https?://[-_.!~*''()a-zA-Z0-9;/?:@&=+$,%#]+';
+     FindStr := Clipboard.AsText;
+      if regex.Exec (FindStr) then
+      begin
+        repeat
+          RetStr := regex.Match[0];
+          if not IsAlreadyOpened(RetStr) then begin
+            if ((cnt mod 15) = 0) and (cnt<>0) then begin
+              CanContinue := MessageDlg('すでにクリップボードから'+IntToStr(cnt)+'個のタブを開きました。まだクリップボードにはURI文字列が含まれています。これ以上開きますか？', mtConfirmation,[mbYes, mbNo], 0) = mrYes;
+              if not CanContinue then break;
+            end;
+            Inc(cnt);
+            ObserveClipList.AddItem(RetStr,nil);
+            AddTab(RetStr,Pref.OpenModeClipboard,0,'',Pref.DocShellDefault);
+          end;
+        until not regex.ExecNext;   //マッチした文字列の次から検索を再開します。
+      end;
+     finally
+       regex.Free;
      end;
-     regex.Free;
    end;
     //StringList.Add(Clipboard.AsText) ;
     //タイトルと時間を入れてノードに追加
@@ -10279,7 +10282,7 @@ var
   startPt:nsIDOMRange;
   endPt:nsIDOMRange;
   rangestr:String;
-  regex:TAWKStr;
+  regex:TSkRegExp;
   findstr:WideString;
   st:Integer;
   len:Integer;
@@ -10291,17 +10294,17 @@ begin
   //Rangeから得た文字列
   rangestr:=String(Range2String(Range));
   if rangestr='' then exit;
-  regex := TAWKStr.Create(nil);
+  regex := TSkRegExp.Create;
   try
     try
-      regex.RegExp := patRegExp;
-      regex.UseFuzzyCharDic:=True;
-      //ShowMessage('fuzzy!');
-      regex.Match(rangestr,st,len);
-      //ShowMessage('matched');
+      regex.Expression := patRegExp;
+      //ToDo:
+      //regex.UseFuzzyCharDic:=True;
+      if regex.Exec(rangestr) then
+        findstr:=WideString(regex.Match[0]);
     except
     end;
-    findstr:=WideString(Copy(rangestr,st,len));
+
   finally
     regex.Free;
   end;
@@ -10588,7 +10591,7 @@ function TBagelMainForm.WildcardMatch(Exp:String;S:String):Boolean;
 
   function WildcardMatchInternal(Exp:String;S:String):Boolean;
   var
-    RegExp:TAWKStr;
+    RegExp:TSkRegExp;
     st:Integer;
     len:Integer;
     astr:Boolean;
@@ -10601,11 +10604,10 @@ function TBagelMainForm.WildcardMatch(Exp:String;S:String):Boolean;
 
     if astr then Exp:='^'+Exp+'$';
 
-    RegExp:=TAWKStr.Create(nil);
+    RegExp:=TSkRegExp.Create;
     try
-      RegExp.RegExp:=Exp;
-      RegExp.Match(S,st,len);
-      if st>0 then Result:=true;
+      RegExp.Expression:=Exp;
+      Result := RegExp.Exec(S);
     finally
       RegExp.Free;
     end;

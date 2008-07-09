@@ -829,6 +829,10 @@ object BagelMainForm: TBagelMainForm
               ImageIndex = 7
               TabVisible = False
               OnShow = MemoSheetShow
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Splitter3: TSplitter
                 Left = 0
                 Top = 133

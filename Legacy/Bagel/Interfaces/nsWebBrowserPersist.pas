@@ -3,10 +3,9 @@ unit nsWebBrowserPersist;
 interface
 
 uses
-  nsTypes,nsXPCOM,nsGeckoStrings;
+  nsTypes,nsXPCOM,nsGeckoStrings,nsHelperApp;
 
 const
-  NS_ICANCELABLE_IID: TGUID = '{d94ac0a0-bb18-46b8-844e-84159064b0bd}';
 
   NS_IWEBBROWSERPERSIST_IID: TGUID = '{dd4e0a6a-210f-419a-ad85-40e8543b9465}';
   NS_IWEBBROWSERPERSIST_PERSIST_FLAGS_NONE = 0;
@@ -47,12 +46,7 @@ const
   NS_IWEBBROWSERPERSIST_ENCODE_FLAGS_ENCODE_HTML_ENTITIES = 32768;
 
 type
-  nsICancelable = interface;
   nsIWebBrowserPersist = interface;
-  nsICancelable = interface(nsISupports)
-  ['{d94ac0a0-bb18-46b8-844e-84159064b0bd}']
-    procedure Cancel(aReason: nsresult); safecall;
-  end;
 
   nsIWebBrowserPersist = interface(nsICancelable)
   ['{dd4e0a6a-210f-419a-ad85-40e8543b9465}']

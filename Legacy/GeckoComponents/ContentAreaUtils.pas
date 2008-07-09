@@ -795,21 +795,21 @@ begin
       EncodingFlags := EncodingFlags or NS_IWEBBROWSERPERSIST_ENCODE_FLAGS_ENCODE_BASIC_ENTITIES;
     end;
 
-
-    if aChosenData<>nil then
+    //???
+    {if aChosenData<>nil then
       tr.init(aChosenData.uri, PersistArgs.target, NewString.AString, nil, 0, nil, Persist)
     else
-      tr.init(fileInfo.uri, PersistArgs.target, NewString.AString, nil, 0, nil, Persist);
+      tr.init(fileInfo.uri, PersistArgs.target, NewString.AString, nil, 0, nil, Persist);}
 
     //Persist.progressListener = new DownloadListener(window, tr);
     Persist.SaveDocument((PersistArgs.source as nsIDOMDocument), PersistArgs.target, filesFolder,
                          PAnsiChar(PersistArgs.contentType), EncodingFlags, kWrapColumn);
   end
   else begin
-    if aChosenData<>nil then
+    {if aChosenData<>nil then
       tr.init(aChosenData.uri, PersistArgs.target, NewString.AString, nil, 0, nil, Persist)
     else
-      tr.init(source as nsIURI, PersistArgs.target, NewString.AString, nil, 0, nil, Persist);
+      tr.init(source as nsIURI, PersistArgs.target, NewString.AString, nil, 0, nil, Persist);}
     //Persist.progressListener = new DownloadListener(window, tr);
     if aChosenData<>nil then
       Persist.SaveURI(aChosenData.uri,

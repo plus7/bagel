@@ -45,7 +45,7 @@ end;
 PFileInfo = ^TFileInfo;
 
 TFilePickerParams = record
-  fpTitleKey: String;
+  fpTitle: String;
   IsDocument: Boolean;
   FileInfo: PFileInfo;
   ContentType:String;
@@ -63,7 +63,7 @@ function GetStringBundle:nsIStringBundle;
 function InternalSave(aURL:String; aDocument:nsIDOMDocument;
                       aDefaultFileName:String; aContentDisposition:String;
                       aContentType:String; aShouldBypassCache:Boolean;
-                      aFilePickerTitleKey:String; aChosenData:PChosenData;
+                      aFilePickerTitle:String; aChosenData:PChosenData;
                       aReferrer:nsIURI; aSkipPrompt:Boolean = False):Boolean;
 function MakeURI(aURL:String; aOriginCharset:String; aBaseURI:nsIURI):nsIURI;
 function MakeFilePicker:nsIFilePicker;
@@ -350,7 +350,7 @@ var
   fp : nsIFilePicker;
   Dir, LastDir, Directory, _File : nsILocalFile;
   FileLocator : nsIProperties;
-  TitleKey : String;
+  Title : String;
   Bundle : nsIStringBundle;
   LeafName : IInterfacedString;
   CollisionCount : Integer;
@@ -392,11 +392,11 @@ begin
     end;
 
     fp := MakeFilePicker();
-    TitleKey := aFpP^.fpTitleKey;
-    // || 'SaveLinkTitle';
+    Title := aFpP^.fpTitle;
+    // || '名前を付けて保存';
     Bundle := GetStringBundle;
-    //TODO:ここはBundleの仕組みに従わなくてよさそう
-    fp.init(nil(*window*), NewString('Title').AString(*Bundle.GetStringFromName(titleKey)*),
+    //TODO:
+    fp.init(nil(*window*), NewString(Title).AString,
             NS_IFILEPICKER_modeSave);
 
     fp.SetDefaultExtension(NewString(aFpP^.fileInfo^.fileExt).AString);
@@ -504,7 +504,7 @@ end;
 function InternalSave(aURL:String; aDocument:nsIDOMDocument;
                       aDefaultFileName:String; aContentDisposition:String;
                       aContentType:String; aShouldBypassCache:Boolean;
-                      aFilePickerTitleKey:String; aChosenData:PChosenData; aReferrer:nsIURI;
+                      aFilePickerTitle:String; aChosenData:PChosenData; aReferrer:nsIURI;
                       aSkipPrompt:Boolean = False):Boolean;
 var
   SaveMode, EncodingFlags:Integer;
@@ -548,7 +548,7 @@ begin
     //InitFileInfo(fileInfo, aURL, charset, aDocument,
     //             aContentType, aContentDisposition);
 
-    fpParams.fpTitleKey := aFilePickerTitleKey;
+    fpParams.fpTitle := aFilePickerTitle;
     fpParams.IsDocument := isDocument;
     //pParams.FileInfo := myFileInfo;
     fpParams.ContentType := aContentType;

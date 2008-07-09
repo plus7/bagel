@@ -392,8 +392,10 @@ begin
     end;
 
     fp := MakeFilePicker();
-    Title := aFpP^.fpTitle;
-    // || '名前を付けて保存';
+    if aFpP^.fpTitle <> '' then
+      Title := aFpP^.fpTitle
+    else
+      Title := '名前を付けて保存';
     Bundle := GetStringBundle;
     //TODO:
     fp.init(nil(*window*), NewString(Title).AString,

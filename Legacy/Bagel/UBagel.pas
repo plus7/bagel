@@ -7843,8 +7843,7 @@ end;
 procedure TBagelMainForm.actSaveAsExecute(Sender: TObject);
 begin
   if GetCurrentBrowser<>nil then
-  //TODO:
-  //SaveDocument(GetCurrentBrowser.ContentDocument,false);
+    SaveDocument(GetCurrentBrowser.ContentDocument,False);
 end;
 {スクリプトサイドバーを表示}
 procedure TBagelMainForm.actScriptSidebarExecute(Sender: TObject);

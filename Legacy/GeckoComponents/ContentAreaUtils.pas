@@ -61,11 +61,11 @@ function GetMIMEService:nsIMIMEService;
 function GetMIMEInfoForType(aMIMEType:String; aExtension:String):nsIMIMEInfo;
 function GetLastDir(Path:String):String;
 function GetStringBundle:nsIStringBundle;
-function InternalSave(aURL:String; aDocument:nsIDOMDocument;
+procedure InternalSave(aURL:String; aDocument:nsIDOMDocument;
                       aDefaultFileName:String; aContentDisposition:String;
                       aContentType:String; aShouldBypassCache:Boolean;
                       aFilePickerTitle:String; aChosenData:PChosenData;
-                      aReferrer:nsIURI; aSkipPrompt:Boolean = False):Boolean;
+                      aReferrer:nsIURI; aSkipPrompt:Boolean = False);
 function MakeURI(aURL:String; aOriginCharset:String; aBaseURI:nsIURI):nsIURI;
 function MakeFilePicker:nsIFilePicker;
 function MakeFileURI(aFile:nsIFile):nsIURI; overload;
@@ -174,8 +174,6 @@ end;
 
 function GetLastDir(Path:String):String;
 var
-  idx:Integer;
-  RevPath : String;
   sk:TSkRegExp;
 begin
   Result := '';
@@ -457,7 +455,7 @@ var
   DnldMgr : nsIDownloadManager;
   fp : TSaveDialog;
   LastDir, Directory : nsILocalFile;
-  FileLocator : nsIProperties;
+//  FileLocator : nsIProperties;
   Title : String;
   Bundle : nsIStringBundle;
   LeafName, _File, Dir : String;
@@ -545,7 +543,7 @@ begin
   else begin
     _File := IncludeTrailingPathDelimiter(Dir) + GetNormalizedLeafName(aFpP.fileInfo.FileName, aFpP.fileInfo.FileExt);
 
-    // Since we're automatically downloading, we don't get the file picker's 
+    // Since we're automatically downloading, we don't get the file picker's
     // logic to check for existing files, so we need to do that here.
     //
     // Note - this code is identical to that in
@@ -557,7 +555,7 @@ begin
     try
       while (FileExists(_File)) do begin
         Inc(CollisionCount);
-        LeafName := ExtractFileName(fp.FileName);
+        LeafName := ExtractFileName(_File);
         if (CollisionCount = 1) then begin
           // Append '(2)' before the last dot in (or at the end of) the filename
           // special case .ext.gz etc files so we don't wind up with .tar(2).gz
@@ -658,11 +656,11 @@ begin
   end;
 end;
 
-function InternalSave(aURL:String; aDocument:nsIDOMDocument;
+procedure InternalSave(aURL:String; aDocument:nsIDOMDocument;
                       aDefaultFileName:String; aContentDisposition:String;
                       aContentType:String; aShouldBypassCache:Boolean;
                       aFilePickerTitle:String; aChosenData:PChosenData; aReferrer:nsIURI;
-                      aSkipPrompt:Boolean = False):Boolean;
+                      aSkipPrompt:Boolean = False);
 var
   SaveMode, EncodingFlags:Integer;
   IsDocument:Boolean;

@@ -381,7 +381,8 @@ begin
     else
       Dir := dnldMgr.userDownloadsDirectory;
   except
-    Dir := dnldMgr.userDownloadsDirectory;
+    Dir := nil;
+    //Dir := dnldMgr.userDownloadsDirectory;
   end;
 
   if ((not aSkipPrompt) or (not useDownloadDir) or (Dir=nil) or ((Dir<>nil) and (not Dir.Exists))) then begin

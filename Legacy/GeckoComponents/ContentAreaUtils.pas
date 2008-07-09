@@ -58,6 +58,7 @@ PFilePickerParams = ^TFilePickerParams;
 
 procedure AppendFiltersForContentType(aFilePicker:TSaveDialog; aContentType:String; aFileExtension:String; aSaveMode:Integer);
 function GetMIMEService:nsIMIMEService;
+function GetMIMEInfoForType(aMIMEType:String; aExtension:String):nsIMIMEInfo;
 function GetLastDir(Path:String):String;
 function GetStringBundle:nsIStringBundle;
 function InternalSave(aURL:String; aDocument:nsIDOMDocument;
@@ -190,6 +191,67 @@ begin
    if (path && path.length > 1)
      return validateFileName(path[1]);
 }
+end;
+
+function GetDefaultExtension(aFilename:String; aURI:nsIURI; aContentType:String):String;
+var
+  url:nsIURL;
+  ext,scheme,urlext,priext:IInterfacedCString;
+  MimeInfo:nsIMIMEInfo;
+begin
+  scheme := NewCString;
+  aURI.GetScheme(scheme.ACString);
+  if (aContentType = 'text/plain') or (aContentType = 'application/octet-stream') or (scheme.ToString = 'ftp') then
+  begin
+    Result := '';   // temporary fix for bug 120327
+    Exit;
+  end;
+
+  // First try the extension from the filename
+  NS_CreateInstance('@mozilla.org/network/standard-url;1',nsIURL,url);
+  url.SetFilePath(NewCString(aFilename).ACString);
+
+  ext := NewCString;
+  url.GetFileExtension(ext.ACString);
+
+  // This mirrors some code in nsExternalHelperAppService::DoContent
+  // Use the filename first and then the URI if that fails
+
+  MimeInfo := GetMIMEInfoForType(aContentType, ext.ToString);
+
+  if (ext.ToString<>'') and (MimeInfo<>nil) and (mimeInfo.extensionExists(ext.ACString)) then begin
+    Result := ext.ToString;
+    Exit;
+  end;
+
+  // Well, that failed.  Now try the extension from the URI
+  try
+    url := aURI as nsIURL;
+    urlext := NewCString;
+    url.GetFileExtension(urlext.ACString);
+  finally
+
+  end;
+
+
+  if (urlext.ToString<>'') and (mimeInfo <> nil) and (mimeInfo.extensionExists(urlext.ACString)) then begin
+    Result := urlext.ToString;
+  end
+  else begin
+    try
+      if MimeInfo<>nil then begin
+        priext := NewCString;
+        MimeInfo.GetPrimaryExtension(priext.ACString);
+        Result := priext.ToString;
+        Exit;
+      end;
+    finally
+
+    end;
+    // Fall back on the extensions in the filename and URI for lack
+    // of anything better.
+    Result := IfThen(ext.ToString<>'', ext.ToString, urlext.ToString);
+  end;
 end;
 
 function GetDefaultFileName(aDefaultFileName:String; aURI:nsIURI; aDocument:nsIDOMDocument;
@@ -434,6 +496,7 @@ begin
       // Default to desktop.
       //NS_GetService('@mozilla.org/file/directory_service;1',nsIProperties,FileLocator);
       //FileLocator.Get('Desk', nsILocalFile, Dir);
+      Dir := GetDesktopFolder;
     end;
 
     fp := TSaveDialog.Create(nil); //MakeFilePicker();
@@ -540,6 +603,61 @@ begin
   end;
 end;
 
+procedure InitFileInfo(FileInfo:PFileInfo; aURL:String; aURLCharset:String;
+                       aDocument:nsIDOMDocument; aContentType:String;
+                       aContentDisposition:String);
+var
+  url:nsIURL;
+  FileExt:IInterfacedCString;
+  sk:TSKRegExp;
+begin
+  try
+    // Get an nsIURI object from aURL if possible:
+    try
+      fileInfo.Uri := MakeURI(aURL, aURLCharset, nil);
+      // Assuming nsiUri is valid, calling QueryInterface(...) on it will
+      // populate extra object fields (eg filename and file extension).
+      url := (fileInfo.uri as nsIURL);
+      FileExt := NewCString;
+      url.GetFileExtension(FileExt.ACString);
+      fileInfo.FileExt := FileExt.ToString;
+    finally
+    end;
+    // Get the default filename:
+    FileInfo.fileName := GetDefaultFileName(
+                           IfThen(
+                             FileInfo.suggestedFileName <> '',
+                             FileInfo.suggestedFileName,
+                             FileInfo.fileName),
+                           FileInfo.uri,
+                           aDocument,
+                           aContentDisposition
+                         );
+    // If FileInfo.fileExt is still blank, consider: FileInfo.suggestedFileName is supplied
+    // if saveURL(...) was the original caller (hence both aContentType and
+    // aDocument are blank). If they were saving a link to a website then make
+    // the extension .htm .
+    sk := TSkRegExp.Create;
+    try
+      sk.Expression := '^http(s?):\/\/';
+      if (FileInfo.fileExt = '') and
+         (aDocument=nil) and
+         (aContentType='') and
+         sk.Exec(aURL) then begin
+        FileInfo.fileExt := 'htm';
+        FileInfo.fileBaseName := FileInfo.fileName;
+      end else begin
+        FileInfo.fileExt := GetDefaultExtension(FileInfo.fileName, FileInfo.uri, aContentType);
+        FileInfo.fileBaseName := GetFileBaseName(FileInfo.fileName);
+      end;
+    finally
+      sk.Free;
+    end;
+  finally
+
+  end;
+end;
+
 function InternalSave(aURL:String; aDocument:nsIDOMDocument;
                       aDefaultFileName:String; aContentDisposition:String;
                       aContentType:String; aShouldBypassCache:Boolean;
@@ -572,24 +690,28 @@ begin
 
   // Find the URI object for aURL and the FileName/Extension to use when saving.
   // FileName/Extension will be ignored if aChosenData supplied.
-  //TODO:
-  //FileInfo := new FileInfo(aDefaultFileName);
+  FileInfo.FileName := aDefaultFileName;
+  
   if aChosenData<>nil then
     _File := aChosenData._File
   else begin
     Charset := NewString;
     CharsetC := NewCString;
-    if aDocument<>nil then
-      (aDocument as nsIDOMNSDocument).GetCharacterSet(Charset.AString)
-    else if aReferrer<>nil then
+    if aDocument<>nil then begin
+      (aDocument as nsIDOMNSDocument).GetCharacterSet(Charset.AString);
+      InitFileInfo(@fileInfo, aURL, Charset.ToString, aDocument,
+                   aContentType, aContentDisposition);
+    end
+    else if aReferrer<>nil then begin
       aReferrer.GetOriginCharset(CharsetC.ACString);
-    //TODO:
-    //InitFileInfo(fileInfo, aURL, charset, aDocument,
-    //             aContentType, aContentDisposition);
+      InitFileInfo(@fileInfo, aURL, CharsetC.ToString, aDocument,
+                   aContentType, aContentDisposition);
+    end;
+
 
     fpParams.fpTitle := aFilePickerTitle;
     fpParams.IsDocument := isDocument;
-    //pParams.FileInfo := myFileInfo;
+    fpParams.FileInfo := @FileInfo;
     fpParams.ContentType := aContentType;
     fpParams.SaveMode := SaveMode;
     fpParams.SaveAsType := SaveAsType;

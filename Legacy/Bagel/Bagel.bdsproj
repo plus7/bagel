@@ -123,7 +123,7 @@
 			<Directories Name="UnitOutputDir"></Directories>
 			<Directories Name="PackageDLLOutputDir"></Directories>
 			<Directories Name="PackageDCPOutputDir"></Directories>
-			<Directories Name="SearchPath">C:\Documents and Settings\priv\My Documents\software\NkMemIniFile;..\GeckoSDK;..\GeckoComponents;.\Interfaces;C:\Documents and Settings\priv\My Documents\lib</Directories>
+			<Directories Name="SearchPath">C:\Documents and Settings\priv\My Documents\software\NkMemIniFile;..\GeckoSDK;..\GeckoComponents;.\Interfaces;.\lib</Directories>
 			<Directories Name="Packages">vclx;vcl;rtl;vclactnband</Directories>
 			<Directories Name="Conditionals"></Directories>
 			<Directories Name="DebugSourceDirs">C:\Program Files\Borland\BDS\4.0\Demos\DelphiWin32\VCLWin32\ShellControls\</Directories>

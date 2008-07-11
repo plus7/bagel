@@ -142,7 +142,6 @@ type
     ChevronPopupMenu: TPopupMenu;
     ClipSheet: TTabSheet;
     ComboBox2: TComboBox;
-//    ControlToolBar: TToolBar;
     CookieLifetimeAskEach: TMenuItem;
     CookieLifetimeNormal: TMenuItem;
     CookieLifetimeSession: TMenuItem;

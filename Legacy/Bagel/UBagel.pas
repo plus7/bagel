@@ -2424,7 +2424,7 @@ begin
   CloseTab(tabBarCtxTarget);
 end;
 
-
+//ブックマークにターゲットのブラウザのページを追加
 procedure TBagelMainForm.actAddBookmarkExecute(Sender: TObject);
 var
   f:TBookmarkForm;
@@ -2442,6 +2442,7 @@ begin
   f.Free;
 end;
 
+//拒否するタイトルにブラウザのタイトルを追加
 procedure TBagelMainForm.actAddDenyTitleExecute(Sender: TObject);
 var
   b:TBagelBrowser;
@@ -2451,6 +2452,7 @@ begin
   Pref.DenyTitleList.Add(b.Title);
 end;
 
+//拒否するURIにブラウザのURIを追加
 procedure TBagelMainForm.actAddDenyURIExecute(Sender: TObject);
 var
   b:TBagelBrowser;
@@ -2460,6 +2462,7 @@ begin
   Pref.DenyURLList.Add(b.URI);
 end;
 
+//Webパネルにターゲットのブラウザのページを登録
 procedure TBagelMainForm.actAddPanelExecute(Sender: TObject);
 var
   f:TBookmarkForm;
@@ -2476,6 +2479,7 @@ begin
   f.Free;
 end;
 
+//空白の式タブを追加
 procedure TBagelMainForm.actAddTabBlankExecute(Sender: TObject);
 begin
   AddTab('about:blank',0,0,'',Pref.DocShellDefault);
@@ -2486,6 +2490,7 @@ begin
   AddTab(Clipboard.AsText,Pref.OpenModeClipboard,0,'',Pref.DocShellDefault);
 end;
 
+//今表示しているページのクローンを作成
 procedure TBagelMainForm.actAddTabCurrExecute(Sender: TObject);
 begin
   if GetCurrentBrowser=nil then
@@ -2499,6 +2504,7 @@ begin
   end;
 end;
 
+//新規タブを作成
 procedure TBagelMainForm.actAddTabExecute(Sender: TObject);
 begin
   case Pref.NewTabMode of
@@ -2508,6 +2514,7 @@ begin
   end;
 end;
 
+//キャッシュを削除
 procedure TBagelMainForm.actClearCacheExecute(Sender: TObject);
 var
   cs:nsICacheService;
@@ -2517,6 +2524,7 @@ begin
   cs.EvictEntries(NS_ICACHE_STORE_IN_MEMORY);
 end;
 
+//Cookieを削除
 procedure TBagelMainForm.actClearCookieExecute(Sender: TObject);
 var
   cookieman :nsICookieManager;
@@ -2525,6 +2533,7 @@ begin
   cookieman.removeAll;
 end;
 
+//履歴を削除
 procedure TBagelMainForm.actClearHistoryExecute(Sender: TObject);
 var
   browserHistory:nsIBrowserHistory;
@@ -2533,6 +2542,7 @@ begin
   browserHistory.RemoveAllPages;
 end;
 
+//クリップボードサイドバーを表示
 procedure TBagelMainForm.actClipboardSidebarExecute(Sender: TObject);
 begin
   if actClipboardSidebar.Checked then begin
@@ -2545,6 +2555,7 @@ begin
   end;
 end;
 
+//すべて閉じる
 procedure TBagelMainForm.actCloseAllExecute(Sender: TObject);
 var
   i: Integer;
@@ -2567,6 +2578,7 @@ begin
   end;
 end;
 
+//左のタブを閉じる
 procedure TBagelMainForm.actCloseLeftExecute(Sender: TObject);
 var
   i: Integer;
@@ -2580,6 +2592,22 @@ begin
   end;
 end;
 
+//右を閉じる
+procedure TBagelMainForm.actCloseRightExecute(Sender: TObject);
+var
+  i: Integer;
+  c: Integer;
+  c2: Integer;
+begin
+  c:=tabBarCtxTarget+1;//TabControl1.TabIndex+1;
+  c2:=TabControl.Tabs.Count-1;
+  for i := c to c2 do
+  begin
+    CloseTab(c);
+  end;
+end;
+
+//ターゲット以外のタブを閉じる
 procedure TBagelMainForm.actCloseWithoutExecute(Sender: TObject);
 var
   i: Integer;
@@ -2609,11 +2637,13 @@ begin
   end;
 end;
 
+//選択した要素のURIをコピー
 procedure TBagelMainForm.actCopyCtxURIExecute(Sender: TObject);
 begin
   Clipboard.AsText := currentCtxURI;
 end;
 
+//ブラウザの選択部分をコピー
 procedure TBagelMainForm.actCopyExecute(Sender: TObject);
 var
   clipCmd:nsIClipboardCommands;
@@ -2625,6 +2655,7 @@ begin
   if clipCmd.CanCopySelection then clipCmd.CopySelection;
 end;
 
+//ブラウザのタイトルとURIをコピー
 procedure TBagelMainForm.actCopyTitleAndURIExecute(Sender: TObject);
 var
   b:TGeckoBrowser;
@@ -2634,6 +2665,7 @@ begin
   Clipboard.AsText := b.Title+#13+b.URI;
 end;
 
+//ブラウザのタイトルをコピー
 procedure TBagelMainForm.actCopyTitleExecute(Sender: TObject);
 var
   b:TGeckoBrowser;
@@ -2642,6 +2674,7 @@ begin
   Clipboard.AsText := b.Title;
 end;
 
+//ブラウザのURIをコピー
 procedure TBagelMainForm.actCopyURIExecute(Sender: TObject);
 var
   b:TGeckoBrowser;
@@ -2651,6 +2684,7 @@ begin
   Clipboard.AsText := b.URI;
 end;
 
+//選択要素に関するプロパティを表示
 procedure TBagelMainForm.actCtxPropertyExecute(Sender: TObject);
 var
   f:TfrmProperties;
@@ -2665,7 +2699,7 @@ var
   elm:nsIDOMHTMLElement;
   str:IInterfacedString;
   astr:nsAString;
-  
+
   cacheService:nsICacheService;
   httpSession:nsICacheSession;
   ftpSession:nsICacheSession;
@@ -2772,18 +2806,21 @@ begin
   end;
 end;
 
+//ブックマークをコピー
 procedure TBagelMainForm.actCutBookmarkExecute(Sender: TObject);
 begin
   actCopyBookmark.Execute;
   UnregisterBookmark(BookmarksTree.Selected.Data);
 end;
 
+//ブックマークを切り取り
 procedure TBagelMainForm.actCutBookmarkUpdate(Sender: TObject);
 begin
   if BookmarksTree.Selected = nil then actCutBookmark.Enabled := false
   else actCutBookmark.Enabled := true;
 end;
 
+//ブックマークリスト中のページをすべて開く
 procedure TBagelMainForm.OpenAllBookmarksInternal(l:TBookmarkList);
 var
   c:Integer;//カウンタ
@@ -2822,6 +2859,7 @@ begin
   end;
 end;
 
+//ブックマークをOpenAllBookmarksInternalに渡す
 procedure TBagelMainForm.OpenAllBookmarks(Sender:TObject);
 var
   l:TBookmarkList;
@@ -2830,6 +2868,7 @@ begin
   OpenAllBookmarksInternal(l);
 end;
 
+//ページ内で切り取る
 procedure TBagelMainForm.actCutExecute(Sender: TObject);
 var
   clipCmd:nsIClipboardCommands;
@@ -2841,12 +2880,14 @@ begin
   if clipCmd.CanCutSelection then clipCmd.CutSelection;
 end;
 
+//すべて閉じた後デフォルトのタブグループを開く
 procedure TBagelMainForm.actDefaultTabsExecute(Sender: TObject);
 begin
   actCloseAll.Execute;
   LoadSession( GetSettingDir() + 'Default.bbg');
 end;
 
+//検索バーから検索を実行
 procedure TBagelMainForm.actDoSearchExecute(Sender: TObject);
 var
   tmp:Char;
@@ -2855,18 +2896,21 @@ begin
   SearchBoxKeyPress(Self, tmp);
 end;
 
+//アドレスバーの候補を表示
 procedure TBagelMainForm.actDropdownAddressbarExecute(Sender: TObject);
 begin
   LocationBox.SetFocus;
   LocationBox.DroppedDown := true;
 end;
 
+//メニュー設定を保存
 procedure SaveMenu(c:TBagelActionContainer;name:String);
 begin
   c.SaveToFile(GetSettingDir() + name + '.dat');
 end;
 
 
+//タブメニュー編集ダイアログを表示し、編集結果を反映
 procedure TBagelMainForm.actEditTabMenuExecute(Sender: TObject);
 var
   f:TfrmMenuEdit;
@@ -2884,6 +2928,7 @@ begin
   SaveMenu(Self.TabMenu,'tabmenu');
 end;
 
+//ツールバー編集ダイアログを表示し、編集結果を反映
 procedure TBagelMainForm.actEditToolbarExecute(Sender: TObject);
 var
   f:TfrmMenuEdit;
@@ -2901,6 +2946,7 @@ begin
   SaveMenu(Self.CtrlTbActionContainer,'tabmenu');
 end;
 
+//コンテキストメニュー編集
 procedure TBagelMainForm.actEditCtxMenuExecute(Sender: TObject);
 var
   f:TfrmMenuEdit;
@@ -2918,6 +2964,7 @@ begin
   SaveMenu(Self.ContextMenu,'ctxmenu');
 end;
 
+//メインメニュー編集
 procedure TBagelMainForm.actEditMainMenuExecute(Sender: TObject);
 var
   f:TfrmMenuEdit;
@@ -2936,6 +2983,7 @@ begin
 end;
 
 
+//「早送り」
 procedure TBagelMainForm.actFastForwardExecute(Sender: TObject);
 var
   histCount:Integer;
@@ -2970,11 +3018,13 @@ begin
   end;
 end;
 
+//検索ダイアログを表示
 procedure TBagelMainForm.actFindDialogExecute(Sender: TObject);
 begin
   FindDialog1.Execute;
 end;
 
+//次を検索
 procedure TBagelMainForm.actFindExecute(Sender: TObject);
 var
   b:TBagelBrowser;
@@ -3026,31 +3076,37 @@ begin
   //end;
 end;
 
+//アドレスバーにフォーカス
 procedure TBagelMainForm.actFocusLocationBoxExecute(Sender: TObject);
 begin
   LocationBox.SetFocus;
 end;
 
+//検索エンジンボックスにフォーカス
 procedure TBagelMainForm.actFocusSearchEngineExecute(Sender: TObject);
 begin
   EngineBox.SetFocus;
 end;
 
+//検索ボックスにフォーカス
 procedure TBagelMainForm.actFocusSearchExecute(Sender: TObject);
 begin
   SearchBox.SetFocus;
 end;
 
+//ブラウザにフォーカス
 procedure TBagelMainForm.actFocusTabExecute(Sender: TObject);
 begin
   if GetCurrentBrowser<>nil then GetCurrentBrowser.SetFocus;
 end;
 
+//「Donutユーザのために」 とかいう痛いページに誘導
 procedure TBagelMainForm.actForDonutUsersExecute(Sender: TObject);
 begin
   AddTab('http://tkm.s31.xrea.com/gecko/bagel/fordonutusers.html');
 end;
 
+//全画面表示
 procedure TBagelMainForm.actFullScreenExecute(Sender: TObject);
 var
   dwStyle: DWORD;         //ウィンドウスタイル
@@ -3128,22 +3184,7 @@ begin
   //[biSystemMenu,biMinimize,biMaximize]
 end;
 
-
-procedure TBagelMainForm.actCloseRightExecute(Sender: TObject);
-var
-  i: Integer;
-  c: Integer;
-  c2: Integer;
-begin
-  c:=tabBarCtxTarget+1;//TabControl1.TabIndex+1;
-  c2:=TabControl.Tabs.Count-1;
-  for i := c to c2 do
-  begin
-    CloseTab(c);
-  end;
-end;
-
-
+//戻る
 procedure TBagelMainForm.actGoBackExecute(Sender: TObject);
 begin
   if TabControl.Tabs.Count<1 then Exit;
@@ -3153,11 +3194,7 @@ begin
   end;
 end;
 
-procedure TBagelMainForm.actGoExecute(Sender: TObject);
-begin
-  OnURIEnter;
-end;
-
+//進む
 procedure TBagelMainForm.actGoForwardExecute(Sender: TObject);
 begin
   if TabControl.Tabs.Count<1 then Exit;
@@ -3167,12 +3204,20 @@ begin
   end;
 end;
 
+//入力されたアドレスから開く
+procedure TBagelMainForm.actGoExecute(Sender: TObject);
+begin
+  OnURIEnter;
+end;
+
+//ホームを開く
 procedure TBagelMainForm.actGoHomeExecute(Sender: TObject);
 begin
   if GetCurrentBrowser<>nil then GetCurrentBrowser.LoadURI(Pref.Homepage)
   else actAddTabHome.Execute;
 end;
 
+//上の階層へ
 procedure TBagelMainForm.actGoUpExecute(Sender: TObject);
 var
   str:String;
@@ -3183,6 +3228,7 @@ begin
   if (str<>'') or (str<>'http:/')then GetBrowser(tabBarCtxTarget).LoadURI(str);
 end;
 
+//Grepサイドバーを表示
 procedure TBagelMainForm.actGrepSidebarExecute(Sender: TObject);
 begin
   if actGrepSidebar.Checked then begin
@@ -3196,6 +3242,7 @@ begin
   end;
 end;
 
+//履歴サイドバーを表示
 procedure TBagelMainForm.actHistorySidebarExecute(Sender: TObject);
 begin
   if actHistorySidebar.Checked then begin
@@ -3208,6 +3255,7 @@ begin
   end;
 end;
 
+//IEを起動して表示
 procedure TBagelMainForm.actIEViewExecute(Sender: TObject);
 var
   Buf: array[0..MAX_PATH] of char;
@@ -3226,6 +3274,7 @@ begin
     SW_SHOW);
 end;
 
+//ブックマークをコピー
 procedure TBagelMainForm.actCopyBookmarkExecute(Sender: TObject);
   procedure WriteChildren(WR :TWriter; parent:TBookmarkList; level:Integer);
   var
@@ -3270,7 +3319,7 @@ begin
     FCopyData:=TMemoryStream.Create;
     FDataFormat := RegisterClipboardFormat(PChar('BagelBkmkClipbrdItem'));
     FCopyData.Clear;
-    
+
 
     if TObject(node.Data) is TBookmark then
     begin
@@ -3304,7 +3353,7 @@ begin
       WriteChildren(WR,TBookmarkList(TBookmarkList(node.Data)),2);
       WR.WriteInteger(2);
       WR.Free;
-      
+
       hBuf := GlobalAlloc(GPTR,FCopyData.Size);
       p := GlobalLock(hBuf);
       FCopyData.Position := 0;
@@ -3320,13 +3369,13 @@ begin
   end;
 end;
 
-
 procedure TBagelMainForm.actCopyBookmarkUpdate(Sender: TObject);
 begin
   if BookmarksTree.Selected = nil then actCopyBookmark.Enabled := false
   else actCopyBookmark.Enabled := true;
 end;
 
+//ブックマークを削除
 procedure TBagelMainForm.actDeleteBookmarkExecute(Sender: TObject);
 	function DelOK:Boolean;
 	begin
@@ -3351,6 +3400,7 @@ begin
   else actDeleteBookmark.Enabled := true;
 end;
 
+//サイドバーにフォーカス
 procedure TBagelMainForm.actFocusSidebarExecute(Sender: TObject);
 begin
   if PageControl1.ActivePage.ControlCount>0 then begin
@@ -3358,6 +3408,8 @@ begin
   end;
 end;
 
+//パスワードマネージャ
+//TODO:nsILoginManagerへの対応、情報バー
 procedure TBagelMainForm.actShowPassManExecute(Sender: TObject);
 var
   f:TfrmPassMan;
@@ -3366,6 +3418,7 @@ begin
   f.ShowModal;
 end;
 
+//ポップアップブロックの設定
 procedure TBagelMainForm.actShowPopupManExecute(Sender: TObject);
 var
   f:TBagelSettingForm;
@@ -3375,6 +3428,7 @@ begin
   f.ShowModal;
 end;
 
+//サイドバー上部のアイコンを表示するかどうか
 procedure TBagelMainForm.actShowSidebarIconsExecute(Sender: TObject);
 begin
   Pref.ShowSidebarTabs:=actShowSidebarIcons.Checked;
@@ -3382,6 +3436,7 @@ begin
   Panel1.OnResize(Self);
 end;
 
+//UAマネージャ
 procedure TBagelMainForm.actShowUAManExecute(Sender: TObject);
 var
   f:TBagelSettingForm;
@@ -3391,6 +3446,7 @@ begin
   f.ShowModal;
 end;
 
+//Webパネルの編集
 procedure TBagelMainForm.actShowWebPanelEditorExecute(Sender: TObject);
 var
   f:TfrmWebPanelEditor;
@@ -3400,6 +3456,7 @@ begin
 //  ViewMenuSidebar.Click;
 end;
 
+//リンクサイドバーを表示
 procedure TBagelMainForm.actLinkSidebarExecute(Sender: TObject);
 begin
   if actLinkSidebar.Checked then begin
@@ -3412,6 +3469,7 @@ begin
   end;
 end;
 
+//メモサイドバーを表示
 procedure TBagelMainForm.actMemoSidebarExecute(Sender: TObject);
 begin
   if actMemoSidebar.Checked then begin
@@ -3424,6 +3482,7 @@ begin
   end;
 end;
 
+//次のタブを選択
 procedure TBagelMainForm.actNextTabExecute(Sender: TObject);
 var
   i:Integer;
@@ -3447,11 +3506,13 @@ begin
 
 end;
 
+//about:configをタブで開く
 procedure TBagelMainForm.actOpenAboutConfigExecute(Sender: TObject);
 begin
   AddTab('about:config');
 end;
 
+//ブックマークを開く
 procedure TBagelMainForm.actOpenBookmarkExecute(Sender: TObject);
 var
   node:TTreenode;
@@ -3477,6 +3538,7 @@ begin
   else actOpenBookmark.Enabled := true;
 end;
 
+//履歴をクリック
 procedure TBagelMainForm.HistoryItemClicked(Sender: TObject);
 var
   node: TTreeNode;
@@ -3496,6 +3558,7 @@ begin
     end;
 end;
 
+//履歴が意図せず開くのを防止
 procedure TBagelMainForm.HistoryTreeMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var

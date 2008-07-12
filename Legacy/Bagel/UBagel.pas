@@ -765,7 +765,6 @@ type
     procedure HistGotoIndex(Sender: TObject);
     procedure ForwardHistoryPopupPopup(Sender: TObject);
     procedure actFindDialogExecute(Sender: TObject);
-    procedure ToolPQuickPrefClick    (Sender: TObject);
     procedure FindDialog1Find(Sender: TObject);
     procedure Panel7Resize(Sender: TObject);
     procedure SidePanelResize(Sender: TObject);
@@ -9698,28 +9697,6 @@ begin
     if PxName=Pref.Proxies.Strings[i] then newitem.Checked:=true;
     ProxySwitchMenu.Add(newitem);
   end;
-end;
-
-procedure TBagelMainForm.ToolPQuickPrefClick(Sender: TObject);
-var
-  pB:nsIPrefBranch;
-  tmpInt:Integer;
-begin
-{PopupEnableDenyTitle.Checked:=Pref.EnableDenyTitle;
-
-pB:=GeckoPref.GetRootBranch;
-
-PopupDisableDuringLoad.Checked := pB.GetBoolPref(PChar('dom.disable_open_during_load'));
-DisableCtxmenuEvt.Checked := not pB.GetBoolPref(PCHar('dom.event.contextmenu.enabled'));
-BlockTargetNewwin.Checked := pB.GetBoolPref(PChar('browser.block.target_new_window'));
-DisableFrames.Checked := not pB.GetBoolPref(PChar('browser.frames.enabled'));
-EnableFrameResize.Checked := pB.GetBoolPref(PChar('layout.frames.force_resizability'));
-
-tmpInt := pB.GetIntPref(PChar('network.http.sendRefererHeader'));
-if tmpInt=0 then RefererConfig0.Checked := true
-else if tmpInt=1 then RefererConfig1.Checked := true
-else RefererConfig2.Checked := true;}
-
 end;
 
 procedure TBagelMainForm.StyleSheetSwitchClick(Sender: TObject);

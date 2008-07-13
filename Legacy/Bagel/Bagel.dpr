@@ -76,7 +76,6 @@ uses
   UBagelMemo in 'UBagelMemo.pas',
   splitjoin in 'splitjoin.pas',
   buinIntelliMouse in 'buinIntelliMouse.pas',
-  bmregexp in 'bmregexp.pas',
   BufStream in 'BufStream.pas',
   USearchEdit in 'USearchEdit.pas' {frmSearchEdit},
   UExtGoEdit in 'UExtGoEdit.pas' {frmExtGoEditor},

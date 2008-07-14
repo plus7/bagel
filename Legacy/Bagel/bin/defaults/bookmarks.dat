@@ -1,0 +1,20 @@
+<bookmark top="0" selected="12">
+  <folder name="リンク" expanded="false">
+    <item name="Google" docshell="" reload="" URI="http://www.google.co.jp/"/>
+    <folder name="js" expanded="false">
+      <item name="CSS無効" docshell="" reload="" URI="javascript:for (i=0;i<document.styleSheets.length;i++) {void(document.styleSheets.item(i).disabled=true);}"/>
+    </folder>
+  </folder>
+  <folder name="Bagel" expanded="true">
+    <item name="Bagelのページ" docshell="" reload="" URI="http://ipt.sakura.ne.jp/gecko/bagel/"/>
+    <item name="Bagel - GeckoDev Wiki" docshell="" reload="" URI="http://tkm.s31.xrea.com/gecko/wiki/wiki.cgi?page=Bagel"/>
+    <item name="ahya365の日記" docshell="" reload="" URI="http://d.hatena.ne.jp/ahya365/"/>
+    <item name="Bagelスレ@2ch" docshell="" reload="" URI="http://pc7.2ch.net/test/read.cgi/software/1136732400/"/>
+    <item name="マニュアル作成Wiki" docshell="" reload="" URI="http://ipt.sakura.ne.jp/gecko/farm/wiki.cgi/BagelManual"/>
+  </folder>
+  <folder name="Mozilla/Gecko" expanded="true">
+    <item name="トップページ - Mozilla Firefoxまとめサイト" docshell="" reload="" URI="http://firefox.geckodev.org/"/>
+    <item name="Mozilla的コンテンツ（XUL、UserCSSなど）" docshell="" reload="" URI="http://tkm.s31.xrea.com/xul/"/>
+    <item name="nesitive thinking" docshell="" reload="" URI="http://nesitive.net/"/>
+  </folder>
+</bookmark>

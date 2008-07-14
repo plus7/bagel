@@ -1,0 +1,15 @@
+W3C Validation Service|http://validator.w3.org/check?uri=%addr%
+Another HTML Lint|http://openlab.ring.gr.jp/k16/htmllint/htmllint.cgi?URL=%addr%
+-|
+Excite翻訳(英->日)|http://www.excite.co.jp/world/english/web/?wb_url=%addr%&wb_lp=ENJA&wb_dis=2
+Excite翻訳(日->英)|http://www.excite.co.jp/world/english/web/?wb_url=%addr%&wb_lp=JAEN&wb_dis=2
+-|
+はてなアンテナに追加|http://a.hatena.ne.jp/append?%addr%
+はてなRSSに追加|http://r.hatena.ne.jp/append/%addr%
+はてなブックマークに追加|http://b.hatena.ne.jp/add?mode=confirm&url=%addr%
+-|
+Googleキャッシュ|http://www.google.co.jp/search?q=cache:%addr%
+WayBackMachine|http://web.archive.org/web/*/%addr%
+-|
+www.補完.com|http://www.%addr%.com/
+www.補完.net|http://www.%addr%.net/

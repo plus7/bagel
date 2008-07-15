@@ -1161,8 +1161,8 @@ begin
   if img then Result:=Result+16;
 end;
 {リファラを送信するかどうか}
-function GetReferrer(Referrer:String):String;
-const
+function IsSendReferrer(Referrer:String):String;
+const                       
   HTTP_REF_PREF='network.http.sendRefererHeader';
 var
   gp:TGeckoPref;
@@ -1186,6 +1186,7 @@ begin
   if i2<i1 then Result:=i2;
 end;
 
+// from OpenJane
 function GetMouseInPane(control: TControl): boolean;
 var
   point: TPoint;
@@ -1208,6 +1209,137 @@ begin
 	for i := 0 to ToolBar.ButtonCount - 1 do
 		if ToolBar.Buttons[i].Visible then
 			Result := Result + ToolBar.Buttons[i].Width;
+end;
+
+{LEFT からの絶対座標を取得}
+function GetPageOffsetLeft( elem : nsIDOMElement ):Integer;
+var
+  Left:Integer;
+  offsLeft:Integer;
+  tmpElem:nsIDOMElement;
+  hoge:nsIDOMNSHTMLElement;
+begin
+  Result := 0;
+  if elem=nil then Exit;
+
+  Left:=(elem as nsIDOMNSHTMLElement).OffsetLeft;
+  tmpElem:=(elem as nsIDOMNSHTMLElement).OffsetParent;
+  while (tmpElem<>nil) do begin
+    offsLeft := (tmpElem as nsIDOMNSHTMLElement).OffsetLeft;
+    left := left + offsLeft;
+    hoge := (tmpElem as nsIDOMNSHTMLElement);
+    tmpElem:=hoge.OffsetParent;
+  end;
+
+  Result:=left;
+end;
+
+{TOP からの絶対座標を取得}
+function GetPageOffsetTop( elem : nsIDOMElement ):Integer;
+var
+  top:Integer;
+  offsTop:Integer;
+  tmpElem:nsIDOMElement;
+  hoge:nsIDOMNSHTMLElement;
+begin
+  Result := 0;
+  if elem=nil then Exit;
+
+  top := (elem as nsIDOMNSHTMLElement).OffsetTop;
+  tmpElem:=(elem as nsIDOMNSHTMLElement).OffsetParent;
+  while (tmpElem<>nil) do begin
+    offsTop:=(tmpElem as nsIDOMNSHTMLElement).OffsetTop;
+    top := top + offsTop;
+    hoge := (tmpElem as nsIDOMNSHTMLElement);
+    tmpElem:=hoge.OffsetParent;
+  end;
+
+  Result:=top;
+end;
+
+function GetRange(sn:nsIDOMNode;so:Integer;en:nsIDOMNode;eo:Integer):nsIDOMRange;
+var
+  tmpRange:nsIDOMRange;
+begin
+  tmpRange := (sn.GetOwnerDocument as nsIDOMDocumentRange).CreateRange;
+  tmpRange.SetStart(sn,so);
+  tmpRange.SetEnd(en,eo);
+  Result:=tmpRange;
+end;
+
+function GetDocShellObjByWin(win:nsIDOMWindow):nsIDocShell;
+var
+  doc:nsIDOMDocument;
+  ir:nsIInterfaceRequestor;
+  webnav:nsiWebnavigation;
+  docshell:nsIDocShell;
+begin
+  if win=nil then exit;
+  doc:=win.Document;
+  (doc as nsIDOMDocumentView).GetDefaultView.QueryInterface(nsIInterfaceRequestor,ir);
+  ir.GetInterface(nsiWebnavigation,webnav);
+  webNav.QueryInterface(nsIDocShell,docshell);
+  Result:=docshell;
+end;
+
+function GetSelConByWin(win:nsIDOMWindow):nsISelectionController;
+var
+  ir:nsIInterfaceRequestor;
+  seldisp:nsISelectionDisplay;
+  selcon:nsISelectionController;
+begin
+  GetDocShellObjByWin(win).QueryInterface(nsIInterfaceRequestor,ir);
+  ir.GetInterface(nsISelectionDisplay,seldisp);
+  seldisp.QueryInterface(nsISelectionController,selcon);
+  Result:=selcon;
+end;
+
+function GetRootWindowByDoc(document:nsIDOMDocument):nsIDOMWindow;
+var
+  tmpWin,window:nsIDOMWindow;
+begin
+  Result:=nil;
+  if document=nil then Exit;
+  window := ((document as nsIDOMDocumentView).DefaultView as nsIDOMWindow);
+  tmpWin := window.Parent;
+  while tmpWin<>nil do begin
+    if window=tmpWin then break;
+    window:=tmpWin;
+    tmpWin := window.Parent;
+  end;
+  Result:=window;
+end;
+
+function GetSelectionStrFromWin(win:nsIDOMWindow):WideString;
+var
+  childwin:nsIDOMWindow;
+  sel:nsISelection;
+  length:Cardinal;
+  i:Integer;
+  ret:String;
+  selstr:PWideChar;
+begin
+  Result:='';
+  if win=nil then Exit;
+  sel := win.GetSelection;
+  if sel.IsCollapsed then begin
+    length := win.Frames.Length;
+    if length=0 then Result:=''
+    else begin
+      for i:=0 to length-1 do begin
+        childwin := win.Frames.Item(i);
+        ret:=GetSelectionStrFromWin(childwin);
+        if ret<>'' then begin
+          Result:=ret;
+          exit;
+        end;
+      end;
+    end;
+  end
+  else begin
+    selstr := sel.ToString;
+    Result := WideString(selstr);
+  end;
 end;
 
 function IsValidForFrame(Frame: nsIDOMWindow; Title: String):Boolean;
@@ -1309,72 +1441,6 @@ begin
   NS_CreateInstance('@mozilla.org/network/standard-url;1',nsIURI,uri);
   uri.SetSpec(NewCString(aStr).ACString);
   Result := uri;
-end;
-
-{LEFT からの絶対座標を取得}
-function GetPageOffsetLeft( elem : nsIDOMElement ):Integer;
-var
-  Left:Integer;
-  offsLeft:Integer;
-  tmpElem:nsIDOMElement;
-  hoge:nsIDOMNSHTMLElement;
-begin
-  Result := 0;
-  if elem=nil then Exit;
-
-  Left:=(elem as nsIDOMNSHTMLElement).OffsetLeft;
-  tmpElem:=(elem as nsIDOMNSHTMLElement).OffsetParent;
-  while (tmpElem<>nil) do begin
-    offsLeft := (tmpElem as nsIDOMNSHTMLElement).OffsetLeft;
-    left := left + offsLeft;
-    hoge := (tmpElem as nsIDOMNSHTMLElement);
-    tmpElem:=hoge.OffsetParent;
-  end;
-
-  Result:=left;
-end;
-
-{TOP からの絶対座標を取得}
-function GetPageOffsetTop( elem : nsIDOMElement ):Integer;
-var
-  top:Integer;
-  offsTop:Integer;
-  tmpElem:nsIDOMElement;
-  hoge:nsIDOMNSHTMLElement;
-begin
-  Result := 0;
-  if elem=nil then Exit;
-
-  top := (elem as nsIDOMNSHTMLElement).OffsetTop;
-  tmpElem:=(elem as nsIDOMNSHTMLElement).OffsetParent;
-  while (tmpElem<>nil) do begin
-    offsTop:=(tmpElem as nsIDOMNSHTMLElement).OffsetTop;
-    top := top + offsTop;
-    hoge := (tmpElem as nsIDOMNSHTMLElement);
-    tmpElem:=hoge.OffsetParent;
-  end;
-
-  Result:=top;
-end;
-{
-    if(! elem ) return 0;
-
-    var top = elem.offsetTop;
-    while( elem.offsetParent != null ){
-        elem = elem.offsetParent;
-        top += elem.offsetTop;
-
-
-    return top;
-}
-function GetRange(sn:nsIDOMNode;so:Integer;en:nsIDOMNode;eo:Integer):nsIDOMRange;
-var
-  tmpRange:nsIDOMRange;
-begin
-  tmpRange := (sn.GetOwnerDocument as nsIDOMDocumentRange).CreateRange;
-  tmpRange.SetStart(sn,so);
-  tmpRange.SetEnd(en,eo);
-  Result:=tmpRange;
 end;
 
 function Range2String(range:nsIDOMRange):WideString;
@@ -1610,79 +1676,6 @@ begin
   myRange.DeleteContents;
   myRange.Detach;
   tmpNode.Normalize;
-end;
-function GetDocShellObjByWin(win:nsIDOMWindow):nsIDocShell;
-var
-  doc:nsIDOMDocument;
-  ir:nsIInterfaceRequestor;
-  webnav:nsiWebnavigation;
-  docshell:nsIDocShell;
-begin
-  if win=nil then exit;
-  doc:=win.Document;
-  (doc as nsIDOMDocumentView).GetDefaultView.QueryInterface(nsIInterfaceRequestor,ir);
-  ir.GetInterface(nsiWebnavigation,webnav);
-  webNav.QueryInterface(nsIDocShell,docshell);
-  Result:=docshell;
-end;
-
-function GetSelConByWin(win:nsIDOMWindow):nsISelectionController;
-var
-  ir:nsIInterfaceRequestor;
-  seldisp:nsISelectionDisplay;
-  selcon:nsISelectionController;
-begin
-  GetDocShellObjByWin(win).QueryInterface(nsIInterfaceRequestor,ir);
-  ir.GetInterface(nsISelectionDisplay,seldisp);
-  seldisp.QueryInterface(nsISelectionController,selcon);
-  Result:=selcon;
-end;
-function GetRootWindowByDoc(document:nsIDOMDocument):nsIDOMWindow;
-var
-  tmpWin,window:nsIDOMWindow;
-begin
-  Result:=nil;
-  if document=nil then Exit;
-  window := ((document as nsIDOMDocumentView).DefaultView as nsIDOMWindow);
-  tmpWin := window.Parent;
-  while tmpWin<>nil do begin
-    if window=tmpWin then break;
-    window:=tmpWin;
-    tmpWin := window.Parent;
-  end;
-  Result:=window;
-end;
-
-function GetSelectionStrFromWin(win:nsIDOMWindow):WideString;
-var
-  childwin:nsIDOMWindow;
-  sel:nsISelection;
-  length:Cardinal;
-  i:Integer;
-  ret:String;
-  selstr:PWideChar;
-begin
-  Result:='';
-  if win=nil then Exit;
-  sel := win.GetSelection;
-  if sel.IsCollapsed then begin
-    length := win.Frames.Length;
-    if length=0 then Result:=''
-    else begin
-      for i:=0 to length-1 do begin
-        childwin := win.Frames.Item(i);
-        ret:=GetSelectionStrFromWin(childwin);
-        if ret<>'' then begin
-          Result:=ret;
-          exit;
-        end;
-      end;
-    end;
-  end
-  else begin
-    selstr := sel.ToString;
-    Result := WideString(selstr);
-  end;
 end;
 
 function convertURIToFilePath(aURI:nsIURI):String;
@@ -4391,7 +4384,7 @@ begin
   if Pos('javascript:', uri)=1 then // JavaScriptスキームは特例
   begin
     if GetCurrentBrowser<>nil then
-      GetCurrentBrowser.LoadURIWithFlags(uri,loadFlags,GetReferrer(Referrer));
+      GetCurrentBrowser.LoadURIWithFlags(uri,loadFlags, IsSendReferrer(Referrer));
   end
   else
   begin
@@ -4442,20 +4435,20 @@ begin
           Self.ActiveControl:=brwsr;
         end;
         SetSecurity(brwsr,DocShell);
-        brwsr.LoadURIWithFlags(uri,loadFlags,GetReferrer(Referrer));
+        brwsr.LoadURIWithFlags(uri,loadFlags, IsSendReferrer(Referrer));
       end
       else begin
         brwsr.SendToBack;
         brwsr.Visible := true;
         SetSecurity(brwsr,DocShell);
-        brwsr.LoadURIWithFlags(uri,loadFlags,GetReferrer(Referrer));
+        brwsr.LoadURIWithFlags(uri,loadFlags, IsSendReferrer(Referrer));
       end;
       if brwsr.DocShell<>nil then
         brwsr.DocShell.UseErrorPages := True;
     end
     else begin
     //現在のタブで開く
-      if GetCurrentBrowser<>nil then GetCurrentBrowser.LoadURIWithFlags(uri,loadFlags,GetReferrer(Referrer));
+      if GetCurrentBrowser<>nil then GetCurrentBrowser.LoadURIWithFlags(uri,loadFlags, IsSendReferrer(Referrer));
     end;
   end;
 

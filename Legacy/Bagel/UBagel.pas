@@ -4761,7 +4761,7 @@ begin
   str :=NewCString('');
 //URI
   LocationBox.Text := URIToStr(Browser.WebNavigation.CurrentURI);
-  Self.Caption := Browser.Title+GetStringByBool(' - Bagel',Pref.ShowAppNameInTitle) ;
+  Self.Caption := Browser.Title + IfThen(Pref.ShowAppNameInTitle,'- Bagel') ;
   Application.Title := Self.Caption;
   actGoBack.Enabled:=Browser.CanGoBack;
   actRewind.Enabled:=actGoBack.Enabled;
@@ -5721,7 +5721,7 @@ begin
   else begin
     if Length(String(aMessage))=0 then begin
       if TabControl.Tabs.Count>1 then begin
-        Self.Caption:=GetCurrentBrowser.Title + GetStringByBool(' - Bagel',Pref.ShowAppNameInTitle);
+        Self.Caption:=GetCurrentBrowser.Title + IfThen(Pref.ShowAppNameInTitle, ' - Bagel');
         Application.Title:=self.Caption;
       end
       else begin
@@ -5730,7 +5730,7 @@ begin
       end;
     end
     else begin
-      Self.Caption:=aMessage + GetStringByBool(' - Bagel',Pref.ShowAppNameInTitle);
+      Self.Caption:=aMessage + IfThen(Pref.ShowAppNameInTitle,' - Bagel');
       Application.Title:=self.Caption;
     end;
   end;
@@ -5804,7 +5804,7 @@ begin
 
   if i<>-1 then TabControl.Tabs.Strings[i]:=CutRight(Pref.TabMaxStrCount,tmpTitle);
   if i=TabControl.TabIndex then
-    Self.Caption:=tmpTitle + getStringByBool(' - Bagel',Pref.ShowAppNameInTitle);
+    Self.Caption:=tmpTitle + IfThen(Pref.ShowAppNameInTitle, ' - Bagel');
     Application.Title:=Self.Caption;
 end;
 procedure TBagelMainForm.btnPageSetupClick(Sender: TObject);

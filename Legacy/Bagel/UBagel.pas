@@ -2545,34 +2545,23 @@ end;
 procedure TBagelMainForm.actCloseAllExecute(Sender: TObject);
 var
   i: Integer;
-  c: Integer;
-  M: String;
 begin
   if Pref.OnCloseAll=true then
   begin
-    M := '全て閉じてもよろしいですか？';
-    if MessageDlg(M, mtConfirmation,[mbYes, mbNo], 0) = mrNo then
-    begin
+    if MessageDlg('全て閉じてもよろしいですか？', mtConfirmation,[mbYes, mbNo], 0) = mrNo then
       exit;
-    end;
   end;
 
-  c:=TabControl.Tabs.Count-1;
-  for i := 0 to c do
-  begin
+  for i := 0 to TabControl.Tabs.Count-1 do
     CloseTab(0);
-  end;
 end;
 
 //左のタブを閉じる
 procedure TBagelMainForm.actCloseLeftExecute(Sender: TObject);
 var
   i: Integer;
-  c: Integer;
 begin
-  //c:=TabControl1.TabIndex;
-  c:=tabBarCtxTarget;
-  for i := 0 to c-1 do
+  for i := 0 to tabBarCtxTarget-1 do
   begin
     CloseTab(0);
   end;

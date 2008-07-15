@@ -3096,8 +3096,6 @@ end;
 procedure TBagelMainForm.actFullScreenExecute(Sender: TObject);
 var
   dwStyle: DWORD;         //ウィンドウスタイル
-//  Bmp : TBitmap;          //BITMAPオブジェクト
-//  hTrayWnd: HWND;         //タスクバーウィンドウハンドル
 begin
 
   if TAction(Sender).Checked=true then

@@ -26,8 +26,6 @@ object frmPassMan: TfrmPassMan
     ActivePage = TabSheet2
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 471
-    ExplicitHeight = 193
     object SavedPassSheet: TTabSheet
       Caption = #20445#23384#12373#12428#12390#12356#12427#12497#12473#12527#12540#12489
       ExplicitLeft = 8
@@ -84,8 +82,6 @@ object frmPassMan: TfrmPassMan
     object TabSheet2: TTabSheet
       Caption = #12497#12473#12527#12540#12489#12434#20445#23384#12375#12394#12356#12469#12452#12488
       ImageIndex = 1
-      ExplicitWidth = 465
-      ExplicitHeight = 224
       object lvPasswordNeverSaved: TListView
         Left = 8
         Top = 8
@@ -129,8 +125,6 @@ object frmPassMan: TfrmPassMan
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 193
-    ExplicitWidth = 471
     object Button1: TButton
       Left = 381
       Top = 6

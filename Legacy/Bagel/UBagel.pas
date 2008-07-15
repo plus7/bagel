@@ -10146,7 +10146,7 @@ begin
   startPoint.SetStart(body,0);
   startPoint.SetEnd(body,0);
   endPoint.Collapse(False);
-  
+
   NS_CreateInstance('@mozilla.org/embedcomp/rangefind;1',nsIFind,mFind);
   mFind.SetFindBackwards(false);
 

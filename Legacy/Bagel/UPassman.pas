@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, ComCtrls, StdCtrls, nsXPCOM,nsXPCOMGlue, nsPassword,
+  Dialogs, ExtCtrls, ComCtrls, StdCtrls, nsXPCOM,nsXPCOMGlue, nsLogin,
   nsGeckoStrings;
 
 type
@@ -43,11 +43,22 @@ type
     Site    :String;
     User  :String;
     Pass :String;
+    Realm :String;
+    SubmitURL:String;
+    LoginInfo: nsILoginInfo;
   end;
 
 implementation
 
 {$R *.dfm}
+function GetLoginManager:nsILoginManager;
+var
+  loginmanager : nsILoginManager;
+begin
+  NS_GetService('@mozilla.org/login-manager;1',nsILoginManager, loginmanager);
+  Result := loginmanager;  
+end;
+
 function NewPasswordData(PD:TPasswordData):PPasswordData;
 begin
   New(result);
@@ -64,98 +75,80 @@ begin
    for i := 0 to lvPasswordNeverSaved.Items.Count-1 do begin
      Dispose(PPasswordData(lvPasswordNeverSaved.Items.Item[i].Data));
    end;
-  Action:=CAFree;
+  Action:=caFree;
 end;
 
 procedure TfrmPassMan.FormCreate(Sender: TObject);
 var
-//  password:nsIPassword;
-  passwordmanager:nsIPasswordManager;
-  passenum:nsISimpleEnumerator;
-  rejectenum:nsISimpleEnumerator;
-  hasnext:LongBool;
-  s:nsISupports;
-  strPass:nsAString;
-  strUser:nsAString;
-  cstrSite:nsACString;
-  intfPass:IInterfacedString;
-  intfUser:IInterfacedString;
-  intfcSite:IInterfacedCString;
+  logininfo:nsILoginInfo;
+  logincount:Cardinal;
+  loginarray:array of nsILoginInfo;
+  loginmanager:nsILoginManager;
+
+  disabledcount:Cardinal;
+  disabledhosts:array of PWideChar;
+
+  host,user,realm,submiturl,password : IInterfacedString;
+
   PD:TPasswordData;
   tmpItem:TListItem;
+  i: Integer;
 begin
-  NS_GetService('@mozilla.org/passwordmanager;1',nsIPasswordManager,passwordmanager);
+  loginmanager := GetLoginManager;
+  host := NewString;
+  user := NewString;
+  password := NewString;
 
-  intfPass:=NewString;
-  strPass:=intfPass.AString;
-
-  intfUser:=NewString;
-  strUser:=intfUser.AString;
-
-  intfcSite:=NewCString;
-  cstrSite:=intfcSite.ACString;
-
-  passenum := passwordmanager.Enumerator;
-
-  {while passenum.HasMoreElements do begin
-    s := passenum.GetNext;
-    s.QueryInterface(nsIPassword,password);
-
-    password.GetHost(cstrSite);
-    PD.Site:=intfcSite.ToString;
-
-    password.GetUser(strUser);
-    PD.User:=intfUser.ToString;
-
-    password.GetPassword(strPass);
-    PD.Pass:=intfPass.ToString;
+  loginmanager.GetAllLogins(logincount, loginarray);
+  for i := 0 to logincount - 1 do
+  begin
+    loginarray[i].GetHostname(host.AString);
+    loginarray[i].GetUsername(user.AString);
+    loginarray[i].GetPassword(password.AString);
+    PD.Site := host.ToString;
+    PD.User := user.ToString;
+    PD.Pass := password.ToString;
+    PD.LoginInfo := loginarray[i];
 
     tmpItem:=lvSavedPassword.Items.Add;
     tmpItem.Caption:=PD.Site;
     tmpItem.SubItems.Add(PD.User);
     tmpItem.Data:=TObject(NewPasswordData(PD));
-
   end;
 
-  rejectenum := passwordmanager.RejectEnumerator;
-  while rejectenum.HasMoreElements do begin
-    s:=rejectenum.GetNext;
-    s.QueryInterface(nsIPassword,password);
-
-    password.GetHost(cstrSite);
-    PD.Site:=intfcSite.ToString;
-    
+  loginmanager.GetAllDisabledHosts(disabledcount, disabledhosts);
+  for i := 0 to disabledcount - 1 do
+  begin
+    PD.Site := disabledhosts[i];
     tmpItem:=lvPasswordNeverSaved.Items.Add;
     tmpItem.Caption:=PD.Site;
     tmpItem.Data:=TObject(NewPasswordData(PD));
-
-  end;   }
-  
+  end;
 end;
 
 procedure TfrmPassMan.btnRemoveAllSavedPassClick(Sender: TObject);
-var i:Integer;   passwordmanager:nsIPasswordManager;
+var
+  i:Integer;
+  loginmanager:nsILoginManager;
 begin
-  NS_GetService('@mozilla.org/passwordmanager;1',nsIPasswordManager,passwordmanager);
+  loginmanager := GetLoginManager;
   for i := 0 to lvSavedPassword.Items.Count-1 do begin
-    passwordmanager.RemoveUser(
-      NewCString(PPasswordData(lvSavedPassword.Items.Item[i].Data).Site).ACString
-      ,NewString(PPasswordData(lvSavedPassword.Items.Item[i].Data).User).AString
-    );
     Dispose(PPasswordData(lvSavedPassword.Items.Item[i].Data));
   end;
+  loginmanager.RemoveAllLogins;
   lvSavedPassword.Clear;
 end;
 
 procedure TfrmPassMan.btnRemoveAllNeverSavedSiteClick(Sender: TObject);
 var
-  i:Integer;    passwordmanager:nsIPasswordManager;
+  i:Integer;
+  loginmanager:nsILoginManager;
 begin
-  NS_GetService('@mozilla.org/passwordmanager;1',nsIPasswordManager,passwordmanager);
+  loginmanager := GetLoginManager;
   for i := 0 to lvPasswordNeverSaved.Items.Count-1 do begin
-    passwordmanager.RemoveReject(
-      NewCString(PPasswordData(lvPasswordNeverSaved.Items.Item[i].Data).Site).ACString
-    );
+    loginmanager.SetLoginSavingEnabled(
+      NewString(PPasswordData(lvPasswordNeverSaved.Items.Item[i].Data).Site).AString,
+      true);
     Dispose(PPasswordData(lvPasswordNeverSaved.Items.Item[i].Data));
   end;
   lvPasswordNeverSaved.Clear;
@@ -163,25 +156,20 @@ end;
 
 procedure TfrmPassMan.btnRemoveSelectedPassClick(Sender: TObject);
 var
-  passwordmanager:nsIPasswordManager;
+  loginmanager:nsILoginManager;
 begin
-  NS_GetService('@mozilla.org/passwordmanager;1',nsIPasswordManager,passwordmanager);
-  passwordmanager.RemoveUser(
-    NewCString(PPasswordData(lvSavedPassword.Selected.Data).Site).ACString
-    ,NewString(PPasswordData(lvSavedPassword.Selected.Data).User).AString
-  );
+  loginmanager := GetLoginManager;
+  loginmanager.RemoveLogin(PPasswordData(lvSavedPassword.Selected.Data).LoginInfo);
   Dispose(PPasswordData(lvSavedPassword.Selected.Data));
   lvSavedPassword.DeleteSelected;
 end;
 
 procedure TfrmPassMan.btnRemoveNeverSavedSiteClick(Sender: TObject);
 var
-  passwordmanager:nsIPasswordManager;
+  loginmanager:nsILoginManager;
 begin
-  NS_GetService('@mozilla.org/passwordmanager;1',nsIPasswordManager,passwordmanager);
-  passwordmanager.RemoveReject(
-    NewCString(PPasswordData(lvPasswordNeverSaved.Selected.Data).Site).ACString
-  );
+  loginmanager := GetLoginManager;
+  loginmanager.SetLoginSavingEnabled(NewString(PPasswordData(lvPasswordNeverSaved.Selected.Data).Site).AString,true);
   Dispose(PPasswordData(lvPasswordNeverSaved.Selected.Data));
   lvPasswordNeverSaved.DeleteSelected;
 end;

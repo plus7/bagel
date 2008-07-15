@@ -4,8 +4,8 @@ object frmPassMan: TfrmPassMan
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = #12497#12473#12527#12540#12489#12510#12493#12540#12472#12515
-  ClientHeight = 228
-  ClientWidth = 471
+  ClientHeight = 282
+  ClientWidth = 469
   Color = clBtnFace
   Font.Charset = SHIFTJIS_CHARSET
   Font.Color = clWindowText
@@ -21,18 +21,24 @@ object frmPassMan: TfrmPassMan
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 471
-    Height = 193
-    ActivePage = SavedPassSheet
+    Width = 469
+    Height = 247
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 471
+    ExplicitHeight = 193
     object SavedPassSheet: TTabSheet
       Caption = #20445#23384#12373#12428#12390#12356#12427#12497#12473#12527#12540#12489
+      ExplicitLeft = 8
+      ExplicitTop = 21
+      ExplicitWidth = 465
+      ExplicitHeight = 219
       object lvSavedPassword: TListView
-        Left = 8
-        Top = 8
+        Left = 3
+        Top = 3
         Width = 449
-        Height = 121
+        Height = 179
         Columns = <
           item
             Caption = #12469#12452#12488
@@ -49,7 +55,7 @@ object frmPassMan: TfrmPassMan
       end
       object btnRemoveSelectedPass: TButton
         Left = 8
-        Top = 140
+        Top = 188
         Width = 75
         Height = 21
         Caption = #21066#38500
@@ -57,8 +63,8 @@ object frmPassMan: TfrmPassMan
         OnClick = btnRemoveSelectedPassClick
       end
       object btnRemoveAllSavedPass: TButton
-        Left = 92
-        Top = 140
+        Left = 89
+        Top = 188
         Width = 75
         Height = 21
         Caption = #20840#12390#21066#38500
@@ -66,8 +72,8 @@ object frmPassMan: TfrmPassMan
         OnClick = btnRemoveAllSavedPassClick
       end
       object btnShowSavedPassword: TButton
-        Left = 332
-        Top = 140
+        Left = 327
+        Top = 188
         Width = 125
         Height = 21
         Caption = #12497#12473#12527#12540#12489#12434#34920#31034#12377#12427
@@ -78,10 +84,8 @@ object frmPassMan: TfrmPassMan
     object TabSheet2: TTabSheet
       Caption = #12497#12473#12527#12540#12489#12434#20445#23384#12375#12394#12356#12469#12452#12488
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitWidth = 465
+      ExplicitHeight = 224
       object lvPasswordNeverSaved: TListView
         Left = 8
         Top = 8
@@ -119,15 +123,17 @@ object frmPassMan: TfrmPassMan
   end
   object Panel1: TPanel
     Left = 0
-    Top = 193
-    Width = 471
+    Top = 247
+    Width = 469
     Height = 35
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 193
+    ExplicitWidth = 471
     object Button1: TButton
-      Left = 388
-      Top = 8
+      Left = 381
+      Top = 6
       Width = 75
       Height = 21
       Cancel = True

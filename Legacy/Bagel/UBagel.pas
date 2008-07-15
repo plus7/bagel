@@ -53,7 +53,6 @@ const
   NOPROXY = '直接接続';
   NOOVERRIDEAGENT = 'デフォルト';
   BOOKMARKS_DAT='bookmarks.dat';
-  WM_MY_TRAYICON = WM_APP + $300; // 適当です
   BAGEL_HILIGHT_CLASS='_bagel_hilight_class';
   SEARCH_NORMAL=0;
   SEARCH_MIGEMO=1;

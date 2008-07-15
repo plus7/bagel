@@ -28,10 +28,6 @@ object frmPassMan: TfrmPassMan
     TabOrder = 0
     object SavedPassSheet: TTabSheet
       Caption = #20445#23384#12373#12428#12390#12356#12427#12497#12473#12527#12540#12489
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lvSavedPassword: TListView
         Left = 8
         Top = 8

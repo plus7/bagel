@@ -2,6 +2,8 @@ unit nsLogin;
 
 interface
 
+uses nsTypes, nsXPCOM, nsGeckoStrings;
+
 const
   NS_ILOGININFO_IID: TGUID = '{9c87a9bd-bf8b-4fae-bdb8-70513b2877df}';
 

@@ -61,6 +61,8 @@ program Bagel;
 {%TogetherDiagram 'ModelSupport_Bagel\TabbedToolBar\default.txaPackage'}
 {%TogetherDiagram 'ModelSupport_Bagel\UWebPanelEdit\default.txaPackage'}
 {%TogetherDiagram 'ModelSupport_Bagel\Mutex\default.txaPackage'}
+{%TogetherDiagram 'ModelSupport_Bagel\UMenuEdit\default.txaPackage'}
+{%TogetherDiagram 'ModelSupport_Bagel\AboutBagel\default.txvpck'}
 
 uses
   Forms,

@@ -1140,7 +1140,7 @@ begin
   inherited;
 end;
 
-function GetDocShellForB(b:TBagelBrowser):Integer;
+function GetDocShellSettingForB(b:TBagelBrowser):Integer;
 var
   plugins:LongBool;
   js:LongBool;
@@ -1611,7 +1611,7 @@ begin
   myRange.Detach;
   tmpNode.Normalize;
 end;
-function GetDocShellByWin(win:nsIDOMWindow):nsIDocShell;
+function GetDocShellObjByWin(win:nsIDOMWindow):nsIDocShell;
 var
   doc:nsIDOMDocument;
   ir:nsIInterfaceRequestor;
@@ -1632,7 +1632,7 @@ var
   seldisp:nsISelectionDisplay;
   selcon:nsISelectionController;
 begin
-  getDocShellByWin(win).QueryInterface(nsIInterfaceRequestor,ir);
+  GetDocShellObjByWin(win).QueryInterface(nsIInterfaceRequestor,ir);
   ir.GetInterface(nsISelectionDisplay,seldisp);
   seldisp.QueryInterface(nsISelectionController,selcon);
   Result:=selcon;
@@ -1653,6 +1653,37 @@ begin
   Result:=window;
 end;
 
+function GetSelectionStrFromWin(win:nsIDOMWindow):WideString;
+var
+  childwin:nsIDOMWindow;
+  sel:nsISelection;
+  length:Cardinal;
+  i:Integer;
+  ret:String;
+  selstr:PWideChar;
+begin
+  Result:='';
+  if win=nil then Exit;
+  sel := win.GetSelection;
+  if sel.IsCollapsed then begin
+    length := win.Frames.Length;
+    if length=0 then Result:=''
+    else begin
+      for i:=0 to length-1 do begin
+        childwin := win.Frames.Item(i);
+        ret:=GetSelectionStrFromWin(childwin);
+        if ret<>'' then begin
+          Result:=ret;
+          exit;
+        end;
+      end;
+    end;
+  end
+  else begin
+    selstr := sel.ToString;
+    Result := WideString(selstr);
+  end;
+end;
 
 function convertURIToFilePath(aURI:nsIURI):String;
 var
@@ -1922,39 +1953,6 @@ begin
     end;
     tmpNode := node.ParentNode;
     node:=tmpNode;
-  end;
-end;
-
-
-function GetSelectionFromWin(win:nsIDOMWindow):WideString;
-var
-  childwin:nsIDOMWindow;
-  sel:nsISelection;
-  length:Cardinal;
-  i:Integer;
-  ret:String;
-  selstr:PWideChar;
-begin
-  Result:='';
-  if win=nil then Exit;
-  sel := win.GetSelection;
-  if sel.IsCollapsed then begin
-    length := win.Frames.Length;
-    if length=0 then Result:=''
-    else begin
-      for i:=0 to length-1 do begin
-        childwin := win.Frames.Item(i);
-        ret:=GetSelectionFromWin(childwin);
-        if ret<>'' then begin
-          Result:=ret;
-          exit;
-        end;
-      end;
-    end;
-  end
-  else begin
-    selstr := sel.ToString;
-    Result := WideString(selstr);
   end;
 end;
 
@@ -5689,7 +5687,7 @@ begin
     //新しいタブで開くか？
     if (uri<>'') and (Pos('javascript:',uri)<>1) then begin
       if Pref.InheritDocShell then
-        docshell := GetDocShellForB(TBagelBrowser(Sender))
+        docshell := GetDocShellSettingForB(TBagelBrowser(Sender))
       else
         docshell := Pref.DocShellDefault;
       b:=AddTab(uri,
@@ -6016,7 +6014,7 @@ begin
   if (Sender is TBagelBrowser) and TBagelBrowser(Sender).Locked then begin
     Handled:=true;
     aContinue:=False;
-    Addtab(uritostr(aURI),Pref.OpenModePopup,0,'',GetDocShellForB(TBagelBrowser(Sender)));
+    Addtab(uritostr(aURI),Pref.OpenModePopup,0,'',GetDocShellSettingForB(TBagelBrowser(Sender)));
   end;
 end;
 
@@ -6025,7 +6023,7 @@ begin
   if (Sender is TBagelBrowser) and TBagelBrowser(Sender).Locked then begin
     Handled:=true;
     aContinue:=False;
-    Addtab(uritostr(aURI),Pref.OpenModePopup,0,'',GetDocShellForB(TBagelBrowser(Sender)));
+    Addtab(uritostr(aURI),Pref.OpenModePopup,0,'',GetDocShellSettingForB(TBagelBrowser(Sender)));
   end;
 end;
 
@@ -6034,7 +6032,7 @@ begin
   if (Sender is TBagelBrowser) and TBagelBrowser(Sender).Locked then begin
     Handled:=true;
     aContinue:=False;
-    Addtab(uritostr(aURI),Pref.OpenModePopup,0,'',GetDocShellForB(TBagelBrowser(Sender)));
+    Addtab(uritostr(aURI),Pref.OpenModePopup,0,'',GetDocShellSettingForB(TBagelBrowser(Sender)));
   end;
 end;
 {フォームの作成}

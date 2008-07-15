@@ -82,6 +82,10 @@ object frmPassMan: TfrmPassMan
     object TabSheet2: TTabSheet
       Caption = #12497#12473#12527#12540#12489#12434#20445#23384#12375#12394#12356#12469#12452#12488
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lvPasswordNeverSaved: TListView
         Left = 8
         Top = 8

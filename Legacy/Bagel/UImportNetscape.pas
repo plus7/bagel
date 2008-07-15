@@ -125,12 +125,16 @@ var
   strURL:String;
   tmpInt:Integer;
   tmpInt2:Integer;
-  level:Integer;
+//  level:Integer;
   tmpTreeNode:TTreeNode;
   tmpPrevNode:TTreeNode;
   tmpParentnode:TTreenode;
 begin
   Panel1.Visible:=true;
+  prev := nil;
+  tmpPrevNode := nil;
+  parent := nil;
+  tmpParentNode := nil;
 
   sl:=TStringList.Create;
   sl.LoadFromFile(path);
@@ -152,14 +156,14 @@ begin
     end
     else if Pos('<DL>',tmpStr)<>0 then
     begin
-      inc(level);
+//      inc(level);
       parent:=TBookmarkList(prev);
       tmpParentNode:=tmpPrevNode;
       prev:=nil;
     end
     else if Pos('</DL>',tmpStr)<>0 then
     begin
-      dec(level);
+//      dec(level);
       prev:=parent;
       tmpPrevNode:=tmpParentNode;
       parent:=TBookmarkList(prev.parent);

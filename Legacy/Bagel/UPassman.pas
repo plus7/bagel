@@ -115,7 +115,7 @@ end;
 
 procedure TfrmPassMan.FormCreate(Sender: TObject);
 var
-  logininfo:nsILoginInfo;
+//  logininfo:nsILoginInfo;
   logincount:Cardinal;
   loginarray:array of nsILoginInfo;
   loginmanager:nsILoginManager;
@@ -123,7 +123,7 @@ var
   disabledcount:Cardinal;
   disabledhosts:array of PWideChar;
 
-  host,user,realm,submiturl,password : IInterfacedString;
+  host,user{,realm,submiturl},password : IInterfacedString;
 
   PD:TPasswordData;
   tmpItem:TListItem;

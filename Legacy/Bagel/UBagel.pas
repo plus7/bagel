@@ -1199,12 +1199,6 @@ begin
   end;
 end;
 
-function GetStringByBool(Str:String;cond:Boolean):String;
-begin
-Result:='';
-if cond then Result:=Str;
-end;
-
 //from gikonavi
 function GetWidthAllToolButton(ToolBar: TToolBar): Integer;
 var

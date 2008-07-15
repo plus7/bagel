@@ -3089,7 +3089,7 @@ end;
 //「Donutユーザのために」 とかいう痛いページに誘導
 procedure TBagelMainForm.actForDonutUsersExecute(Sender: TObject);
 begin
-  AddTab('http://tkm.s31.xrea.com/gecko/bagel/fordonutusers.html');
+  AddTab('http://bagel.tnose.net/forundonutusers.html');
 end;
 
 //全画面表示

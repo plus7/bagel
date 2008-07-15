@@ -2480,14 +2480,9 @@ end;
 procedure TBagelMainForm.actAddTabCurrExecute(Sender: TObject);
 begin
   if GetCurrentBrowser=nil then
-  begin
-    actAddTabBlank.Execute;
-  end
+    actAddTabBlank.Execute
   else
-  begin
-    //AddTab(GetUrlForB(GetCurrentBrowser));
     CloneTab(GetCurrentBrowser);
-  end;
 end;
 
 //新規タブを作成

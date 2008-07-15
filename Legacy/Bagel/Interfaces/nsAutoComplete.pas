@@ -2,6 +2,8 @@ unit nsAutoComplete;
 
 interface
 
+uses nsTypes, nsXPCOM, nsGeckoStrings;
+
 const
   NS_IAUTOCOMPLETECONTROLLER_IID: TGUID = '{6f08d134-8536-4b28-b456-d150fbaa66a9}';
   NS_IAUTOCOMPLETECONTROLLER_STATUS_NONE = 1;
@@ -39,6 +41,12 @@ const
   NS_IAUTOCOMPLETESIMPLERESULTLISTENER_IID: TGUID = '{004efdc5-1989-4874-8a7a-345bf2fa33af}';
 
 type
+  nsIMdbEnv = interface end;
+  nsIMdbTable = interface end;
+  nsIMdbRow = interface end;
+  mdb_scope = PRUint32;
+  mdb_column  = PRUint32;
+
   nsIAutoCompleteController = interface;
   nsIAutoCompleteInput = interface;
   nsIAutoCompletePopup = interface;

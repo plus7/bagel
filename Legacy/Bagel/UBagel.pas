@@ -545,6 +545,19 @@ type
     actEditTabMenu: TAction;
     actEditToolbar: TAction;
     actFind: TAction;
+
+    function GetLinkBkmkList:TBookmarkList;
+    function GetPrintSettings:nsIPrintSettings;
+    function GetNewTabPos(OpenMode:Integer):Integer;
+    function GetMDITabPos(OpenMode:Integer):Integer;
+    function GetLink(node:nsIDOMNode):String;
+    function GetSelectionForDoc(doc:nsIDOMDocument):nsISelectionController;
+    procedure SetSelectionAndScroll(aRange:nsIDOMRange;selCon:nsISelectionController);
+    function GetDocShellForFrame(aFrame:nsIDOMAbstractView):nsIDocShell;
+    function GetCurrentBrowser:TBagelBrowser;
+    function GetBrowser(Index:Integer):TBagelBrowser;
+    function GetBrowserById(Id:Cardinal):TBagelBrowser;
+
     procedure SideSplitterMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure SideSplitterMouseUp(Sender: TObject; Button: TMouseButton;
@@ -565,7 +578,7 @@ type
     procedure PrepareForPP;
     procedure RestorePrePPState;
 
-    function GetPrintSettings:nsIPrintSettings;
+
 
     //LoadURI
     //OnURIEnter
@@ -590,12 +603,7 @@ type
     procedure BrowserGoToIndex(Sender: TObject; aIndex: LongInt; aURI: nsIURI; out aContinue: LongBool; var Handled: Boolean);
     procedure WebPanelNewWindow(Sender: TObject; aChromeFlags: Longword; var newWindow: TCustomGeckoBrowser);
     procedure WebPanelDOMClick(Sender: TObject; event: nsIDOMMouseEvent);
-    function GetNewTabPos(OpenMode:Integer):Integer;
-    function GetMDITabPos(OpenMode:Integer):Integer;
-    function GetLink(node:nsIDOMNode):String;
-    function GetSelectionForDoc(doc:nsIDOMDocument):nsISelectionController;
-    procedure SetSelectionAndScroll(aRange:nsIDOMRange;selCon:nsISelectionController);
-    function GetDocShellForFrame(aFrame:nsIDOMAbstractView):nsIDocShell;
+
     function IsValidIndex(i:Integer):Boolean;
     function FindAction(name:String): TCustomAction;
     function FindScrollToCenter(win:nsIDOMWindow):Boolean;
@@ -613,9 +621,6 @@ type
     procedure StopTab(Browser:TBagelBrowser); overload;
     procedure CloseTab(Browser:TBagelBrowser); overload;
     procedure CloneTab(b:TBagelBrowser;loadFlags:Integer=1);
-    function GetCurrentBrowser:TBagelBrowser;
-    function GetBrowser(Index:Integer):TBagelBrowser;
-    function GetBrowserById(Id:Cardinal):TBagelBrowser;
     procedure LoadSession(fileName:String);
     procedure FormDestroy(Sender: TObject);
     procedure TabControlChange(Sender: TObject);
@@ -1101,7 +1106,6 @@ type
     procedure CloseTab(Index:integer); overload;
     procedure UpdatePrefs;
     procedure UpdateSearch;
-    function GetLinkBkmkList:TBookmarkList;
   end;
 
 var
@@ -1967,7 +1971,7 @@ var
   listNumStr:String;
   i:Integer;
   encode:String;
-  charset,pquery:PChar;
+  pquery:PChar;
   text:PWideChar;
   b:TBagelBrowser;
   front,back:String;

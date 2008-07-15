@@ -115,7 +115,8 @@ uses
   BagelToolbar in 'BagelToolbar.pas',
   GeckoStringNG in 'GeckoStringNG.pas',
   NkDropTarget in 'NkDropTarget.pas',
-  UMenuEdit in 'UMenuEdit.pas';
+  UMenuEdit in 'UMenuEdit.pas',
+  LoginManagerPrompter in 'Components\LoginManagerPrompter.pas';
 
 {$R *.res}
 

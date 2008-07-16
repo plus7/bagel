@@ -1,7 +1,7 @@
 object BagelMainForm: TBagelMainForm
   Left = 293
   Top = 0
-  Caption = 'Bagel'
+  Caption = 'svn'
   ClientHeight = 494
   ClientWidth = 671
   Color = clBtnFace

@@ -220,7 +220,7 @@ var
   col:TListColumn;
   CanContinue:Boolean;
 begin
-  CanContinue := MessageDlg('本当に表示しますか？後ろに変な人がいなければいいんですが…', mtConfirmation,[mbYes, mbNo], 0) = mrYes;
+  CanContinue := MessageDlg('本当に表示しますか？', mtConfirmation,[mbYes, mbNo], 0) = mrYes;
   if not CanContinue then exit;
   col:=lvSavedPassword.Columns.Add;
   col.Caption:='パスワード';

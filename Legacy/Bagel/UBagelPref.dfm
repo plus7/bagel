@@ -80,7 +80,7 @@ object BagelSettingForm: TBagelSettingForm
     Top = 4
     Width = 489
     Height = 361
-    ActivePage = GeneralSheet
+    ActivePage = TabSheet3
     MultiLine = True
     ParentShowHint = False
     ShowHint = False
@@ -323,10 +323,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12501#12457#12531#12488
       ImageIndex = 46
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label74: TLabel
         Left = 8
         Top = 32
@@ -381,7 +377,7 @@ object BagelSettingForm: TBagelSettingForm
         Top = 52
         Width = 145
         Height = 20
-        ItemHeight = 0
+        ItemHeight = 12
         TabOrder = 4
         Text = 'cboMenubarFont'
       end
@@ -390,7 +386,7 @@ object BagelSettingForm: TBagelSettingForm
         Top = 76
         Width = 145
         Height = 20
-        ItemHeight = 0
+        ItemHeight = 12
         TabOrder = 5
         Text = 'cboToolbarFont'
       end
@@ -399,7 +395,7 @@ object BagelSettingForm: TBagelSettingForm
         Top = 100
         Width = 145
         Height = 20
-        ItemHeight = 0
+        ItemHeight = 12
         TabOrder = 6
         Text = 'cboSidebarFont'
       end
@@ -408,10 +404,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #38283#22987#26178#20966#29702
       ImageIndex = 14
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel13: TPanel
         Left = 0
         Top = 0
@@ -557,10 +549,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #32066#20102#26178#20966#29702
       ImageIndex = 24
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel5: TPanel
         Left = 0
         Top = 0
@@ -677,10 +665,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #30906#35469
       ImageIndex = 15
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel16: TPanel
         Left = 0
         Top = 0
@@ -752,10 +736,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #38306#36899#20184#12369
       ImageIndex = 18
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel19: TPanel
         Left = 0
         Top = 0
@@ -831,10 +811,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #20840#33324
       ImageIndex = 25
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel31: TPanel
         Left = 0
         Top = 0
@@ -900,10 +876,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = 'JavaScript'
       ImageIndex = 26
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label17: TLabel
         Left = 12
         Top = 132
@@ -1026,10 +998,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12503#12525#12488#12467#12523#21046#24481
       ImageIndex = 27
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox6: TGroupBox
         Left = 8
         Top = 32
@@ -1078,10 +1046,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12479#12502#12496#12540
       ImageIndex = 11
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel12: TPanel
         Left = 0
         Top = 0
@@ -1374,7 +1338,7 @@ object BagelSettingForm: TBagelSettingForm
           Width = 113
           Height = 20
           Style = csDropDownList
-          ItemHeight = 0
+          ItemHeight = 12
           ItemIndex = 0
           TabOrder = 0
           Text = #12450#12463#12486#12451#12502#12398#21491
@@ -1390,10 +1354,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #26032#35215#20316#25104
       ImageIndex = 17
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel18: TPanel
         Left = 0
         Top = 0
@@ -1487,10 +1447,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #32153#25215
       ImageIndex = 29
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel28: TPanel
         Left = 0
         Top = 0
@@ -1531,10 +1487,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #30011#20687#21046#24481
       ImageIndex = 9
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel10: TPanel
         Left = 0
         Top = 0
@@ -1592,10 +1544,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12509#12483#12503#12450#12483#12503#21046#24481
       ImageIndex = 8
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label12: TLabel
         Left = 8
         Top = 32
@@ -1667,10 +1615,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #24195#21578#12502#12525#12483#12463
       ImageIndex = 30
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel25: TPanel
         Left = 0
         Top = 0
@@ -1750,7 +1694,7 @@ object BagelSettingForm: TBagelSettingForm
         Width = 109
         Height = 20
         Style = csDropDownList
-        ItemHeight = 0
+        ItemHeight = 12
         TabOrder = 6
         Items.Strings = (
           #37096#20998#19968#33268
@@ -1774,10 +1718,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12518#12540#12470#12540'CSS'
       ImageIndex = 13
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label6: TLabel
         Left = 8
         Top = 32
@@ -1826,10 +1766,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = 'URL'#12450#12463#12471#12519#12531#12539#25233#27490
       ImageIndex = 31
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label37: TLabel
         Left = 8
         Top = 224
@@ -1954,7 +1890,7 @@ object BagelSettingForm: TBagelSettingForm
         Width = 157
         Height = 20
         Style = csDropDownList
-        ItemHeight = 0
+        ItemHeight = 12
         TabOrder = 8
         Items.Strings = (
           #12434#21547#12416
@@ -1976,7 +1912,7 @@ object BagelSettingForm: TBagelSettingForm
         Width = 101
         Height = 20
         Style = csDropDownList
-        ItemHeight = 0
+        ItemHeight = 12
         TabOrder = 10
         OnChange = cboURIActionTypeChange
         Items.Strings = (
@@ -2054,10 +1990,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12479#12452#12488#12523#25233#27490
       ImageIndex = 32
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object RejTitleList: TListBox
         Left = 0
         Top = 84
@@ -2123,10 +2055,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12501#12457#12531#12488#12392#33394
       ImageIndex = 13
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label5: TLabel
         Left = 288
         Top = 160
@@ -2200,7 +2128,7 @@ object BagelSettingForm: TBagelSettingForm
           Width = 225
           Height = 20
           Style = csDropDownList
-          ItemHeight = 0
+          ItemHeight = 12
           ItemIndex = 0
           TabOrder = 0
           Text = #26126#26397#20307
@@ -2213,7 +2141,7 @@ object BagelSettingForm: TBagelSettingForm
           Top = 40
           Width = 225
           Height = 20
-          ItemHeight = 0
+          ItemHeight = 12
           TabOrder = 1
           Text = 'ComboSansSerif'
         end
@@ -2222,7 +2150,7 @@ object BagelSettingForm: TBagelSettingForm
           Top = 64
           Width = 225
           Height = 20
-          ItemHeight = 0
+          ItemHeight = 12
           TabOrder = 2
           Text = 'ComboSerif'
         end
@@ -2231,7 +2159,7 @@ object BagelSettingForm: TBagelSettingForm
           Top = 88
           Width = 225
           Height = 20
-          ItemHeight = 0
+          ItemHeight = 12
           TabOrder = 3
           Text = 'ComboMonospace'
         end
@@ -2357,10 +2285,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12493#12483#12488#12527#12540#12463
       ImageIndex = 14
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel15: TPanel
         Left = 0
         Top = 0
@@ -2550,7 +2474,7 @@ object BagelSettingForm: TBagelSettingForm
           Width = 89
           Height = 20
           Style = csDropDownList
-          ItemHeight = 0
+          ItemHeight = 12
           TabOrder = 14
           Items.Strings = (
             'SOCKS v4'
@@ -2670,10 +2594,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12518#12540#12470#12540#12456#12540#12472#12455#12531#12488
       ImageIndex = 33
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label29: TLabel
         Left = 8
         Top = 32
@@ -2770,10 +2690,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12450#12463#12475#12471#12499#12522#12486#12451
       ImageIndex = 34
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel33: TPanel
         Left = 0
         Top = 0
@@ -2815,10 +2731,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12502#12521#12454#12472#12531#12464
       ImageIndex = 35
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel34: TPanel
         Left = 0
         Top = 0
@@ -2859,10 +2771,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12459#12473#12479#12510#12452#12474
       ImageIndex = 36
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label50: TLabel
         Left = 8
         Top = 192
@@ -2979,10 +2887,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #33258#21205#34920#31034
       ImageIndex = 37
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label38: TLabel
         Left = 8
         Top = 56
@@ -3051,10 +2955,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = 'Cookie'
       ImageIndex = 10
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label9: TLabel
         Left = 4
         Top = 28
@@ -3220,10 +3120,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12497#12473#12527#12540#12489
       ImageIndex = 39
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel36: TPanel
         Left = 0
         Top = 0
@@ -3264,10 +3160,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12461#12515#12483#12471#12517#12539#23653#27508
       ImageIndex = 40
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel37: TPanel
         Left = 0
         Top = 0
@@ -3411,10 +3303,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12484#12540#12523#12496#12540#20840#33324
       ImageIndex = 52
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel38: TPanel
         Left = 0
         Top = 0
@@ -3447,10 +3335,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12513#12452#12531#12484#12540#12523#12496#12540
       ImageIndex = 41
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel39: TPanel
         Left = 0
         Top = 0
@@ -3475,10 +3359,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12450#12489#12524#12473#12496#12540
       ImageIndex = 42
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel40: TPanel
         Left = 0
         Top = 0
@@ -3535,10 +3415,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12522#12531#12463#12496#12540
       ImageIndex = 43
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel41: TPanel
         Left = 0
         Top = 0
@@ -3572,10 +3448,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #26908#32034#12496#12540
       ImageIndex = 16
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object TLabel
         Left = 44
         Top = 140
@@ -3694,10 +3566,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #20840#33324
       ImageIndex = 5
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel6: TPanel
         Left = 0
         Top = 0
@@ -3804,10 +3672,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12461#12540#21106#12426#24403#12390
       ImageIndex = 2
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -3907,10 +3771,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = 'Opera'#39080#12461#12540
       ImageIndex = 45
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel24: TPanel
         Left = 0
         Top = 0
@@ -4018,10 +3878,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12510#12454#12473#12472#12455#12473#12481#12515
       ImageIndex = 3
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label11: TLabel
         Left = 40
         Top = 336
@@ -4171,10 +4027,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12510#12454#12473#25805#20316
       ImageIndex = 47
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel45: TPanel
         Left = 0
         Top = 0
@@ -4479,10 +4331,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12473#12540#12497#12540#12489#12521#12483#12464
       ImageIndex = 48
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel21: TPanel
         Left = 0
         Top = 0
@@ -4510,10 +4358,6 @@ object BagelSettingForm: TBagelSettingForm
         TabOrder = 1
         object TabSheet8: TTabSheet
           Caption = #30011#20687
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label70: TLabel
             Left = 8
             Top = 76
@@ -4567,7 +4411,7 @@ object BagelSettingForm: TBagelSettingForm
             Width = 169
             Height = 20
             Style = csDropDownList
-            ItemHeight = 0
+            ItemHeight = 12
             ItemIndex = 0
             TabOrder = 4
             Text = #20445#23384#22580#25152#12434#27598#22238#23563#12397#12427
@@ -4614,10 +4458,6 @@ object BagelSettingForm: TBagelSettingForm
         object TabSheet17: TTabSheet
           Caption = #12522#12531#12463
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object rbSDLinkNoAction: TRadioButton
             Left = 8
             Top = 4
@@ -4648,7 +4488,7 @@ object BagelSettingForm: TBagelSettingForm
             Width = 169
             Height = 20
             Style = csDropDownList
-            ItemHeight = 0
+            ItemHeight = 12
             ItemIndex = 0
             TabOrder = 3
             Text = #20445#23384#22580#25152#12434#27598#22238#23563#12397#12427
@@ -4669,10 +4509,6 @@ object BagelSettingForm: TBagelSettingForm
         object TabSheet18: TTabSheet
           Caption = #36984#25246#31684#22258
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object rbSDSelectionNoAction: TRadioButton
             Left = 8
             Top = 4
@@ -4744,10 +4580,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12495#12452#12521#12452#12488
       ImageIndex = 48
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label68: TLabel
         Left = 172
         Top = 76
@@ -4888,10 +4720,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #26908#32034#12456#12531#12472#12531#12522#12473#12488
       ImageIndex = 49
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel47: TPanel
         Left = 0
         Top = 0
@@ -4976,10 +4804,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12452#12531#12463#12522#12513#12531#12479#12523#26908#32034
       ImageIndex = 50
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label28: TLabel
         Left = 16
         Top = 252
@@ -5113,10 +4937,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #25313#24373#19968#35239
       ImageIndex = 52
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label30: TLabel
         Left = 8
         Top = 32
@@ -5158,10 +4978,6 @@ object BagelSettingForm: TBagelSettingForm
           TabOrder = 0
           object TabSheet22: TTabSheet
             Caption = 'TabSheet22'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object Label33: TLabel
               Left = 4
               Top = 4
@@ -5219,10 +5035,6 @@ object BagelSettingForm: TBagelSettingForm
           object TabSheet23: TTabSheet
             Caption = 'TabSheet23'
             ImageIndex = 1
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object lvAutoExec: TListView
               Left = 4
               Top = 5
@@ -5272,10 +5084,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #12473#12463#12522#12503#12488
       ImageIndex = 53
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label59: TLabel
         Left = 80
         Top = 64
@@ -5307,10 +5115,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #35373#23450#22793#26356#12467#12510#12531#12489
       ImageIndex = 54
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel52: TPanel
         Left = 0
         Top = 0
@@ -5335,10 +5139,6 @@ object BagelSettingForm: TBagelSettingForm
       Caption = #22806#37096#12450#12503#12522#12465#12540#12471#12519#12531
       ImageIndex = 47
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel20: TPanel
         Left = 0
         Top = 0

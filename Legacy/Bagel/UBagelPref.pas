@@ -1650,19 +1650,21 @@ dom.disable_window_flip
   //Java JavaScript
   chkEnableJS.Checked:=gp.GetBoolPref(PChar('javascript.enabled'));
   chkEnableJava.Checked:=gp.GetBoolPref(PChar('security.enable_java'));
+
   //画像表示設定
+  // 1-Accept, 2-Deny, 3-dontAcceptForeign
   case gp.GetIntPref('permissions.default.image') of
-    0:begin
+    1:begin
       chkShowImage.Checked:=true;
       chkOnlyOrigServer.Checked:=False;
       chkOnlyOrigServer.Enabled:=True;
     end;
-    1:begin
+    2:begin
       chkShowImage.Checked:=true;
       chkOnlyOrigServer.Checked:=true;
       chkOnlyOrigServer.Enabled:=True;
     end;
-    2:begin
+    3:begin
       chkShowImage.Checked:=False;
       chkOnlyOrigServer.Checked:=False;
       chkOnlyOrigServer.Enabled:=False;
@@ -2593,14 +2595,15 @@ begin
   gp.SetIntPref('dom.popup_maximum',StrToInt(edtPopupmax.Text));
 
   //画像表示設定
+  // 1-Accept, 2-Deny, 3-dontAcceptForeign
   if chkShowImage.Checked then begin
     if chkOnlyOrigServer.Checked then
-     gp.SetIntPref('network.image.imageBehavior',1)    //同じ鯖のみ
+     gp.SetIntPref('permissions.default.image',3)    //同じ鯖のみ
     else
-     gp.SetIntPref('network.image.imageBehavior',0);//全て読み込む
+     gp.SetIntPref('permissions.default.image',1);//全て読み込む
   end
   else begin
-    gp.SetIntPref('network.image.imageBehavior',2);//読み込まない
+    gp.SetIntPref('permissions.default.image',2);//読み込まない
   end;
 
   {//キャレットモード

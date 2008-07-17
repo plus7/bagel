@@ -170,4 +170,17 @@
                         <use xlink:href="#rrRect231215462017679" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(2, 2)" p:filter="url(#shadingFilter231215462017679)" style="opacity: 0.5; visibility: hidden;" p:heavy="true" p:name="bgCopy" id="bgCopy231215462017679"/>
                         <use xlink:href="#rrRect231215462017679" xmlns:xlink="http://www.w3.org/1999/xlink"/>
                         <foreignObject x="0" y="3" width="85" height="15" p:name="text" id="text231215462017679" style="font-family: Arial; font-size: 12px; font-weight: normal; font-style: normal; text-decoration: none; fill: rgb(0, 0, 0); fill-opacity: 1; color: rgb(0, 0, 0); opacity: 1; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml">Google検索　　</div></foreignObject><path id="text231215462017679_underline" style="fill: none; stroke-width: 1px; visibility: hidden;"/>
-                </g></Content></Page></Pages></Document>
+                </g><g xmlns="http://www.w3.org/2000/svg" p:type="Shape" xmlns:p="http://www.evolus.vn/Namespace/Pencil" p:def="Evolus.Annotation:Balloon" transform="matrix(1, 0, 0, 1, 245, 395)"><p:metadata><p:property name="box"><![CDATA[200,80]]></p:property><p:property name="withBlur"><![CDATA[true]]></p:property><p:property name="radius"><![CDATA[8,0]]></p:property><p:property name="start"><![CDATA[0,12]]></p:property><p:property name="end"><![CDATA[0,33]]></p:property><p:property name="pin"><![CDATA[-12,23]]></p:property><p:property name="fillColor"><![CDATA[#FFCD19E6]]></p:property><p:property name="strokeColor"><![CDATA[#00000047]]></p:property><p:property name="strokeStyle"><![CDATA[1|]]></p:property><p:property name="textContent"><![CDATA[検索っぽい何か]]></p:property><p:property name="textFont"><![CDATA[Arial|normal|normal|11px|none]]></p:property></p:metadata>
+
+                <defs>
+                    <filter height="1.2558399" y="-0.12792" width="1.06396" x="-0.03198" p:name="imageShading" id="imageShading11215464880001">
+                        <feGaussianBlur stdDeviation="1.3325" in="SourceAlpha"/>
+                    </filter>
+                    <g p:name="container" id="container11215464880001">
+                        <path transform="translate(0.5, 0.5)" style="stroke-width: 1; fill: rgb(255, 205, 25); fill-opacity: 0.901961; stroke: rgb(0, 0, 0); stroke-opacity: 0.278431;" p:name="rect" id="rect11215464880001" d="M 8 0 L 192 0 C 197.33333333333334 0 200 2.6666666666666665 200 8 L 200 72 C 200 77.33333333333333 197.33333333333334 80 192 80 L 8 80 C 2.6666666666666665 80 0 77.33333333333333 0 72 L 0 33 L -12 23 L 0 12 L 0 8 C 0 2.6666666666666665 2.6666666666666665 0 8 0"/>
+                    </g>
+                </defs>
+                <use xlink:href="#container11215464880001" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(1, 1)" p:filter="url(#imageShading11215464880001)" style="opacity: 0.6; visibility: visible;" p:heavy="true" p:name="bgCopy" id="bgCopy11215464880001" filter="url(#imageShading11215464880001)"/>
+                <use xlink:href="#container11215464880001" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+                <foreignObject x="8" y="8" width="184" height="64" p:name="text" id="text11215464880001" style="font-family: Arial; font-size: 11px; font-weight: normal; font-style: normal; text-decoration: none;"><div xmlns="http://www.w3.org/1999/xhtml">検索っぽい何か</div></foreignObject><path id="text11215464880001_underline" style="fill: none; stroke-width: 1px; visibility: hidden;"/>
+            </g></Content></Page></Pages></Document>

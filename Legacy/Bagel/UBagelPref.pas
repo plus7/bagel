@@ -840,22 +840,22 @@ end;
 
 function StrToColor(Str:String):TColor;
 var
-tmp:String;
+  tmp:String;
 begin
-tmp:=Str[5]+Str[6];
-tmp:=tmp+Str[3]+Str[4];
-Result:=TColor(HexToInt(tmp+Str[1]+Str[2]));
+  tmp:=Str[5]+Str[6];
+  tmp:=tmp+Str[3]+Str[4];
+  Result:=TColor(HexToInt(tmp+Str[1]+Str[2]));
 end;
 
 function ColorToStr(Color:TColor):String;
 var
-tmp:String;
-str:String;
+  tmp:String;
+  str:String;
 begin
-str:=IntToHex(Integer(Color),6);
-tmp:=Str[5]+Str[6];
-tmp:=tmp+Str[3]+Str[4];
-Result:=tmp+Str[1]+Str[2];
+  str:=IntToHex(Integer(Color),6);
+  tmp:=Str[5]+Str[6];
+  tmp:=tmp+Str[3]+Str[4];
+  Result:=tmp+Str[1]+Str[2];
 end;
 
 function getChromeDir(fileName:String):String;
@@ -867,18 +867,18 @@ var
   strFilename:IInterfacedString;
   astrFileName:nsAString;
 begin
-    Result := '';
-    NS_GetService('@mozilla.org/file/directory_service;1',nsIProperties,dirLocator);
-    dirLocator.Get('UChrm',nsIFile,f);
-    if f=nil then Exit;
+  Result := '';
+  NS_GetService('@mozilla.org/file/directory_service;1',nsIProperties,dirLocator);
+  dirLocator.Get('UChrm',nsIFile,f);
+  if f=nil then Exit;
 
-    strFilename:=NewString(filename);
-    astrFilename:=strFilename.AString;
-    f.Append(astrFilename);
-    str:=NewString('');
-    astr:=str.AString;
-    f.GetPath(astr);
-    Result:=str.ToString;
+  strFilename:=NewString(filename);
+  astrFilename:=strFilename.AString;
+  f.Append(astrFilename);
+  str:=NewString('');
+  astr:=str.AString;
+  f.GetPath(astr);
+  Result:=str.ToString;
 end;
 
 procedure TBagelSettingForm.SetCurrentSheet(Sheet:TTabSheet);
@@ -932,9 +932,9 @@ end;
 
 function CheckFiletype(ext:String;ref:String):Boolean;
 var
-reg:TRegistry;
-i:Integer;
-strArray:TStrArray;
+  reg:TRegistry;
+  i:Integer;
+  strArray:TStrArray;
 begin
    reg:=TRegistry.Create;
    reg.RootKey := HKEY_CLASSES_ROOT;
@@ -1026,12 +1026,12 @@ begin
   chkAutoSaveTablist.Checked:=Pref.AutoSaveTablist;
 //Font
   try
-  ComboSerif.Items := Screen.Fonts;
-  ComboSansSerif.Items := Screen.Fonts;
-  ComboMonospace.Items := Screen.Fonts;
-  cboMenubarFont.Items := Screen.Fonts;
-  cboToolbarFont.Items := Screen.Fonts;
-  cboSidebarFont.Items := Screen.Fonts;
+    ComboSerif.Items := Screen.Fonts;
+    ComboSansSerif.Items := Screen.Fonts;
+    ComboMonospace.Items := Screen.Fonts;
+    cboMenubarFont.Items := Screen.Fonts;
+    cboToolbarFont.Items := Screen.Fonts;
+    cboSidebarFont.Items := Screen.Fonts;
   finally
   //
   end;
@@ -1412,24 +1412,27 @@ begin
   
 
   //Confirm
-   chkCnfAppQuit.Checked := Pref.OnAppQuit;
-   chkCnfCloseAll.Checked := Pref.OnCloseAll;
-   chkCnfCloseOther.Checked := Pref.OnCloseOther;
-   chkBkmkDel.Checked := Pref.OnDeleteBookmark;
-   chkOpeningManyItems.Checked := Pref.OnOpeningManyItems;
-   edtWarnItemCount.Text := IntToStr(Pref.WarnItemCount);
-   //Kiosk
-   chkKioskAddr.Checked:=Pref.KioskAddressBarVisible;
-   chkKioskTabbar.Checked:=Pref.KioskTabBarVisible;
-   chkKioskSearchbar.Checked:=Pref.KioskSearchBarVisible;
-   chkKioskStatusBar.Checked:=Pref.KioskStatusBarVisible;
-   chkKioskLinkbar.Checked:=pref.KioskLinkBarVisible;
-   chkKioskMainbar.Checked:=Pref.KioskMainBarVisible;
-   chkKioskMenubar.Checked:=Pref.KioskMenuBarVisible;
-   //Recent
-   edtRecentCMax.Text:=IntToStr(Pref.RecentClosedMaxCount);
-   edtRecentOMax.Text:=IntToStr(Pref.RecentOpenedMaxCount);
-   cboRecentClosedMenuStyle.ItemIndex:=Pref.RecentClosedURLStyle;
+  chkCnfAppQuit.Checked := Pref.OnAppQuit;
+  chkCnfCloseAll.Checked := Pref.OnCloseAll;
+  chkCnfCloseOther.Checked := Pref.OnCloseOther;
+  chkBkmkDel.Checked := Pref.OnDeleteBookmark;
+  chkOpeningManyItems.Checked := Pref.OnOpeningManyItems;
+  edtWarnItemCount.Text := IntToStr(Pref.WarnItemCount);
+
+  //Kiosk
+  chkKioskAddr.Checked:=Pref.KioskAddressBarVisible;
+  chkKioskTabbar.Checked:=Pref.KioskTabBarVisible;
+  chkKioskSearchbar.Checked:=Pref.KioskSearchBarVisible;
+  chkKioskStatusBar.Checked:=Pref.KioskStatusBarVisible;
+  chkKioskLinkbar.Checked:=pref.KioskLinkBarVisible;
+  chkKioskMainbar.Checked:=Pref.KioskMainBarVisible;
+  chkKioskMenubar.Checked:=Pref.KioskMenuBarVisible;
+
+  //Recent
+  edtRecentCMax.Text:=IntToStr(Pref.RecentClosedMaxCount);
+  edtRecentOMax.Text:=IntToStr(Pref.RecentOpenedMaxCount);
+  cboRecentClosedMenuStyle.ItemIndex:=Pref.RecentClosedURLStyle;
+
   //Sidebar
   chkShowSidebarTabs.Checked    := Pref.ShowSidebarTabs;
   chkUseSidebarAutohide.Checked := Pref.SidebarAutoHide;
@@ -1945,10 +1948,10 @@ procedure TBagelSettingForm.FormCreate(Sender: TObject);
     Result:=new;
   end;
 var
-i:Integer;
-node:TTreenode;
-parent:TMenuItem;
-newnode:TMenuitem;
+  i:Integer;
+  node:TTreenode;
+  parent:TMenuItem;
+  newnode:TMenuitem;
 begin
   //ExePath := ExtractFilePath(Application.ExeName);
   //SearchIni:=TMeminiFile.Create(ExePath+'Search.ini');
@@ -2041,7 +2044,7 @@ begin
           reg.OpenKey('DefaultIcon',True);         // Icon 参照キー
           reg.WriteString('',Application.ExeName+',0'); // Icon の指定
           reg.CloseKey;
-          
+
           reg.OpenKey(ref+'\shell\open\command',True);  // Application 参照キー
           reg.WriteString('',                               // Application の指定
                  '"'+Application.ExeName+'" "%1"');
@@ -2937,60 +2940,57 @@ end;
 
 procedure TBagelSettingForm.AddRejURLClick(Sender: TObject);
 begin
-RejURLList.AddItem(RejURL.Text,nil);
-RejURL.Text:='';
+  RejURLList.AddItem(RejURL.Text,nil);
+  RejURL.Text:='';
 end;
 
 procedure TBagelSettingForm.RejURLList1Click(Sender: TObject);
 begin
-RejURL.Text:=RejURLList.Items.Strings[RejURLList.ItemIndex];
+  RejURL.Text:=RejURLList.Items.Strings[RejURLList.ItemIndex];
 end;
 
 procedure TBagelSettingForm.lblClick(Sender: TObject);
 begin
-//
-if TLabel(Sender).Color = clBtnFace then
-begin
-  ColorDialog1.Color:=TLabel(Sender).Font.Color;
-  if ColorDialog1.Execute then TLabel(Sender).Font.Color:=ColorDialog1.Color;
-end
-else
-begin
-  ColorDialog1.Color:=TLabel(Sender).Color;
-  if ColorDialog1.Execute then TLabel(Sender).Color:=ColorDialog1.Color;
-end;
-
-
+  if TLabel(Sender).Color = clBtnFace then
+  begin
+    ColorDialog1.Color:=TLabel(Sender).Font.Color;
+    if ColorDialog1.Execute then TLabel(Sender).Font.Color:=ColorDialog1.Color;
+  end
+  else
+  begin
+    ColorDialog1.Color:=TLabel(Sender).Color;
+    if ColorDialog1.Execute then TLabel(Sender).Color:=ColorDialog1.Color;
+  end;
 end;
 
 procedure TBagelSettingForm.ButtonClearClick(Sender: TObject);
 begin
-edtMGest.Text:='';
+  edtMGest.Text:='';
 end;
 
 procedure TBagelSettingForm.ButtonRightClick(Sender: TObject);
 begin
-edtMGest.Text:=edtMGest.Text+'→'
+  edtMGest.Text:=edtMGest.Text+'→'
 end;
 
 procedure TBagelSettingForm.ButtonLeftClick(Sender: TObject);
 begin
-edtMGest.Text:=edtMGest.Text+'←'
+  edtMGest.Text:=edtMGest.Text+'←'
 end;
 
 procedure TBagelSettingForm.ButtonDownClick(Sender: TObject);
 begin
-edtMGest.Text:=edtMGest.Text+'↓'
+  edtMGest.Text:=edtMGest.Text+'↓'
 end;
 
 procedure TBagelSettingForm.ButtonUpClick(Sender: TObject);
 begin
-edtMGest.Text:=edtMGest.Text+'↑'
+  edtMGest.Text:=edtMGest.Text+'↑'
 end;
 
 procedure TBagelSettingForm.edtNoProxyChange(Sender: TObject);
 begin
-//network.proxy.no_proxies_on
+  //network.proxy.no_proxies_on
 end;
 
 procedure TBagelSettingForm.radAutoConnectByScrClick(Sender: TObject);
@@ -3041,8 +3041,8 @@ end;
 
 procedure TBagelSettingForm.AddProxyListClick(Sender: TObject);
 var
-i:Integer;
-tmp:String;
+  i:Integer;
+  tmp:String;
 begin
   for i:=0 to MemoProxy.Lines.Count-1 do
   begin
@@ -3065,15 +3065,15 @@ end;
 
 procedure TBagelSettingForm.AddDenyImgClick(Sender: TObject);
 begin
-DenyImgList.AddItem(DenyImgEdit.Text ,nil);
-DenyImgEdit.Text:='';
-DenyImgList.Tag:=1;
+  DenyImgList.AddItem(DenyImgEdit.Text ,nil);
+  DenyImgEdit.Text:='';
+  DenyImgList.Tag:=1;
 end;
 
 procedure TBagelSettingForm.DelDenyImgClick(Sender: TObject);
 begin
-DenyImgList.DeleteSelected;
-DenyImgList.Tag:=1;
+  DenyImgList.DeleteSelected;
+  DenyImgList.Tag:=1;
 end;
                   {
 procedure TBagelSettingForm.DelCookieClick(Sender: TObject);
@@ -3091,45 +3091,45 @@ end;           }
 
 procedure TBagelSettingForm.AddAllowPopupClick(Sender: TObject);
 begin
-AllowPopupList.AddItem(AllowPopupEdit.Text ,nil);
-AllowPopupList.Tag:=1;
-AllowPopupEdit.Text:='';
+  AllowPopupList.AddItem(AllowPopupEdit.Text ,nil);
+  AllowPopupList.Tag:=1;
+  AllowPopupEdit.Text:='';
 end;
 
 procedure TBagelSettingForm.DelAllowPopupClick(Sender: TObject);
 begin
-AllowPopupList.DeleteSelected;
-AllowPopupList.Tag:=1;
+  AllowPopupList.DeleteSelected;
+  AllowPopupList.Tag:=1;
 end;
 
 procedure TBagelSettingForm.btnAdaptGestClick(Sender: TObject);
 var
-item:TListItem;
-new:TListItem;
+  item:TListItem;
+  new:TListItem;
 begin
-item:=GestListEditor.FindCaption(0,edtMGest.Text,false,false,false);
-//i:=GestListEditor.Strings.IndexOfName(edtMGest.Text);
-//
+  item:=GestListEditor.FindCaption(0,edtMGest.Text,false,false,false);
+  //i:=GestListEditor.Strings.IndexOfName(edtMGest.Text);
+  //
   GestListEditor.Tag:=1;
-if item<>nil then
-begin
-  item.Caption:=edtMGest.Text;
-  item.SubItems.Strings[0]:=TAction(stMouseAction.Tag).Caption;
-  item.Data:=TAction(stMouseAction.Tag);
+  if item<>nil then
+  begin
+    item.Caption:=edtMGest.Text;
+    item.SubItems.Strings[0]:=TAction(stMouseAction.Tag).Caption;
+    item.Data:=TAction(stMouseAction.Tag);
 
-end
-else
-begin
-  new:=GestListEditor.Items.Add;
-  //new:=
-  //GestListEditor.Items.
-  new.Caption:=edtMGest.Text;
-  new.SubItems.Add(TAction(stMouseAction.Tag).Caption);
-  new.Data:=TAction(stMouseAction.Tag);
-  //GestListEditor.Items.AddItem(new);
-end;
+  end
+  else
+  begin
+    new:=GestListEditor.Items.Add;
+    //new:=
+    //GestListEditor.Items.
+    new.Caption:=edtMGest.Text;
+    new.SubItems.Add(TAction(stMouseAction.Tag).Caption);
+    new.Data:=TAction(stMouseAction.Tag);
+    //GestListEditor.Items.AddItem(new);
+  end;
 
-edtMGest.Text:='';
+  edtMGest.Text:='';
 
 end;
 
@@ -3151,48 +3151,48 @@ end;
 
 procedure TBagelSettingForm.btnAdaptKbdClick(Sender: TObject);
 var
-item:TListItem;
-new:TListItem;
+  item:TListItem;
+  new:TListItem;
 begin
-item:=ShortcutListEditor.FindCaption(0,edtKbdShortcut.Text,false,false,false);
-  ShortcutListEditor.Tag:=1;
-if item<>nil then
-begin
-  item.Caption:=edtKbdShortcut.Lines.Text;
-  //item.SubItems.Add();
-  item.SubItems.Strings[0]:=TAction(stKeyAction.Tag).Caption;
-  item.Data:=TAction(stKeyAction.Tag);
+  item:=ShortcutListEditor.FindCaption(0,edtKbdShortcut.Text,false,false,false);
+  shortcutListEditor.Tag:=1;
+  if item<>nil then
+  begin
+    item.Caption:=edtKbdShortcut.Lines.Text;
+    //item.SubItems.Add();
+    item.SubItems.Strings[0]:=TAction(stKeyAction.Tag).Caption;
+    item.Data:=TAction(stKeyAction.Tag);
 
-end
-else
-begin
-  new:=ShortcutListEditor.Items.Add;
-  new.Caption:=edtKbdShortcut.Lines.Text;
-  new.SubItems.Add(TAction(stKeyAction.Tag).Caption);
-  new.Data:=TAction(stKeyAction.Tag);
-end;
+  end
+  else
+  begin
+    new:=ShortcutListEditor.Items.Add;
+    new.Caption:=edtKbdShortcut.Lines.Text;
+    new.SubItems.Add(TAction(stKeyAction.Tag).Caption);
+    new.Data:=TAction(stKeyAction.Tag);
+  end;
 
-edtKbdShortcut.Lines.Text:='';
+  edtKbdShortcut.Lines.Text:='';
 end;
 
 procedure TBagelSettingForm.edtKbdShortcutKeyDown(Sender: TObject;
   var Key: Word; Shift: TShiftState);
 var
-shortcut:String;
+  shortcut:String;
 begin
-    shortcut:=ShortcutToText(TShortcut(Key));
+  shortcut:=ShortcutToText(TShortcut(Key));
 {
 ssShift	〔Shift〕キーが押されている
 ssAlt	〔Alt〕キーが押されている
 ssCtrl	〔Ctrl〕キーが押されている
 }
-    if (shortcut='Ctrl') or (shortcut='Alt') or (shortcut='Shift') then Exit;
+  if (shortcut='Ctrl') or (shortcut='Alt') or (shortcut='Shift') then Exit;
 
-    if ssAlt in Shift then shortcut:='Alt+'+shortcut;
-    if ssCtrl in Shift then shortcut:='Ctrl+'+shortcut;
-    if ssShift in Shift then shortcut:='Shift+'+shortcut;
+  if ssAlt in Shift then shortcut:='Alt+'+shortcut;
+  if ssCtrl in Shift then shortcut:='Ctrl+'+shortcut;
+  if ssShift in Shift then shortcut:='Shift+'+shortcut;
 
-    TMemo(Sender).Lines.Text:=shortcut;
+  TMemo(Sender).Lines.Text:=shortcut;
 
 end;
 
@@ -3248,12 +3248,12 @@ begin
 end;
 procedure TBagelSettingForm.btnAddUAClick(Sender: TObject);
 var
-item:TListItem;
-//new:TListItem;
+  item:TListItem;
+  //new:TListItem;
 begin
   item:=lvUserAgent.FindCaption(0,edtUAViewName.Text,false,false,false);
   if item=nil then item:=lvUserAgent.Items.Add;
-  
+
   item.Caption:=edtUAViewName.Text;
   item.SubItems.Add(edtUAString.Text);
 
@@ -3266,7 +3266,7 @@ end;
 
 procedure TBagelSettingForm.btnSaveUserContentClick(Sender: TObject);
 var
- sl : TStringList;
+  sl : TStringList;
 begin
   sl := TStringList.Create;
   sl.Text:=AnsiToUTF8(UserCssMemo.Text);
@@ -3275,13 +3275,13 @@ end;
 
 procedure TBagelSettingForm.lbOpenModeClick(Sender: TObject);
 var
-OpenMode:Integer;
+  OpenMode:Integer;
 begin
-//チェックボックス等に反映
-OpenMode:=arrOpenMode[lbOpenMode.ItemIndex];
-if (OpenMode and 1)=0 then chkNewTab.Checked:=true else chkNewTab.Checked:=false;
-if (OpenMode and 2)=0 then chkBgTab.Checked:=false else chkBgTab.Checked:=true;
-rgTabAddPos.ItemIndex:=OpenMode div 4;
+  //チェックボックス等に反映
+  OpenMode:=arrOpenMode[lbOpenMode.ItemIndex];
+  if (OpenMode and 1)=0 then chkNewTab.Checked:=true else chkNewTab.Checked:=false;
+  if (OpenMode and 2)=0 then chkBgTab.Checked:=false else chkBgTab.Checked:=true;
+  rgTabAddPos.ItemIndex:=OpenMode div 4;
 end;
 
 procedure TBagelSettingForm.TabOpenModeChange(Sender: TObject);
@@ -3289,31 +3289,31 @@ begin
    arrOpenMode[lbOpenMode.ItemIndex]:=rgTabAddPos.ItemIndex * 4 +
                                       Integer(chkBgTab.Checked)*2 +
                                       Integer(not chkNewTab.Checked)
-end; 
+end;
 procedure TBagelSettingForm.TreeView1Editing(Sender: TObject;
   Node: TTreeNode; var AllowEdit: Boolean);
 begin
-AllowEdit:=False;
+  AllowEdit:=False;
 end;
 
 procedure TBagelSettingForm.TreeView1KeyDown(Sender: TObject;
   var Key: Word; Shift: TShiftState);
 begin
-if Key=VK_UP then begin
-  if TreeView1.Selected.Index=0 then begin
-    if TreeView1.Selected.Parent.GetPrev<>nil then
-    TreeView1.Select(TreeView1.Selected.Parent.GetPrev);
-    Key := 0;
-  end;
-end
-else if Key=VK_Down then begin
-  if (TreeView1.Selected.Parent<>nil) and (TreeView1.Selected.Index=TreeView1.Selected.Parent.Count-1) then begin
-    if (TreeView1.Selected.GetNext<>nil) and (TreeView1.Selected.GetNext.Getnext<>nil) then begin
-      TreeView1.Select(TreeView1.Selected.GetNext.Getnext);
-      Key:=0;
+  if Key=VK_UP then begin
+    if TreeView1.Selected.Index=0 then begin
+      if TreeView1.Selected.Parent.GetPrev<>nil then
+      TreeView1.Select(TreeView1.Selected.Parent.GetPrev);
+      Key := 0;
+    end;
+  end
+  else if Key=VK_Down then begin
+    if (TreeView1.Selected.Parent<>nil) and (TreeView1.Selected.Index=TreeView1.Selected.Parent.Count-1) then begin
+      if (TreeView1.Selected.GetNext<>nil) and (TreeView1.Selected.GetNext.Getnext<>nil) then begin
+        TreeView1.Select(TreeView1.Selected.GetNext.Getnext);
+        Key:=0;
+      end;
     end;
   end;
-end;
 end;
 
 procedure TBagelSettingForm.chkShowImageClick(Sender: TObject);
@@ -3356,36 +3356,34 @@ end;
 //ディレクトリを返す関数。
 function SelectFolderDialog(owner : HWND): AnsiString ;
 var
-   b : BROWSEINFO ;
-   path : array[0..MAX_PATH] of char;
-   id : PItemIDList;
+  b : BROWSEINFO ;
+  path : array[0..MAX_PATH] of char;
+  id : PItemIDList;
 begin
-   begin
-     path := 'C:\';
-        b.hwndOwner := owner; //オーナーウィンドウのハンドル
-        b.pidlRoot := nil;   //ルートフォルダ(これが私はよくわかってません))
-        b.pszDisplayName := path; //選択したものの表示名格納場所
-        b.lpszTitle := 'フォルダを選んで下さい'; //表示メッセージ
-        b.ulFlags := BIF_RETURNONLYFSDIRS; //フォルダのみ選べる
-        b.lpfn := nil; //コールバック関数
-        b.lParam := 0;  //コールバック関数に渡される値
-        b.iImage := 0;  //選択したもののイメージ番号
+  path := 'C:\';
+  b.hwndOwner := owner; //オーナーウィンドウのハンドル
+  b.pidlRoot := nil;   //ルートフォルダ(これが私はよくわかってません))
+  b.pszDisplayName := path; //選択したものの表示名格納場所
+  b.lpszTitle := 'フォルダを選んで下さい'; //表示メッセージ
+  b.ulFlags := BIF_RETURNONLYFSDIRS; //フォルダのみ選べる
+  b.lpfn := nil; //コールバック関数
+  b.lParam := 0;  //コールバック関数に渡される値
+  b.iImage := 0;  //選択したもののイメージ番号
 
-      id := SHBrowseForFolder(b); //ダイアログの表示
+  id := SHBrowseForFolder(b); //ダイアログの表示
 
-      if id <> nil then       //フォルダが選択されたか？
-      begin
-         //パス名を得る
-         SHGetPathFromIDList(id, path);
-         Result := path;
-      end
-      else Result := '';   //選択されなかった。
-   end;
+  if id <> nil then       //フォルダが選択されたか？
+  begin
+    //パス名を得る
+    SHGetPathFromIDList(id, path);
+    Result := path;
+  end
+  else Result := '';   //選択されなかった。
 end;
 
 procedure TBagelSettingForm.btnUserDefinedFolderClick(Sender: TObject);
 var
-box:TBrowseFolderBox;
+  box:TBrowseFolderBox;
 begin
   box:=TBrowseFolderBox.Create;
   try
@@ -3422,13 +3420,13 @@ begin
         4:正規表現
       }
 
-    AD.Pattern := edtAdblockPattern.Text;
-    AD.Condition := cboAdblockCondition.ItemIndex;
-    tmpItem:=lvAdblock.Items.Add;
-    tmpItem.Caption:=AD.Pattern;
-    tmpItem.SubItems.Add(cboAdblockCondition.Items.Strings[AD.Condition]);
-    tmpItem.Data:=TObject(NewAdblockData(AD));
-    lvAdblock.Tag:=1;
+  AD.Pattern := edtAdblockPattern.Text;
+  AD.Condition := cboAdblockCondition.ItemIndex;
+  tmpItem:=lvAdblock.Items.Add;
+  tmpItem.Caption:=AD.Pattern;
+  tmpItem.SubItems.Add(cboAdblockCondition.Items.Strings[AD.Condition]);
+  tmpItem.Data:=TObject(NewAdblockData(AD));
+  lvAdblock.Tag:=1;
 end;
 
 procedure TBagelSettingForm.btnAdblockOverrideClick(Sender: TObject);
@@ -3462,35 +3460,35 @@ begin
         4:正規表現
       }
 
-    UD.Pattern := edtURIActionPattern.Text;
-    UD.Condition := cboURIActionCondition.ItemIndex;
-    UD.ActionType := cboURIActionType.ItemIndex;
-    UD.Param := '';
-    if UD.ActionType=0 then begin
-      UD.Param := edtURIActionParam.Text;
-    end
-    else if UD.ActionType=1 then begin
-      if chkActJS.Checked then UD.Param:=UD.Param+'1'
-      else UD.Param:=UD.Param+'0';
+  UD.Pattern := edtURIActionPattern.Text;
+  UD.Condition := cboURIActionCondition.ItemIndex;
+  UD.ActionType := cboURIActionType.ItemIndex;
+  UD.Param := '';
+  if UD.ActionType=0 then begin
+    UD.Param := edtURIActionParam.Text;
+  end
+  else if UD.ActionType=1 then begin
+    if chkActJS.Checked then UD.Param:=UD.Param+'1'
+    else UD.Param:=UD.Param+'0';
 
-      if chkActImg.Checked then UD.Param:=UD.Param+'1'
-      else UD.Param:=UD.Param+'0';
+    if chkActImg.Checked then UD.Param:=UD.Param+'1'
+    else UD.Param:=UD.Param+'0';
 
-      if chkActPlugins.Checked then UD.Param:=UD.Param+'1'
-      else UD.Param:=UD.Param+'0';
+    if chkActPlugins.Checked then UD.Param:=UD.Param+'1'
+    else UD.Param:=UD.Param+'0';
 
-      if chkActFrames.Checked then UD.Param:=UD.Param+'1'
-      else UD.Param:=UD.Param+'0';
+    if chkActFrames.Checked then UD.Param:=UD.Param+'1'
+    else UD.Param:=UD.Param+'0';
 
-      if chkActMeta.Checked then UD.Param:=UD.Param+'1'
-      else UD.Param:=UD.Param+'0';
-    end;
+    if chkActMeta.Checked then UD.Param:=UD.Param+'1'
+    else UD.Param:=UD.Param+'0';
+  end;
 
-    tmpItem:=lvURIAction.Items.Add;
-    tmpItem.Caption:=UD.Pattern+cboURIActionCondition.Items.Strings[UD.Condition];
-    tmpItem.SubItems.Add(cboURIActionType.Items.Strings[ud.ActionType]);
-    tmpItem.Data:=TObject(NewURIActionData(UD));
-    lvURIAction.Tag:=1;
+  tmpItem:=lvURIAction.Items.Add;
+  tmpItem.Caption:=UD.Pattern+cboURIActionCondition.Items.Strings[UD.Condition];
+  tmpItem.SubItems.Add(cboURIActionType.Items.Strings[ud.ActionType]);
+  tmpItem.Data:=TObject(NewURIActionData(UD));
+  lvURIAction.Tag:=1;
 end;
 
 procedure TBagelSettingForm.btnURIActionDelClick(Sender: TObject);
@@ -3503,7 +3501,7 @@ end;
 
 procedure TBagelSettingForm.btnURIActionOverrideClick(Sender: TObject);
 var
-UD:PURIActionData;
+  UD:PURIActionData;
 begin
   if lvURIAction.Selected=nil then exit;
   UD:=PURIActionData(lvURIAction.Selected.Data);
@@ -3615,20 +3613,20 @@ end;
 procedure TBagelSettingForm.lbHighlightStyleDrawItem(Control: TWinControl;
   Index: Integer; Rect: TRect; State: TOwnerDrawState);
 begin
-    try
-        with TListBox(Control) do begin
-           Canvas.Brush.Color := PInlineStyle(Items.Objects[Index])^.BGColor;
-           Canvas.Font.Color := PInlineStyle(Items.Objects[Index])^.Color;
-           Canvas.Font.Style := [];
-           if PInlineStyle(Items.Objects[Index])^.Bold then Canvas.Font.Style := Canvas.Font.Style + [fsBold];
-           if PInlineStyle(Items.Objects[Index])^.Italic then Canvas.Font.Style := Canvas.Font.Style + [fsItalic];
-           if PInlineStyle(Items.Objects[Index])^.Underline then Canvas.Font.Style := Canvas.Font.Style + [fsUnderline];
-           //fsBold, fsItalic, fsUnderline
-           Canvas.FillRect(Rect);
-           Canvas.TextOut(Rect.Left, Rect.Top, Items[Index]);
-        end;
-    except
+  try
+    with TListBox(Control) do begin
+      Canvas.Brush.Color := PInlineStyle(Items.Objects[Index])^.BGColor;
+      Canvas.Font.Color := PInlineStyle(Items.Objects[Index])^.Color;
+      Canvas.Font.Style := [];
+      if PInlineStyle(Items.Objects[Index])^.Bold then Canvas.Font.Style := Canvas.Font.Style + [fsBold];
+      if PInlineStyle(Items.Objects[Index])^.Italic then Canvas.Font.Style := Canvas.Font.Style + [fsItalic];
+      if PInlineStyle(Items.Objects[Index])^.Underline then Canvas.Font.Style := Canvas.Font.Style + [fsUnderline];
+      //fsBold, fsItalic, fsUnderline
+      Canvas.FillRect(Rect);
+      Canvas.TextOut(Rect.Left, Rect.Top, Items[Index]);
     end;
+  except
+  end;
 end;
 
 procedure TBagelSettingForm.chlAccFiletypeClickCheck(Sender: TObject);
@@ -3643,7 +3641,7 @@ end;
 
 procedure TBagelSettingForm.Button14Click(Sender: TObject);
 var
-pt,pt2:TPoint;
+  pt,pt2:TPoint;
 begin
   pasItemNoAction.Visible:=True;
   pasItemNoAction.Caption:='コンテキストメニュー';
@@ -3656,7 +3654,7 @@ end;
 
 procedure TBagelSettingForm.Button15Click(Sender: TObject);
 var
-pt,pt2:TPoint;
+  pt,pt2:TPoint;
 begin
   pasItemNoAction.Visible:=False;
   pt.X:=0;
@@ -3668,7 +3666,7 @@ end;
 
 procedure TBagelSettingForm.Button16Click(Sender: TObject);
 var
-pt,pt2:TPoint;
+  pt,pt2:TPoint;
 begin
   pasItemNoAction.Visible:=False;
   pt.X:=0;
@@ -3680,7 +3678,7 @@ end;
 
 procedure TBagelSettingForm.Button19Click(Sender: TObject);
 var
-pt,pt2:TPoint;
+  pt,pt2:TPoint;
 begin
   pasItemNoAction.Visible:=False;
   pt.X:=0;
@@ -3692,7 +3690,7 @@ end;
 
 procedure TBagelSettingForm.Button17Click(Sender: TObject);
 var
-pt,pt2:TPoint;
+  pt,pt2:TPoint;
 begin
   pasItemNoAction.Visible:=False;
   pt.X:=0;
@@ -3704,7 +3702,7 @@ end;
 
 procedure TBagelSettingForm.ActionSelectorClick(Sender: TObject);
 var
-pt,pt2:TPoint;
+  pt,pt2:TPoint;
 begin
   pasItemNoAction.Visible:=True;
   pasItemNoAction.Caption:='なし';
@@ -3785,15 +3783,15 @@ end;
 
 procedure TBagelSettingForm.btnImgSavePAthSelectorClick(Sender: TObject);
 var
-path:String;
+  path:String;
 begin
-path:=SelectFolderDialog(Self.Handle);
-if path<>'' then edtSDImgSavePath.Text:=Path;
+  path:=SelectFolderDialog(Self.Handle);
+  if path<>'' then edtSDImgSavePath.Text:=Path;
 end;
 
 procedure TBagelSettingForm.Button30Click(Sender: TObject);
 var
-Style:TInlineStyle;
+  Style:TInlineStyle;
 begin
   Style.Color    := clBlack;
   Style.BGColor  := clYellow;
@@ -3831,14 +3829,14 @@ procedure TBagelSettingForm.btnStartupFileSelectorClick(Sender: TObject);
 //var
 //path:String;
 begin
-//path:=SelectFolderDialog(Self.Handle);
-OpenDialog1.InitialDir:=SysUtils.ExtractFileDir(edtStartupGroupFilename.Text);
-if OpenDialog1.Execute then edtStartupGroupFilename.Text:=OpenDialog1.FileName;
+  //path:=SelectFolderDialog(Self.Handle);
+  OpenDialog1.InitialDir:=SysUtils.ExtractFileDir(edtStartupGroupFilename.Text);
+  if OpenDialog1.Execute then edtStartupGroupFilename.Text:=OpenDialog1.FileName;
 end;
 
 procedure TBagelSettingForm.btnAddStupScrClick(Sender: TObject);
 var
-pt,pt2:TPoint;
+  pt,pt2:TPoint;
 begin
   pasItemNoAction.Visible:=False;
   pt.X:=0;
@@ -3850,7 +3848,7 @@ end;
 
 procedure TBagelSettingForm.btnAddStdwnScrClick(Sender: TObject);
 var
-pt,pt2:TPoint;
+  pt,pt2:TPoint;
 begin
   pasItemNoAction.Visible:=False;
   pt.X:=0;
@@ -3867,7 +3865,7 @@ end;
 
 procedure TBagelSettingForm.btnDelStupScrClick(Sender: TObject);
 begin
-lstStartupScript.DeleteSelected;
+  lstStartupScript.DeleteSelected;
 end;
 
 procedure TBagelSettingForm.btnAddSHIClick(Sender: TObject);
@@ -3904,7 +3902,7 @@ end;
 
 procedure TBagelSettingForm.Button10Click(Sender: TObject);
 var
-newindex:Integer;
+  newindex:Integer;
 begin
   if lstSidebarHeaderVisibleItem.ItemIndex<>-1 then begin
     if (lstSidebarHeaderVisibleItem.ItemIndex<>0)  then begin
@@ -3917,7 +3915,7 @@ end;
 
 procedure TBagelSettingForm.Button9Click(Sender: TObject);
 var
-newindex:Integer;
+  newindex:Integer;
 begin
   if lstSidebarHeaderVisibleItem.ItemIndex<>-1 then begin
     if (lstSidebarHeaderVisibleItem.ItemIndex<>lstSidebarHeaderVisibleItem.Count-1) then begin
@@ -4044,7 +4042,7 @@ end;
 
 procedure TBagelSettingForm.BuildSearchGroup(f:TFrmsearchEdit);
 var
-i:Integer;
+  i:Integer;
 begin
   for i:=0 to ListView2.Items.Count-1 do begin
     f.AddEngineMenu(ListView2.Items.Item[i].Caption);
@@ -4056,8 +4054,8 @@ end;
 procedure TBagelSettingForm.ListView2DragDrop(Sender, Source: TObject; X,
   Y: Integer);
 var
-sourceItem,destItem,newItem:TSearchListItem;
-i:Integer;
+  sourceItem,destItem,newItem:TSearchListItem;
+  i:Integer;
 begin
   if (Source = ListView2) then begin
     sourceitem:=TSearchListItem(ListView2.Selected);
@@ -4088,7 +4086,7 @@ end;
 
 procedure TBagelSettingForm.Button5Click(Sender: TObject);
 var
-pt,pt2:TPoint;
+  pt,pt2:TPoint;
 begin
   pasItemNoAction.Visible:=False;
   pt.X:=0;
@@ -4107,8 +4105,8 @@ end;
 
 procedure TBagelSettingForm.Button6Click(Sender: TObject);
 var
-item:TListItem;
-new:TListItem;
+  item:TListItem;
+  new:TListItem;
 begin
   item:=lvOperakeyList.FindCaption(0,edtOperakeyKey.Text,false,false,false);
   lvOperakeyList.Tag:=1;
@@ -4133,14 +4131,14 @@ procedure TBagelSettingForm.edtOperakeyKeyKeyDown(Sender: TObject;
 var
   shortcut:String;
 begin
-    shortcut:=ShortcutToText(TShortcut(Key));
-    if shortcut='Shift' then exit;
-    if (ssAlt in Shift) or (ssCtrl in Shift) then Exit;
+  shortcut:=ShortcutToText(TShortcut(Key));
+  if shortcut='Shift' then exit;
+  if (ssAlt in Shift) or (ssCtrl in Shift) then Exit;
 
-    if ssShift in Shift then 
-    TMemo(Sender).Lines.Text:=shortcut
-    else
-    TMemo(Sender).Lines.Text:=LowerCase(shortcut);
+  if ssShift in Shift then
+  TMemo(Sender).Lines.Text:=shortcut
+  else
+  TMemo(Sender).Lines.Text:=LowerCase(shortcut);
 end;
 
 procedure TBagelSettingForm.lvOperaKeyListSelectItem(Sender: TObject;

@@ -4987,7 +4987,7 @@ begin
       if Index<=0 then i2:=1
       else i2:=Index-1;
     end
-    else if Pref.WhenCloseTabChoose=2 then begin
+    else begin// if Pref.WhenCloseTabChoose=2 then begin
       TabZOrder.Delete(TabZOrder.IndexOf(Browser));
       i2:=TabControl.Tabs.IndexOfObject(TBagelBrowser(TabZOrder.Items[TabZOrder.Count-1]));
     end;
@@ -6596,14 +6596,19 @@ begin
     end
     else if TestActionContainer3.Item[i].Action is TStatusWidget then begin
       tmpSW := TStatusWidget(TestActionContainer3.Item[i].Action);
+    end
+    else
+      tmpSW := nil;
+    if Assigned(tmpSW) then
+    begin
+      tmpSW.Parent := StatusBar;
+      tmpSW.Visible := True;
+      tmpSW.Top := 3;
+      tmpSW.Height := StatusBar.Height - 4;
+      tmpSW.AutoSize := True;
+      tmpSW.ShowCaption := TestActionContainer3.Item[i].Caption<>'';
+      StatusWidgetList.Add(tmpSW);
     end;
-    tmpSW.Parent := StatusBar;
-    tmpSW.Visible := True;
-    tmpSW.Top := 3;
-    tmpSW.Height := StatusBar.Height - 4;
-    tmpSW.AutoSize := True;
-    tmpSW.ShowCaption := TestActionContainer3.Item[i].Caption<>'';
-    StatusWidgetList.Add(tmpSW);
   end;
   StatusBar.Panels.Add.Width:=22;
 
@@ -9783,15 +9788,19 @@ procedure TBagelMainForm.ToolPUASwitchClick(Sender: TObject);
 var
   pB:nsIPrefBranch;
   gp:TGeckoPref;
-  UAString:PChar;
+  UAStringP:PChar;
+  UAString:String;
   newitem:TBagelActionContainer;
   i:Integer;
 begin
   gp:=TGeckoPref.Create;
   pb:=gp.GetRootBranch;
 
+  UAStringP := nil;
   if gp.PrefExists('general.useragent.override') then
-  UAString := pB.GetCharPref('general.useragent.override');
+    UAStringP := pB.GetCharPref('general.useragent.override');
+  UAString  := String(UAStringP);
+  nsMemory.Free(UAStringP);
   UASwitchMenu.Clear;
 
   for i:=0 to Pref.Useragents.Count-1 do begin
@@ -9801,7 +9810,7 @@ begin
     newitem.OnClick:= UASwitchChildClick;
     UASwitchMenu.Add(newitem);
 
-    if Pos(String(UAString),Pref.UserAgents.Strings[i])=Pos('=',Pref.UserAgents.Strings[i])+1 then begin
+    if Pos(UAString, Pref.UserAgents.Strings[i])=Pos('=',Pref.UserAgents.Strings[i])+1 then begin
       newitem.Checked:=true;
     end
     else if (String(UAString)='') and (Pos('=',Pref.UserAgents.Strings[i])=Length(Pref.UserAgents.Strings[i])) then begin
@@ -9816,9 +9825,7 @@ begin
   newitem:=TBagelActionContainer.Create(Self);
   newitem.Action := actShowUAMan;
   newitem.Caption := '編集';
-  UASwitchMenu.Add(newitem);  
-
-  nsMemory.Free(UAString);
+  UASwitchMenu.Add(newitem);
 
   gp.free;
 end;

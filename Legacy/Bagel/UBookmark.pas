@@ -106,7 +106,7 @@ type
     FObservers:TInterfaceList;
   public
     constructor Create;
-    destructor Destroy;
+    destructor Destroy; override;
     procedure AddObserver(Observer:IBookmarkObserver; Bookmarks:TBookmarkList);
     procedure RemoveObserver(Observer:IBookmarkObserver; Bookmarks:TBookmarkList);
     procedure NotifyDeleting(item:TBkmkBase);

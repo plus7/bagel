@@ -68,7 +68,7 @@ type
     procedure Clear;
     property _Result: nsINavHistoryResult read GetResult write SetResult;
   public
-    constructor Create(AOwner: TComponent);
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure DoSearch(keyword: String);
     property SortingType: THistorySortingType read FSortingType write SetSortingType;

@@ -44,8 +44,8 @@ end;
 
 procedure TfrmImportIE.btnImportClick(Sender: TObject);
 var
-bl:TBookmarkList;
-a:olevariant;
+  bl:TBookmarkList;
+//a:olevariant;
 begin
   if chkAddToRootFolder.Checked then
   begin

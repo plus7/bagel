@@ -26,6 +26,10 @@ object frmCookieMan: TfrmCookieMan
     TabOrder = 0
     object StoredCookieSheet: TTabSheet
       Caption = #20445#23384#12373#12428#12390#12356#12427'Cookie'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lvSavedCookies: TListView
         Left = 4
         Top = 8

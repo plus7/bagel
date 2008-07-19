@@ -1185,6 +1185,11 @@ begin
   if i2<i1 then Result:=i2;
 end;
 
+function Doc2Win(doc:nsIDOMDocument):nsIDOMWindow;
+begin
+  Result := ((doc as nsIDOMDocumentView).DefaultView as nsIDOMWindow);
+end;
+
 // from OpenJane
 function GetMouseInPane(control: TControl): boolean;
 var

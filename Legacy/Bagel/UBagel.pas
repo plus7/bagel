@@ -1293,14 +1293,13 @@ begin
   Result:=selcon;
 end;
 
-function GetRootWindowByDoc(document:nsIDOMDocument):nsIDOMWindow;
+function GetRootWindowByWin(win:nsIDOMWindow):nsIDOMWindow;
 var
   tmpWin,window:nsIDOMWindow;
 begin
   Result:=nil;
-  if document=nil then Exit;
-  window := ((document as nsIDOMDocumentView).DefaultView as nsIDOMWindow);
-  tmpWin := window.Parent;
+  if win=nil then Exit;
+  tmpWin := win.Parent;
   while tmpWin<>nil do begin
     if window=tmpWin then break;
     window:=tmpWin;

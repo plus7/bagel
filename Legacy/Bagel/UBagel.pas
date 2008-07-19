@@ -4472,10 +4472,7 @@ begin
     aDOMW := (b.WebBrowser as nsIWebBrowserFocus).FocusedWindow;
     if aDOMW=nil then Exit;
 
-    aSel := aDOMW.GetSelection;
-    Str := aSel.ToString;
-
-    item.Content:=Str;
+    item.Content:=GetSelectionStrFromWin(aDOMW);
 
     memo.Add(item);
 
@@ -7870,10 +7867,7 @@ begin
   //str := GetSelectionFromWin(b.ContentWindow);
   aDOMW := (b.WebBrowser as nsIWebBrowserFocus).FocusedWindow;
   if aDOMW=nil then Exit;
-  aSel := aDOMW.GetSelection;
-  pwSel := aSel.ToString;
-  selstr := String(pwSel);
-  nsMemory.Free(pwSel);
+  selstr := GetSelectionStrFromWin(aDOMW);
 
   DoSearch(selstr);
 
@@ -9901,9 +9895,7 @@ begin
     BagelTitle:=b.Title;
     //selection
     aDOMW := b.ContentWindow;
-    aSel:=aDOMW.GetSelection;
-    str:=aSel.ToString;
-    Selection:=String(str);
+    Selection:=GetSelectionStrFromWin(aDOMW);
 
     if currentCtxTargetNode<>nil then begin
       Supports(currentCtxTargetNode,nsIDOMHTMLAnchorElement,anchor);

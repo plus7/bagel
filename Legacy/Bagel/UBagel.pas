@@ -4436,10 +4436,8 @@ var
   memo:TBagelMemo;
   item:TBagelMemoItem;
   litem:TListItem;
-  Str:PWideChar;
   b:TBagelBrowser;
   aDOMW:nsIDOMWindow;
-  aSel:nsISelection;
 begin
   if TabControl2.Tabs.Count>0 then begin
     b:=GetCurrentBrowser;
@@ -7838,11 +7836,9 @@ begin
 end;
 procedure TBagelMainForm.actSearchSelectionExecute(Sender: TObject);
 var
-  pwSel:PWideChar;
   selstr:String;
   b:TBagelBrowser;
   aDOMW:nsIDOMWindow;
-  aSel:nsISelection;
 begin
   b:=GetBrowser(tabBarCtxTarget);
   if b=nil then Exit;
@@ -9846,8 +9842,6 @@ var
   b:TBagelBrowser;
   aDOMW:nsIDOMWindow;
   range:nsIDOMRange;
-  aSel:nsISelection;
-  str:PWideChar;
   istr:IInterfacedString;
   astr:nsAString;
   Selection:String;

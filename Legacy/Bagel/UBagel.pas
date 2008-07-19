@@ -1338,6 +1338,7 @@ begin
   else begin
     selstr := sel.ToString;
     Result := WideString(selstr);
+    nsMemory.Free(selstr);
   end;
 end;
 

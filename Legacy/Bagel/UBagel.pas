@@ -3737,17 +3737,13 @@ end;
 procedure TBagelMainForm.actOpenSelectionExecute(Sender: TObject);
 var
   win:nsIDOMWindow;
-  aSel:nsISelection;
-  str:PWideChar;
   b:TBagelBrowser;
 begin
   b:=GetBrowser(tabBarCtxTarget);
   if b=nil then Exit;
   win := (b.WebBrowser as nsIWebBrowserFocus).FocusedWindow;
   if win=nil then Exit;
-  aSel:=win.GetSelection;
-  str:=aSel.ToString;
-  AddTab(String(str));
+  AddTab(GetSelectionStrFromWin(win));
 end;
 
 procedure TBagelMainForm.actOutputSidebarExecute(Sender: TObject);

@@ -544,6 +544,7 @@ type
     actEditTabMenu: TAction;
     actEditToolbar: TAction;
     actFind: TAction;
+    NotificationPanel: TPanel;
 
     function GetLinkBkmkList:TBookmarkList;
     function GetPrintSettings:nsIPrintSettings;

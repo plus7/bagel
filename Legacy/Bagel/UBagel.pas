@@ -9463,7 +9463,7 @@ procedure TBagelMainForm.ChangeSelectionColor(win:nsIDOMWindow;attention:Boolean
 var
   selcon:nsISelectionController;
 begin
-  selcon:=getSelconByWin(win);
+  selcon:=GetSelconByWin(win);
   if selcon=nil then exit;
   if attention then begin
     selcon.SetDisplaySelection(NS_ISELECTIONCONTROLLER_SELECTION_ATTENTION);

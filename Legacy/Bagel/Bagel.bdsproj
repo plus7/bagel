@@ -161,7 +161,7 @@
 		</VersionInfo>
 		<VersionInfoKeys>
 			<VersionInfoKeys Name="CompanyName"></VersionInfoKeys>
-			<VersionInfoKeys Name="FileDescription">Bagel 0.5pre "かなしきよせあつめ"</VersionInfoKeys>
+			<VersionInfoKeys Name="FileDescription">Bagel 0.5pre</VersionInfoKeys>
 			<VersionInfoKeys Name="FileVersion">0.5.0.0</VersionInfoKeys>
 			<VersionInfoKeys Name="InternalName"></VersionInfoKeys>
 			<VersionInfoKeys Name="LegalCopyright"></VersionInfoKeys>

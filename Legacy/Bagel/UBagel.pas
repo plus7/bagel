@@ -8112,8 +8112,9 @@ begin
     ps.SetPrinterName(defPrinterName);
     printerName:=defPrinterName;
   end;
-  pss.InitPrintSettingsFromPrinter(printername,ps);
+  pss.InitPrintSettingsFromPrinter(printerName,ps);
   pss.InitPrintSettingsFromPrefs(ps,true,NS_IPRINTSETTINGS_kInitSaveAll);
+  nsMemory.Free(printerName);
   Result:=ps;
 end;
 {アドレス入力ならびにアドレスバー拡張の表示}

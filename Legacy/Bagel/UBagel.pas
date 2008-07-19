@@ -550,7 +550,6 @@ type
     function GetNewTabPos(OpenMode:Integer):Integer;
     function GetMDITabPos(OpenMode:Integer):Integer;
     function GetLink(node:nsIDOMNode):String;
-    function GetSelectionForDoc(doc:nsIDOMDocument):nsISelectionController;
     procedure SetSelectionAndScroll(aRange:nsIDOMRange;selCon:nsISelectionController);
     function GetDocShellForFrame(aFrame:nsIDOMAbstractView):nsIDocShell;
     function GetCurrentBrowser:TBagelBrowser;
@@ -2012,28 +2011,6 @@ begin
   else begin
     SearchByEngine(Keyword, EngineBox.Items.Strings[Index]);
   end;
-end;
-
-
-function TBagelMainForm.GetSelectionForDoc(doc:nsIDOMDocument):nsISelectionController;
-var
-  ds:nsIDocShell;
-  selCon:nsISelectionController;
-  ir:nsIInterfaceRequestor;
-  sd:nsISelectionDisplay;
-  absView:nsIDOMAbstractView;
-begin
-  absView := (doc as nsIDOMDocumentView).DefaultView;
-
-  ds := GetDocShellForFrame(absView);
-
-  ds.QueryInterface(ns_IInterfaceRequestor_IID,ir);
-
-  ir.GetInterface(ns_ISelectionDisplay_IID,sd);
-
-  sd.QueryInterface(ns_ISelectionController_IID,selCon);
-
-  Result:=selCon;
 end;
 
 procedure TBagelMainForm.GoButtonExtMenuClick(Sender: TObject);
@@ -3770,11 +3747,11 @@ begin
   if GetBrowser(tabBarCtxTarget)=nil then exit;
   focusedwin:=(GetBrowser(tabBarCtxTarget).WebBrowser as nsIWebBrowserFocus).FocusedWindow;
   if focusedwin<>nil then begin
-    GetSelectionForDoc(focusedwin.Document)
+    GetSelConByWin(focusedwin)
     .CompleteScroll(false);
   end
   else begin
-    GetSelectionForDoc(GetBrowser(tabBarCtxTarget).ContentDocument)
+    GetSelConByWin(GetBrowser(tabBarCtxTarget).ContentWindow)
     .CompleteScroll(false);
   end;
 end;
@@ -3975,11 +3952,11 @@ begin
   if GetBrowser(tabBarCtxTarget)=nil then exit;
   focusedwin:=(GetBrowser(tabBarCtxTarget).WebBrowser as nsIWebBrowserFocus).FocusedWindow;
   if focusedwin<>nil then begin
-    getSelectionForDoc(focusedwin.Document)
+    GetSelConByWin(focusedwin)
     .CompleteScroll(true);
   end
   else begin
-    getSelectionForDoc(GetBrowser(tabBarCtxTarget).ContentDocument)
+    GetSelConByWin(GetBrowser(tabBarCtxTarget).ContentWindow)
     .CompleteScroll(true);
   end;
 end;
@@ -10211,7 +10188,7 @@ end;
 procedure TBagelMainForm.GrepListClick(Sender: TObject);
 var
   item:TListItem;
-  doc:nsIDOMDocument;
+  win:nsIDOMWindow;
   i:Integer;
 begin
   if GrepList.ItemIndex=-1 then exit;
@@ -10222,14 +10199,14 @@ begin
     if PGrepResult(item.Data)^.Browser<>GetCurrentBrowser then
     SelectTab(i);
     item.MakeVisible(false);
-    doc:=GetBrowser(i).ContentDocument;
+    win := GetBrowser(i).ContentWindow;
 
     DoCenterRange(PGrepResult(item.Data)^.Browser.ContentWindow,PGrepResult(item.Data)^.Range);
     setSelection(getRange(PGrepResult(item.Data)^.startContainer,
                           PGrepResult(item.Data)^.startOffset,
                           PGrepResult(item.Data)^.endContainer,
                           PGrepResult(item.Data)^.endOffset)
-                 ,getSelectionForDoc(doc));
+                 ,GetSelConByWin(win));
     //
   //  setSelectionAndScroll(PGrepResult(item.Data)^.Range,getSelectionForDoc(doc));
   //  selCon.CompleteScroll(true);

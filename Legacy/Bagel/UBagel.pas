@@ -5693,10 +5693,12 @@ procedure TBagelMainForm.BrowserDOMDragDrop(Sender: TObject; aEvent:nsIDOMMouseE
 begin
   //
 end;
+
 procedure TBagelMainForm.BrowserDOMDragExit(Sender: TObject; aEvent:nsIDOMMouseEvent);
 begin
   //
 end;
+
 procedure TBagelMainForm.BrowserDOMFocus(Sender: TObject; aEvent:nsIDOMEvent);
 begin
   //

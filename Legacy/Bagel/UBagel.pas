@@ -43,7 +43,6 @@ uses
   DownloadListView, //Downloader
   HistoryTreeView,  //履歴ツリー
   AutoExec,
-  //JvDragDrop,//TJvDropTarget from JVCL
   IniFiles,UBookmark,
   BagelActnMan,BagelToolbar,
   UTabList, //タブのセッション

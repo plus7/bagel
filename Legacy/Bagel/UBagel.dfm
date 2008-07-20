@@ -7035,10 +7035,6 @@ object BagelMainForm: TBagelMainForm
     Left = 432
     Top = 208
   end
-  object OpenSearchPopup: TPopupMenu
-    Left = 464
-    Top = 208
-  end
   object ApplicationEvents1: TApplicationEvents
     OnMessage = ApplicationEvents1Message
     Left = 464

@@ -253,7 +253,6 @@ type
     Open2: TMenuItem;
     OpenDialog1: TOpenDialog;
     OpenLinkListItem: TMenuItem;
-    OpenSearchPopup: TPopupMenu;
     PageControl1: TPageControl;
     Panel10: TPanel;
     Panel11: TPanel;
@@ -577,10 +576,10 @@ type
     procedure BrowserDOMClick(Sender: TObject; aEvent:nsIDOMMouseEvent);
     procedure BrowserDOMKeyPress(Sender: TObject; aEvent:nsIDOMKeyEvent);
     procedure BrowserDOMLinkAdded(Sender: TObject; aEvent:nsIDOMEvent);
-    procedure BrowserDOMDragOver(Sender: TObject; aEvent:nsIDOMMouseEvent);
-    procedure BrowserDOMDragGesture(Sender: TObject; aEvent:nsIDOMMouseEvent);
-    procedure BrowserDOMDragDrop(Sender: TObject; aEvent:nsIDOMMouseEvent);
-    procedure BrowserDOMDragExit(Sender: TObject; aEvent:nsIDOMMouseEvent);
+    procedure BrowserDOMDragOver(Sender: TObject; aEvent:nsIDOMEvent);
+    procedure BrowserDOMDragGesture(Sender: TObject; aEvent:nsIDOMEvent);
+    procedure BrowserDOMDragDrop(Sender: TObject; aEvent:nsIDOMEvent);
+    procedure BrowserDOMDragExit(Sender: TObject; aEvent:nsIDOMEvent);
     procedure BrowserDOMFocus(Sender: TObject; aEvent:nsIDOMEvent);
     procedure BrowserDOMMouseDown(Sender: TObject; aEvent:nsIDOMMouseEvent);
     procedure BrowserStatusTextChange(Sender: TObject; aMessage: WideString);
@@ -5164,22 +5163,22 @@ begin
   //
 end;
 
-procedure TBagelMainForm.BrowserDOMDragOver(Sender: TObject; aEvent:nsIDOMMouseEvent);
+procedure TBagelMainForm.BrowserDOMDragOver(Sender: TObject; aEvent:nsIDOMEvent);
 begin
   //
 end;
 
-procedure TBagelMainForm.BrowserDOMDragGesture(Sender: TObject; aEvent:nsIDOMMouseEvent);
+procedure TBagelMainForm.BrowserDOMDragGesture(Sender: TObject; aEvent:nsIDOMEvent);
 begin
   //
 end;
 
-procedure TBagelMainForm.BrowserDOMDragDrop(Sender: TObject; aEvent:nsIDOMMouseEvent);
+procedure TBagelMainForm.BrowserDOMDragDrop(Sender: TObject; aEvent:nsIDOMEvent);
 begin
   //
 end;
 
-procedure TBagelMainForm.BrowserDOMDragExit(Sender: TObject; aEvent:nsIDOMMouseEvent);
+procedure TBagelMainForm.BrowserDOMDragExit(Sender: TObject; aEvent:nsIDOMEvent);
 begin
   //
 end;

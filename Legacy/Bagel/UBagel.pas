@@ -25,6 +25,7 @@ uses
   StyleSheetUtils, //CSS関連のユーティリティー関数
   DOMUtils, //DOM関連のユーティリティー関数
   WindowUtils, //nsIDOMWindow関連のユーティリティー関数
+  SelectionUtils, //Selection関係
 
   ActiveX,          //OleInitialize
   buinIntelliMouse, //マウス関連の定数
@@ -1162,11 +1163,6 @@ begin
   if i2<i1 then Result:=i2;
 end;
 
-function Doc2Win(doc:nsIDOMDocument):nsIDOMWindow;
-begin
-  Result := ((doc as nsIDOMDocumentView).DefaultView as nsIDOMWindow);
-end;
-
 // from OpenJane
 function GetMouseInPane(control: TControl): boolean;
 var
@@ -1214,55 +1210,7 @@ begin
 end;
 
 
-procedure SetSelection(aRange:nsIDOMRange;selCon:nsISelectionController);
-var
-  selection:nsISelection;
-//  a:nsIContentViewer;
-begin
-//  selection.
-//selCon.getSelection(selCon.SELECTION_NORMAL);
 
-  selection := selCon.GetSelection(NS_ISELECTIONCONTROLLER_SELECTION_NORMAL);
-  selection.RemoveAllRanges;
-  selection.AddRange(aRange);
-  (*selCon.ScrollSelectionIntoView(
-  NS_ISELECTIONCONTROLLER_SELECTION_NORMAL,
-  NS_ISELECTIONCONTROLLER_SELECTION_FOCUS_REGION,
-  true);*)
-end;
-{Rangeを画面の中央に持ってくる}
-procedure DoCenterRange(aFrame:nsIDOMWindow;aRange:nsIDOMRange);
-var
-  myRange:nsIDOMRange;
-  myElem:nsIDOMElement;
-  y_Offset:Integer;
-  tmpNode:nsIDOMNode;
-  tmpNode2:nsIDOMNode;
-  tmpOffset:Integer;
-  pageXOffset:Integer;
-  FrameHeight:Integer;
-begin
-  myElem := aFrame.Document.CreateElement(NewString('span').AString);
-  myRange := (aFrame.Document as nsIDOMDocumentRange).CreateRange;
-  {aRange.GetStartContainer(tmpNode);
-  aRange.GetStartOffset(tmpOffset);}
-  tmpNode := aRange.EndContainer;
-  tmpOffset := aRange.EndOffset;
-  myRange.SetStart(tmpNode,tmpOffset);
-  myRange.SetEnd(tmpNode,tmpOffset);
-  myRange.InsertNode(myElem as nsIDOMNode);
-
-  FrameHeight := (aFrame as nsIDOMWindowInternal).InnerHeight;
-  y_Offset := GetPageOffsetTop(myElem) - (FrameHeight div 2);
-  pageXOffset := (aFrame as nsIDOMWindowInternal).PageXOffset;
-  (aFrame as nsIDOMWindowInternal).Scroll(pageXOffset,y_Offset);
-
-  tmpNode := myElem.ParentNode;
-  tmpNode2:=tmpNode.RemoveChild(myElem as nsIDOMNode);
-  myRange.DeleteContents;
-  myRange.Detach;
-  tmpNode.Normalize;
-end;
 
 function convertURIToFilePath(aURI:nsIURI):String;
 var
@@ -1555,20 +1503,6 @@ begin
     end;
   end;
 end;
-
-procedure TBagelMainForm.SetSelectionAndScroll(aRange:nsIDOMRange;selCon:nsISelectionController);
-var
-  selection:nsISelection;
-begin
-  selection := selCon.GetSelection(NS_ISELECTIONCONTROLLER_SELECTION_NORMAL);
-  selection.RemoveAllRanges;
-  selection.AddRange(aRange);
-  selCon.ScrollSelectionIntoView(
-  NS_ISELECTIONCONTROLLER_SELECTION_NORMAL,
-  NS_ISELECTIONCONTROLLER_SELECTION_FOCUS_REGION,
-  true);
-end;
-
 
 procedure TBagelMainForm.GPICopyClick(Sender: TObject);
 var
@@ -8915,21 +8849,7 @@ procedure TBagelMainForm.HilightBrowser(b:TBagelBrowser;style:String;patText:Str
 begin
   HilightWin(b.ContentWindow,style,patText,hilight);
 end;
-                              
-procedure TBagelMainForm.ChangeSelectionColor(win:nsIDOMWindow;attention:Boolean);
-var
-  selcon:nsISelectionController;
-begin
-  selcon:=GetSelconByWin(win);
-  if selcon=nil then exit;
-  if attention then begin
-    selcon.SetDisplaySelection(NS_ISELECTIONCONTROLLER_SELECTION_ATTENTION);
-  end
-  else begin
-    selcon.SetDisplaySelection(NS_ISELECTIONCONTROLLER_SELECTION_ON)
-  end;
-  selcon.RepaintSelection(NS_ISELECTIONCONTROLLER_SELECTION_NORMAL);
-end;
+
 
 procedure TBagelMainForm.ToolPCookieConfigClick(Sender: TObject);
 var
@@ -9782,7 +9702,6 @@ begin
   end;
 
 end;
-
 
 function TBagelMainForm.FindScrollToCenter(win:nsIDOMWindow):Boolean;
 var

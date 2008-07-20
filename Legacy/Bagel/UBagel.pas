@@ -5383,10 +5383,7 @@ begin
       TGeckoBrowser(Sender).ContentWindow.SetName(str2.AString);
     end;
     //TODO:
-    {while OpenSearchPopup.Items.Count>0 do begin
-      OpenSearchPopup.Items.Items[0].Free;
-    end;
-    ToolButton6.DropdownMenu:=nil;
+    {ToolButton6.DropdownMenu:=nil;
     ToolButton6.ImageIndex:=5;}
   end;
 end;

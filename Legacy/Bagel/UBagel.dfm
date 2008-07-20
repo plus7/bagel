@@ -7031,10 +7031,6 @@ object BagelMainForm: TBagelMainForm
       Caption = '-'
     end
   end
-  object TmpPopup: TPopupMenu
-    Left = 432
-    Top = 208
-  end
   object ApplicationEvents1: TApplicationEvents
     OnMessage = ApplicationEvents1Message
     Left = 464

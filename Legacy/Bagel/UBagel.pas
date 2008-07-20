@@ -292,7 +292,6 @@ type
     TabSheet1: TTabSheet;
     TaskTrayPopup: TPopupMenu;
     TimerFireSetfocus: TTimer;
-    TmpPopup: TPopupMenu;
     ToolBar1: TToolBar;
     ToolBar2: TToolBar;
     ToolBar3: TToolBar;

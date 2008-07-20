@@ -647,7 +647,7 @@ type
     procedure actClearHistoryExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     function IsDenyTitle(Title:String):Boolean;
-    function IsHilighted(b:TBagelBrowser):Boolean;
+    function IsBrowserHilighted(b:TBagelBrowser):Boolean;
     procedure actGoHomeExecute(Sender: TObject);
     procedure actReloadAllExecute(Sender: TObject);
     procedure actStopAllExecute(Sender: TObject);
@@ -793,7 +793,6 @@ type
     procedure CookieLifetimeNormalClick(Sender: TObject);
     procedure CookieLifetimeSessionClick(Sender: TObject);
     procedure CookieLifetimeAskEachClick(Sender: TObject);
-    procedure DenyAllCookieClick(Sender: TObject);
     procedure DenyAllowCookieMenuClick(Sender: TObject);
     procedure cmbGrepKeywordKeyPress(Sender: TObject; var Key: Char);
     procedure FireGrep(aWord:String; mode:Integer; Browser:TBagelBrowser);
@@ -1307,9 +1306,7 @@ begin
     Result := nil;
 end;
 
-
-
-function TBagelMainForm.IsHilighted(b:TBagelBrowser):Boolean;
+function TBagelMainForm.IsBrowserHilighted(b:TBagelBrowser):Boolean;
 begin
   Result:=IsHilightedWin(b.ContentWindow);
 end;
@@ -4842,12 +4839,6 @@ begin
 end;
 
 
-procedure TBagelMainForm.DenyAllCookieClick(Sender: TObject);
-begin
-
-end;
-
-{ブラウザにイベントハンドラをつける}
 procedure TBagelMainForm.ApplicationEvents1Message(var Msg: tagMSG;
   var Handled: Boolean);
 begin
@@ -4916,6 +4907,7 @@ begin
   end;
 end;
 
+{ブラウザにイベントハンドラをつける}
 procedure TBagelMainForm.ApplyEvtHandlersToBrowser(brwsr:TBagelBrowser);
 begin
   brwsr.OnNewWindow  := Self.BrowserNewWindow;
@@ -8904,7 +8896,7 @@ var
   searchWords:TStrArray;
 begin
   cnt:=0;
-  if isHilighted(GetCurrentBrowser) then begin
+  if IsBrowserHilighted(GetCurrentBrowser) then begin
     HilightBrowser(GetCurrentBrowser,'','',false);
     GetCurrentBrowser.AutoHighlight:=False;
     exit;

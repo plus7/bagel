@@ -115,7 +115,10 @@ uses
   GeckoStringNG in 'GeckoStringNG.pas',
   NkDropTarget in 'NkDropTarget.pas',
   UMenuEdit in 'UMenuEdit.pas',
-  LoginManagerPrompter in 'Components\LoginManagerPrompter.pas';
+  LoginManagerPrompter in 'Components\LoginManagerPrompter.pas',
+  StyleSheetUtils in 'StyleSheetUtils.pas',
+  DOMUtils in 'DOMUtils.pas',
+  WindowUtils in 'WindowUtils.pas';
 
 {$R *.res}
 

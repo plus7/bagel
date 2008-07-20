@@ -8,6 +8,7 @@ function GetDocShellObjByWin(win:nsIDOMWindow):nsIDocShell;
 function GetSelConByWin(win:nsIDOMWindow):nsISelectionController;
 function GetRootWindowByWin(win:nsIDOMWindow):nsIDOMWindow;
 function GetSelectionStrFromWin(win:nsIDOMWindow):WideString;
+function Doc2Win(doc:nsIDOMDocument):nsIDOMWindow;
 
 implementation
 
@@ -84,6 +85,11 @@ begin
     Result := WideString(selstr);
     nsMemory.Free(selstr);
   end;
+end;
+
+function Doc2Win(doc:nsIDOMDocument):nsIDOMWindow;
+begin
+  Result := ((doc as nsIDOMDocumentView).DefaultView as nsIDOMWindow);
 end;
 
 end.

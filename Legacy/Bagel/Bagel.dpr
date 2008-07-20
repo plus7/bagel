@@ -95,7 +95,6 @@ uses
   PropertiesForm in 'PropertiesForm.pas',
   UCookieMan in 'UCookieMan.pas',
   UPassman in 'UPassman.pas',
-  TKMigemo in 'TKMigemo.pas',
   BookmarkUnit in 'BookmarkUnit.pas' {BookmarkForm},
   BookmarkListView in 'BookmarkListView.pas',
   BookmarkTreeView in 'BookmarkTreeView.pas',

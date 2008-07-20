@@ -528,7 +528,6 @@ type
     function GetPrintSettings:nsIPrintSettings;
     function GetNewTabPos(OpenMode:Integer):Integer;
     function GetMDITabPos(OpenMode:Integer):Integer;
-    function GetLink(node:nsIDOMNode):String;
     procedure SetSelectionAndScroll(aRange:nsIDOMRange;selCon:nsISelectionController);
     function GetDocShellForFrame(aFrame:nsIDOMAbstractView):nsIDocShell;
     function GetCurrentBrowser:TBagelBrowser;
@@ -1403,38 +1402,6 @@ begin
   else begin
   //  ura
     Result:=0;
-  end;
-end;
-
-function TBagelMainForm.GetLink(node:nsIDOMNode):String;
-var
-  tmpNode:nsIDOMNode;
-  HrefStr:IInterfacedString;
-  a:nsIDOMHTMLAnchorElement;
-  area:nsIDOMHTMLAreaElement;
-  link:nsIDOMHTMLLinkElement;
-begin
-  Result:='';
-  HrefStr:=NewString('');
-  while node<>nil do
-  begin
-    if Supports(node, nsIDOMHTMLAnchorElement, a) then begin
-      a.GetHref(HrefStr.AString);
-      Result:=HrefStr.ToString;
-      Exit;
-    end
-    else if Supports(node, nsIDOMHTMLAreaElement, area) then begin
-      area.GetHref(HrefStr.AString);
-      Result:=HrefStr.ToString;
-      Exit;
-    end
-    else if Supports(node, nsIDOMHTMLLinkElement, link) then begin
-      link.GetHref(HrefStr.AString);
-      Result:=HrefStr.ToString;
-      Exit;
-    end;
-    tmpNode := node.ParentNode;
-    node:=tmpNode;
   end;
 end;
 
@@ -5118,7 +5085,7 @@ begin
   targetNode:=aEvent.Target as nsIDOMNode;
   if (aEvent.Button = 1) then
   begin
-    uri:=GetLink(targetNode);
+    uri:=GetLinkStr(targetNode);
     //新しいタブで開くか？
     if (uri<>'') and (Pos('javascript:',uri)<>1) then begin
       if Pref.InheritDocShell then
@@ -5349,14 +5316,14 @@ begin
 
   if (event.Button<>2) then
   begin
-    if GetLink(event.Target as nsIDOMNode)='' then exit; {
+    if GetLinkStr(event.Target as nsIDOMNode)='' then exit; {
     NS_NewURI(curUri,WebPanel.URI);
     NS_NewURI(clickedUri,getLink(tgt));
     curUri.GetHost(acstr);
     clickedUri.GetHost(acstr2);
     if (cstr.ToString <> cstr2.ToString) or IsTargetNew(tgt) then
     begin                        }
-      AddTab(GetLink(event.Target as nsIDOMNode),Pref.OpenModeMiddleClick,0,WebPanel.URI,Pref.DocShellDefault);
+      AddTab(GetLinkStr(event.Target as nsIDOMNode),Pref.OpenModeMiddleClick,0,WebPanel.URI,Pref.DocShellDefault);
       event.PreventDefault;
       event.StopPropagation ;
 //    end;

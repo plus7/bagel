@@ -18,6 +18,7 @@ function IsTargetNew(target:nsIDOMEventTarget):Boolean;
 function Range2String(range:nsIDOMRange):WideString;
 function HilightRange(range:nsIDOMRange;node:nsIDOMElement):nsIDOMElement;
 procedure HilightWin(win:nsIDOMWindow;style:String;patText:String;hilight:Boolean);
+function GetLinkStr(node:nsIDOMNode):String;
 
 implementation
 
@@ -361,6 +362,38 @@ begin
 
       hilightedElm := doc.GetElementById(NewString(BAGEL_HILIGHT_ID).AString);
     end;
+  end;
+end;
+
+function GetLinkStr(node:nsIDOMNode):String;
+var
+  tmpNode:nsIDOMNode;
+  HrefStr:IInterfacedString;
+  a:nsIDOMHTMLAnchorElement;
+  area:nsIDOMHTMLAreaElement;
+  link:nsIDOMHTMLLinkElement;
+begin
+  Result:='';
+  HrefStr:=NewString('');
+  while node<>nil do
+  begin
+    if Supports(node, nsIDOMHTMLAnchorElement, a) then begin
+      a.GetHref(HrefStr.AString);
+      Result:=HrefStr.ToString;
+      Exit;
+    end
+    else if Supports(node, nsIDOMHTMLAreaElement, area) then begin
+      area.GetHref(HrefStr.AString);
+      Result:=HrefStr.ToString;
+      Exit;
+    end
+    else if Supports(node, nsIDOMHTMLLinkElement, link) then begin
+      link.GetHref(HrefStr.AString);
+      Result:=HrefStr.ToString;
+      Exit;
+    end;
+    tmpNode := node.ParentNode;
+    node:=tmpNode;
   end;
 end;
 

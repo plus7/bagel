@@ -1592,7 +1592,7 @@ end;
 procedure TCustomGeckoBrowser.WMEraseBkGnd(var Msg: TMessage);
 begin
   // ‚¿‚ç‚Â‚«–hŽ~
-  Msg.Result := 0;
+  //Msg.Result := 0;
 end;
 
 function TCustomGeckoBrowser.GetCanGoBack: Boolean;

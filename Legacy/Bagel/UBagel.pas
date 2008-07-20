@@ -944,7 +944,6 @@ type
     procedure SearchBoxDragLeave(var Res: HRESULT);
     procedure SearchBoxDragOver(var Res: HRESULT;      KeyState: TNkKeyState; pt: TPoint; var dwEffect: Integer);
     procedure SearchBoxDrop(var Res: HRESULT;      const dataObj: IDataObject; KeyState: TNkKeyState; pt: TPoint;      var dwEffect: Integer);
-    procedure ToolButton6Click(Sender: TObject);
     procedure MenuToolbarResize(Sender: TObject);
     procedure ControlToolbarResize(Sender: TObject);
     procedure LinkbarResize(Sender: TObject);
@@ -8930,11 +8929,6 @@ begin
     selcon.SetDisplaySelection(NS_ISELECTIONCONTROLLER_SELECTION_ON)
   end;
   selcon.RepaintSelection(NS_ISELECTIONCONTROLLER_SELECTION_NORMAL);
-end;
-
-procedure TBagelMainForm.ToolButton6Click(Sender: TObject);
-begin
-  //ShowMessage(IntToStr(MainCoolbar.Bands.Count));
 end;
 
 procedure TBagelMainForm.ToolPCookieConfigClick(Sender: TObject);

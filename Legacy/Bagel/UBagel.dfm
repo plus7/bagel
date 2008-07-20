@@ -1242,7 +1242,6 @@ object BagelMainForm: TBagelMainForm
         Top = 0
         AutoSize = True
         ImageIndex = 5
-        OnClick = ToolButton6Click
       end
       object HighLightButton: TToolButton
         Left = 319

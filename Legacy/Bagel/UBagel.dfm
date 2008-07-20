@@ -1177,9 +1177,6 @@ object BagelMainForm: TBagelMainForm
         Caption = 'LoginPrompt'
         Color = clInfoBk
         TabOrder = 2
-        ExplicitLeft = 40
-        ExplicitTop = 16
-        ExplicitWidth = 73
       end
     end
     object LocationBar: TToolBar

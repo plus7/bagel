@@ -9,7 +9,7 @@ uses
   ImgList, AboutBagel, Menus, AppEvnts, TabbedToolBar, BagelPref,
   {GlobalHotkey,} ShellCtrls, BrwsFldr, StatusWidget, (*ActnGen,*)
 
-  nsInit,  BagelBrowser, nsXPCOM,
+  nsInit,  BagelBrowser, nsXPCOM, nsDOMEvent,
   nsXPCOMGlue,  GeckoBrowser, nsGeckoStrings, nsNetUtil,
   BrowserSupports, nsPerm, nsFileProtocolHandler,nsTextToURI,
   nsMemory, nsStyleSheetService, nsDocumentCharsetInfo,
@@ -589,6 +589,13 @@ type
     procedure BrowserContextMenu(Sender: TObject; aInfo: TCtxMenuInfo);
     procedure BrowserNewWindow(Sender: TObject; aChromeFlags: Longword; var newWindow: TCustomGeckoBrowser);
     procedure BrowserDOMClick(Sender: TObject; aEvent:nsIDOMMouseEvent);
+    procedure BrowserDOMKeyPress(Sender: TObject; aEvent:nsIDOMKeyEvent);
+    procedure BrowserDOMLinkAdded(Sender: TObject; aEvent:nsIDOMEvent);
+    procedure BrowserDOMDragOver(Sender: TObject; aEvent:nsIDOMMouseEvent);
+    procedure BrowserDOMDragGesture(Sender: TObject; aEvent:nsIDOMMouseEvent);
+    procedure BrowserDOMDragDrop(Sender: TObject; aEvent:nsIDOMMouseEvent);
+    procedure BrowserDOMDragExit(Sender: TObject; aEvent:nsIDOMMouseEvent);
+    procedure BrowserDOMFocus(Sender: TObject; aEvent:nsIDOMEvent);
     procedure BrowserDOMMouseDown(Sender: TObject; aEvent:nsIDOMMouseEvent);
     procedure BrowserStatusTextChange(Sender: TObject; aMessage: WideString);
     procedure BrowserProgressChange(Sender: TObject; Progress: Integer; ProgressMax: Integer);
@@ -5482,15 +5489,18 @@ begin
   brwsr.OnGoBack         := Self.BrowserGoBack;
   brwsr.OnGoForward      := Self.BrowserGoForward;
   brwsr.OnGoToIndex      := Self.BrowserGoToIndex;
-  {brwsr.OnGeckoKeypress:=self.GeckoBrowser1OnKeypress;
+  {brwsr.OnDOMKeyPress   := Self.BrowserDOMKeyPress;
+  brwsr.OnDOMLinkAdded   := Self.BrowserDOMLinkAdded;
+  brwsr.OnDOMDragOver    := Self.BrowserDOMDragOver;
+  brwsr.OnDOMDragGesture := Self.BrowserDOMDragGesture;
+  brwsr.OnDOMDragDrop    := Self.BrowserDOMDragDrop;
+  brwsr.OnDOMDragExit    := Self.BrowserDOMDragExit;
+  brwsr.OnDOMFocus       := Self.BrowserDOMFocus;}
+  {
   brwsr.OnGeckoMouseMove:=self.GeckoBrowser1OnGeckoMouseMove;
   brwsr.OnGeckoMouseDown:=self.GeckoBrowser1OnGeckoMouseDown;
   brwsr.OnGeckoMouseScroll := self.GeckoBrowser1OnGeckoMouseScroll;
   brwsr.OnGeckoLinkAdded := Self.GeckoBrowser1OnGeckoLinkAdded;
-  brwsr.OnGeckoDragOver := Self.GeckoBrowser1OnGeckoDragOver;
-  brwsr.OnGeckoDragGesture := Self.GeckoBrowser1OnGeckoDragGesture;
-  brwsr.OnGeckoDrop := Self.GeckoBrowser1OnGeckoDrop;
-  brwsr.OnGeckoDragExit := Self.GeckoBrowser1OnGeckoDragExit;
   brwsr.OnGeckoFocus := Self.GeckoBrowser1OnGeckoFocus;
   brwsr.OnURIOpen := Self.GeckoBrowser1OnURIOpen;
   brwsr.OnCloseQuery := Self.GeckoBrowser1OnCloseQuery;
@@ -5658,6 +5668,40 @@ begin
     end;
   end;
 end;
+
+procedure TBagelMainForm.BrowserDOMKeyPress(Sender: TObject; aEvent:nsIDOMKeyEvent);
+begin
+  //
+end;
+
+procedure TBagelMainForm.BrowserDOMLinkAdded(Sender: TObject; aEvent:nsIDOMEvent);
+begin
+  //
+end;
+
+procedure TBagelMainForm.BrowserDOMDragOver(Sender: TObject; aEvent:nsIDOMMouseEvent);
+begin
+  //
+end;
+
+procedure TBagelMainForm.BrowserDOMDragGesture(Sender: TObject; aEvent:nsIDOMMouseEvent);
+begin
+  //
+end;
+
+procedure TBagelMainForm.BrowserDOMDragDrop(Sender: TObject; aEvent:nsIDOMMouseEvent);
+begin
+  //
+end;
+procedure TBagelMainForm.BrowserDOMDragExit(Sender: TObject; aEvent:nsIDOMMouseEvent);
+begin
+  //
+end;
+procedure TBagelMainForm.BrowserDOMFocus(Sender: TObject; aEvent:nsIDOMEvent);
+begin
+  //
+end;
+
 {ステータスバーのテキストが変わった}
 procedure TBagelMainForm.BrowserStatusTextChange(Sender: TObject; aMessage: WideString);
 begin

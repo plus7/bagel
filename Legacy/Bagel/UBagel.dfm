@@ -339,12 +339,6 @@ object BagelMainForm: TBagelMainForm
           TabOrder = 1
           Transparent = True
           Visible = False
-          object ToolButton27: TToolButton
-            Left = 0
-            Top = 0
-            Caption = 'ToolButton27'
-            ImageIndex = 0
-          end
         end
         object Panel1: TPanel
           Left = 2

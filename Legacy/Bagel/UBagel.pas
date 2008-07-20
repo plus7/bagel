@@ -308,7 +308,6 @@ type
     ToolButton18: TToolButton;
     ToolButton1: TToolButton;
     ToolButton22: TToolButton;
-    ToolButton27: TToolButton;
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     ToolButton4: TToolButton;
@@ -3309,7 +3308,7 @@ begin
       
       parent:=curl;
       Inc(level);
-      
+
     end
     else if isfolder = 1 then begin
       level:=RD.ReadInteger;
@@ -8633,7 +8632,7 @@ begin
   //AddressBar
   GoButton.Visible := Pref.ShowGoButton;
   actToggleGoButtonVisible.Checked := Pref.ShowGoButton;
-  
+
   //Sidebar
   SidebarHeaderToolbar.Visible:=Pref.ShowSidebarTabs;
   Panel1Resize(nil);

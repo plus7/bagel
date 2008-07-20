@@ -529,7 +529,6 @@ type
     function GetPrintSettings:nsIPrintSettings;
     function GetNewTabPos(OpenMode:Integer):Integer;
     function GetMDITabPos(OpenMode:Integer):Integer;
-    procedure SetSelectionAndScroll(aRange:nsIDOMRange;selCon:nsISelectionController);
     function GetDocShellForFrame(aFrame:nsIDOMAbstractView):nsIDocShell;
     function GetCurrentBrowser:TBagelBrowser;
     function GetBrowser(Index:Integer):TBagelBrowser;
@@ -743,7 +742,6 @@ type
     procedure Panel5Resize(Sender: TObject);
     procedure GPISelectAllClick(Sender: TObject);
     procedure HilightBrowser(b:TBagelBrowser;style:String;patText:String;hilight:Boolean);
-    procedure ChangeSelectionColor(win:nsIDOMWindow;attention:Boolean);
     procedure actShowSidebarIconsExecute(Sender: TObject);
     procedure Panel6Resize(Sender: TObject);
     procedure BackHistoryPopupPopup(Sender: TObject);

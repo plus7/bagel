@@ -118,7 +118,8 @@ uses
   LoginManagerPrompter in 'Components\LoginManagerPrompter.pas',
   StyleSheetUtils in 'StyleSheetUtils.pas',
   DOMUtils in 'DOMUtils.pas',
-  WindowUtils in 'WindowUtils.pas';
+  WindowUtils in 'WindowUtils.pas',
+  SelectionUtils in 'SelectionUtils.pas';
 
 {$R *.res}
 

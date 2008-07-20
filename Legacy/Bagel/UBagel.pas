@@ -3209,7 +3209,6 @@ begin
   end;
 end;
 
-
 procedure TBagelMainForm.actOpenCtxLinkExecute(Sender: TObject);
 begin
   GetBrowser(TabControl.TabIndex).LoadURI(currentCtxURI);
@@ -4981,23 +4980,23 @@ begin
   {
   brwsr.OnStateFlagsChange:=self.GeckoBrowser1StateFlagsChange;
   }
-  brwsr.OnContextMenu    := Self.BrowserContextMenu;
-  brwsr.OnDOMClick       := Self.BrowserDOMClick;
-  brwsr.OnTitleChange    := Self.BrowserTitleChange;
-  brwsr.OnLocationChange := Self.BrowserLocationChange;
-  brwsr.OnProgressChange := Self.BrowserProgressChange;
-  brwsr.OnDOMMouseScroll := Self.BrowserDOMMouseScroll;
+  brwsr.OnContextMenu      := Self.BrowserContextMenu;
+  brwsr.OnDOMClick         := Self.BrowserDOMClick;
+  brwsr.OnTitleChange      := Self.BrowserTitleChange;
+  brwsr.OnLocationChange   := Self.BrowserLocationChange;
+  brwsr.OnProgressChange   := Self.BrowserProgressChange;
+  brwsr.OnDOMMouseScroll   := Self.BrowserDOMMouseScroll;
   brwsr.OnDownloadComplete := Self.BrowserDownloadComplete;
-  brwsr.OnGoBack         := Self.BrowserGoBack;
-  brwsr.OnGoForward      := Self.BrowserGoForward;
-  brwsr.OnGoToIndex      := Self.BrowserGoToIndex;
-  {brwsr.OnDOMKeyPress   := Self.BrowserDOMKeyPress;
-  brwsr.OnDOMLinkAdded   := Self.BrowserDOMLinkAdded;
-  brwsr.OnDOMDragOver    := Self.BrowserDOMDragOver;
-  brwsr.OnDOMDragGesture := Self.BrowserDOMDragGesture;
-  brwsr.OnDOMDragDrop    := Self.BrowserDOMDragDrop;
-  brwsr.OnDOMDragExit    := Self.BrowserDOMDragExit;
-  brwsr.OnDOMFocus       := Self.BrowserDOMFocus;}
+  brwsr.OnGoBack           := Self.BrowserGoBack;
+  brwsr.OnGoForward        := Self.BrowserGoForward;
+  brwsr.OnGoToIndex        := Self.BrowserGoToIndex;
+  brwsr.OnDOMKeyPress      := Self.BrowserDOMKeyPress;
+  brwsr.OnDOMLinkAdded     := Self.BrowserDOMLinkAdded;
+  brwsr.OnDOMDragOver      := Self.BrowserDOMDragOver;
+  brwsr.OnDOMDragGesture   := Self.BrowserDOMDragGesture;
+  brwsr.OnDOMDragDrop      := Self.BrowserDOMDragDrop;
+  brwsr.OnDOMDragExit      := Self.BrowserDOMDragExit;
+  brwsr.OnDOMFocus         := Self.BrowserDOMFocus;
   {
   brwsr.OnGeckoMouseMove:=self.GeckoBrowser1OnGeckoMouseMove;
   brwsr.OnGeckoMouseDown:=self.GeckoBrowser1OnGeckoMouseDown;

@@ -355,7 +355,7 @@ object BagelMainForm: TBagelMainForm
             Top = 0
             Width = 200
             Height = 213
-            ActivePage = BookmarkSheet
+            ActivePage = UsrTabSheet
             HotTrack = True
             RaggedRight = True
             Style = tsButtons
@@ -986,22 +986,6 @@ object BagelMainForm: TBagelMainForm
                 Items.Strings = (
                   '('#65439#1044#65439')'#65308#12487#12496#12483#12464#29992)
                 TabOrder = 0
-              end
-              object Button3: TButton
-                Left = 8
-                Top = 208
-                Width = 75
-                Height = 25
-                Caption = #35302#12427#12394#21361#38522'3'
-                TabOrder = 1
-              end
-              object Button4: TButton
-                Left = 8
-                Top = 240
-                Width = 75
-                Height = 25
-                Caption = #35302#12427#12394#21361#38522'4'
-                TabOrder = 2
               end
             end
             object UsrTabSheet: TTabSheet
@@ -7198,10 +7182,6 @@ object BagelMainForm: TBagelMainForm
     object hiddenMenu: TMenuItem
       Caption = #31192#20253#12513#12491#12517#12540
       Visible = False
-      object hiddenNextTab: TMenuItem
-      end
-      object hiddenPrevTab: TMenuItem
-      end
       object AddToMemo: TMenuItem
         Caption = #12513#12514#12395#36861#21152
         OnClick = AddToMemoClick

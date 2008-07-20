@@ -136,8 +136,6 @@ type
     BookmarkPPaste: TMenuItem;
     BookmarkSheet: TTabSheet;
     BookmarksPopup: TPopupMenu;
-    Button3: TButton;
-    Button4: TButton;
     ChevronLinkMenu: TPopupMenu;
     ChevronPopupMenu: TPopupMenu;
     ClipSheet: TTabSheet;
@@ -479,8 +477,6 @@ type
     edtMemoTitle: TEdit;
     embed1: TMenuItem;
     hiddenMenu: TMenuItem;
-    hiddenNextTab: TMenuItem;
-    hiddenPrevTab: TMenuItem;
     img1: TMenuItem;
     lstOutPut: TListBox;
     lvMemo: TListView;

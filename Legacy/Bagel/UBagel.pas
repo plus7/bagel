@@ -23,6 +23,7 @@ uses
   GeckoSimpleHALDialog, //Helper Application Dialog
   GeckoSimplePrompt, //Prompt Service
   StyleSheetUtils, //CSS関連のユーティリティー関数
+  DOMUtils, //DOM関連のユーティリティー関数
 
   ActiveX,          //OleInitialize
   buinIntelliMouse, //マウス関連の定数
@@ -50,7 +51,6 @@ uses
   ;
 
 const
-  BAGEL_HILIGHT_ID='_bagel_hilight_id';
   NOPROXY = '直接接続';
   NOOVERRIDEAGENT = 'デフォルト';
   BOOKMARKS_DAT='bookmarks.dat';
@@ -670,12 +670,8 @@ type
     procedure TabControlOLEDrop(Sender: TObject; Str: String);
     procedure actClearHistoryExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    function IsNodeInsideLink(node:nsIDOMNode):nsIDOMHTMLAnchorElement;
-    function IsNodeInsideQuote(node:nsIDOMNode):nsIDOMElement;
-    function IsRangeInsideLink(range:nsIDOMRange):nsIDOMHTMLAnchorElement;
     function IsDenyTitle(Title:String):Boolean;
     function IsHilighted(b:TBagelBrowser):Boolean;
-    function IsTargetNew(target:nsIDOMEventTarget):Boolean;
     procedure actGoHomeExecute(Sender: TObject);
     procedure actReloadAllExecute(Sender: TObject);
     procedure actStopAllExecute(Sender: TObject);
@@ -873,7 +869,6 @@ type
     procedure actBlockCtxImageExecute(Sender: TObject);
     procedure ToolPUASwitchClick(Sender: TObject);
     procedure UASwitchChildClick(Sender: TObject);
-    procedure SwitchStyleSheetInFrame(Frame: nsIDOMWindow; Title: String);
     procedure StyleSheetSwitchClick(Sender: TObject);
     procedure CookieConfigMenuClick(Sender: TObject);
     procedure actToggleMultilineTabExecute(Sender: TObject);
@@ -1221,62 +1216,6 @@ begin
 	for i := 0 to ToolBar.ButtonCount - 1 do
 		if ToolBar.Buttons[i].Visible then
 			Result := Result + ToolBar.Buttons[i].Width;
-end;
-
-{LEFT からの絶対座標を取得}
-function GetPageOffsetLeft( elem : nsIDOMElement ):Integer;
-var
-  Left:Integer;
-  offsLeft:Integer;
-  tmpElem:nsIDOMElement;
-  hoge:nsIDOMNSHTMLElement;
-begin
-  Result := 0;
-  if elem=nil then Exit;
-
-  Left:=(elem as nsIDOMNSHTMLElement).OffsetLeft;
-  tmpElem:=(elem as nsIDOMNSHTMLElement).OffsetParent;
-  while (tmpElem<>nil) do begin
-    offsLeft := (tmpElem as nsIDOMNSHTMLElement).OffsetLeft;
-    left := left + offsLeft;
-    hoge := (tmpElem as nsIDOMNSHTMLElement);
-    tmpElem:=hoge.OffsetParent;
-  end;
-
-  Result:=left;
-end;
-
-{TOP からの絶対座標を取得}
-function GetPageOffsetTop( elem : nsIDOMElement ):Integer;
-var
-  top:Integer;
-  offsTop:Integer;
-  tmpElem:nsIDOMElement;
-  hoge:nsIDOMNSHTMLElement;
-begin
-  Result := 0;
-  if elem=nil then Exit;
-
-  top := (elem as nsIDOMNSHTMLElement).OffsetTop;
-  tmpElem:=(elem as nsIDOMNSHTMLElement).OffsetParent;
-  while (tmpElem<>nil) do begin
-    offsTop:=(tmpElem as nsIDOMNSHTMLElement).OffsetTop;
-    top := top + offsTop;
-    hoge := (tmpElem as nsIDOMNSHTMLElement);
-    tmpElem:=hoge.OffsetParent;
-  end;
-
-  Result:=top;
-end;
-
-function GetRange(sn:nsIDOMNode;so:Integer;en:nsIDOMNode;eo:Integer):nsIDOMRange;
-var
-  tmpRange:nsIDOMRange;
-begin
-  tmpRange := (sn.GetOwnerDocument as nsIDOMDocumentRange).CreateRange;
-  tmpRange.SetStart(sn,so);
-  tmpRange.SetEnd(en,eo);
-  Result:=tmpRange;
 end;
 
 function GetDocShellObjByWin(win:nsIDOMWindow):nsIDocShell;
@@ -1649,111 +1588,11 @@ begin
     Result := nil;
 end;
 
-function TBagelMainForm.IsNodeInsideLink(node:nsIDOMNode):nsIDOMHTMLAnchorElement;
-var
-  anchorNode:nsIDOMHTMLAnchorElement;
-  tmpnode:nsIDOMNode;
-begin
-  while node<>nil do begin
-    if Supports(node,nsIDOMHTMLAnchorElement,anchorNode) then begin
-      Result:=anchorNode;
-      exit;
-    end;
-    tmpnode:=node.ParentNode;
-    node:=tmpnode;
-  end;
-end;
 
-function TBagelMainForm.IsNodeInsideQuote(node:nsIDOMNode):nsIDOMElement;
-var
-  elm:nsIDOMElement;
-  str:IInterfacedString;
-  tmpnode:nsIDOMNode;
-begin
-  str:=NewString;
-  while node<>nil do begin
-    if Supports(node,nsIDOMElement,elm) then begin
-      elm.GetTagName(str.AString);
-      if (LowerCase(str.ToString)='q') or (LowerCase(str.ToString)='blockquote') then begin
-        Result:=elm;
-        exit;
-      end;
-    end;
-    tmpnode := node.ParentNode;
-    node:=tmpnode;
-  end;
-end;
-
-function TBagelMainForm.IsRangeInsideLink(range:nsIDOMRange):nsIDOMHTMLAnchorElement;
-var
-  commonAncestor:nsIDOMNode;
-  node:nsIDOMNode;
-begin
-  Result:=nil;
-  if range = nil then exit;
-  commonAncestor := range.CommonAncestorContainer;
-  if commonAncestor<>nil then node:=commonAncestor.ParentNode;
-  Result:=IsNodeInsideLink(node);
-end;
-
-function IsHilightedWin(win:nsIDOMWindow):Boolean;
-var
-  elm:nsIDOMElement;
-  doc:nsIDOMDocument;
-  str:IInterfacedString;
-  childwin:nsIDOMWindow;
-  collection:nsIDOMWindowCollection;
-  length:Cardinal;
-  i:Integer;
-begin
-  Result:=False;
-  str:=NewString(BAGEL_HILIGHT_ID);
-  doc := win.Document;
-  elm:=doc.GetElementById(str.AString);
-  if elm<>nil then Result:=true
-  else begin
-    collection := win.Frames;
-    length := collection.Length;
-    if length=0 then Result:=false
-    else begin
-      for i:=0 to length-1 do begin
-        childwin := collection.Item(i);
-        if IsHilightedWin(childwin) then begin
-          Result:=true;
-          exit;
-        end;
-      end;
-    end;
-  end;
-end;
 
 function TBagelMainForm.IsHilighted(b:TBagelBrowser):Boolean;
 begin
   Result:=IsHilightedWin(b.ContentWindow);
-end;
-
-
-function TBagelMainForm.IsTargetNew(target:nsIDOMEventTarget):Boolean;
-var
-  tagName:IInterfacedString;
-  targetStr:IInterfacedString;
-begin
-  Result:=False;
-  targetStr:=NewString('');
-  tagName:=NewString('');
-
-  (target as nsIDOMElement).GetTagName(tagName.AString);
-  if Uppercase(tagName.ToString)='A' then
-  begin
-    (target as nsIDOMHTMLAnchorElement).GetTarget(targetStr.AString);
-    if (targetStr.ToString = '_content') {or
-       (iastr.ToString = '_content') or
-       (iastr.ToString = '_content') or
-       (iastr.ToString = '_content') }then
-    result:=true
-    else result:=false;
-  end;
-
 end;
 
 function TBagelMainForm.IsDenyTitle(Title:String):Boolean;
@@ -10318,62 +10157,6 @@ begin
   end;
   EngineBox.ItemIndex := 1;
 end;
-
-
-procedure TBagelMainForm.SwitchStyleSheetInFrame(Frame: nsIDOMWindow; Title: String);
-var
-  ssl:nsIDOMStyleSheetList;
-  j:Integer;
-  i:Integer;
-  styleSheet:nsIDOMStyleSheet;
-  StrSTitle:IInterfacedString;
-begin
-
-  if not IsValidForFrame(Frame, Title) then exit;
-
-  ssl := (Frame.Document as nsIDOMDocumentStyle).StyleSheets;
-
-  For j:=0 to ssl.Length - 1 do
-  begin
-    styleSheet := ssl.Item(j);
-    if IsValidMedia(styleSheet) then
-    begin
-      if Title = '_nostyle' then SetStyleSheetDisabled(styleSheet, true)
-      else if Title = '_default' then
-      begin
-        if isPersistent(styleSheet) or isPreferred(styleSheet) then
-        begin
-          SetStyleSheetDisabled(styleSheet, false);
-        end
-        else
-        begin
-          SetStyleSheetDisabled(styleSheet, true);
-        end;
-      end
-      else
-      begin
-        StrSTitle:=NewString('');
-        styleSheet.GetTitle(StrSTitle.AString);
-
-        if IsPersistent(styleSheet) then
-        begin
-          SetStyleSheetDisabled(styleSheet, false);
-        end
-        else
-        begin
-          SetStyleSheetDisabled(styleSheet, (StrSTitle.ToString<>Title));
-        end;
-      end;
-    end;
-  end;
-
-  if Frame.Frames.Length >0 then For i:=0 to Frame.Frames.Length - 1 do
-  begin
-    SwitchStyleSheetInFrame(Frame.Frames.Item(i),Title);
-  end;
-
-end;
-
 
 procedure TBagelMainForm.SSSMenuClick(Sender: TObject);
 var

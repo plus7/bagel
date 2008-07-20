@@ -136,7 +136,6 @@ type
     BookmarkPPaste: TMenuItem;
     BookmarkSheet: TTabSheet;
     BookmarksPopup: TPopupMenu;
-    Bulkfeeds1: TMenuItem;
     Button3: TButton;
     Button4: TButton;
     ChevronLinkMenu: TPopupMenu;
@@ -188,7 +187,6 @@ type
     GoUpDummyMenu: TMenuItem;
     GoUpListMenu: TMenuItem;
     GoUpPopup: TPopupMenu;
-    Google1: TMenuItem;
     Grep1: TMenuItem;
     GrepList: TListView;
     GrepSheet: TTabSheet;
@@ -216,17 +214,6 @@ type
     MenuTrackerToolbar: TToolBar;
     N14: TMenuItem;
     N15: TMenuItem;
-    N16: TMenuItem;
-    N17: TMenuItem;
-    N18: TMenuItem;
-    N19: TMenuItem;
-    N20: TMenuItem;
-    N21: TMenuItem;
-    N22: TMenuItem;
-    N23: TMenuItem;
-    N24: TMenuItem;
-    N25: TMenuItem;
-    N26: TMenuItem;
     N2: TMenuItem;
     N32: TMenuItem;
     N33: TMenuItem;
@@ -263,7 +250,6 @@ type
     N6: TMenuItem;
     ObeyDefaultThisSiteCookie: TMenuItem;
     ObserveClipList: TListBox;
-    Open1: TMenuItem;
     Open2: TMenuItem;
     OpenDialog1: TOpenDialog;
     OpenLinkListItem: TMenuItem;
@@ -281,7 +267,6 @@ type
     Panel7: TPanel;
     Panel8: TPanel;
     Panel9: TPanel;
-    PopupMenu1: TPopupMenu;
     Property1: TMenuItem;
     RandomProxySelector: TTimer;
     RewindPopup: TPopupMenu;
@@ -341,7 +326,6 @@ type
     ToolbarPopup: TPopupMenu;
     ToolsMenu: TMenuItem;
     URI1: TMenuItem;
-    URL1: TMenuItem;
     URL2: TMenuItem;
     URL3: TMenuItem;
     URL4: TMenuItem;

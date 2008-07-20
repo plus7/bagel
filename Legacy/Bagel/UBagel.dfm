@@ -11,7 +11,7 @@ object BagelMainForm: TBagelMainForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  Position = poDesigned
+  Position = poDefault
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate

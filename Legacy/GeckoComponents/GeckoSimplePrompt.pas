@@ -38,10 +38,10 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Forms, nsTypes,
-  nsXPCOM{, nsHelperAppLauncher};
+  nsXPCOM, PromptSupports{, nsHelperAppLauncher};
 
 type
-  TPromptServiceImpl =  class(TInterfacedObject, nsIPromptService)
+  TPromptServiceImpl =  class(TInterfacedObject, nsIPromptService, nsIPromptService2)
     procedure Alert(aParent: nsIDOMWindow; const aDialogTitle: PWideChar; const aText: PWideChar); safecall;
     procedure AlertCheck(aParent: nsIDOMWindow; const aDialogTitle: PWideChar; const aText: PWideChar; const aCheckMsg: PWideChar; out aCheckState: PRBool); safecall;
     function Confirm(aParent: nsIDOMWindow; const aDialogTitle: PWideChar; const aText: PWideChar): PRBool; safecall;
@@ -52,6 +52,8 @@ type
     function PromptPassword(aParent: nsIDOMWindow; const aDialogTitle: PWideChar; const aText: PWideChar; out aPassword: PWideChar; const aCheckMsg: PWideChar; out aCheckState: PRBool): PRBool; safecall;
 //    function Select(aParent: nsIDOMWindow; const aDialogTitle: PWideChar; const aText: PWideChar; aCount: PRUint32; const aSelectList: PPWideCharArray; out aOutSelection: PRInt32): PRBool; safecall;
     function Select(aParent: nsIDOMWindow; const aDialogTitle: PWideChar; const aText: PWideChar; aCount: PRUint32; const aSelectList_array; out aOutSelection: PRInt32): PRBool; safecall;
+    function PromptAuth(aParent: nsIDOMWindow; aChannel: nsIChannel; level: PRUint32; authInfo: nsIAuthInformation; const checkboxLabel: PWideChar; out checkValue: PRBool): PRBool; safecall;
+    function AsyncPromptAuth(aParent: nsIDOMWindow; aChannel: nsIChannel; aCallback: nsIAuthPromptCallback; aContext: nsISupports; level: PRUint32; authInfo: nsIAuthInformation; const checkboxLabel: PWideChar; out checkValue: PRBool): nsICancelable; safecall;
   end;
 
   TPromptFactory = class(TInterfacedObject, nsIFactory)
@@ -264,5 +266,48 @@ begin
   Result := sPromptForm.Select(aDialogTitle, aText, aCount, PWideCharArray(aSelectList_array), aOutSelection);
   sPromptForm.Free;
 end;
+
+function TPromptServiceImpl.PromptAuth(aParent: nsIDOMWindow;
+                                       aChannel: nsIChannel;
+                                       level: PRUint32;
+                                       authInfo: nsIAuthInformation;
+                                       const checkboxLabel: PWideChar;
+                                       out checkValue: PRBool): PRBool; safecall;
+var
+  sPromptForm:TPromptDlg;
+  realm, user, pass, domain:IInterfacedString;
+  dsUser, dsPass: String;
+begin
+  sPromptForm := TPromptDlg.Create(Application);
+
+  realm := NewString;
+  user := NewString;
+  pass := NewString;
+  domain := NewString;
+
+  authInfo.GetRealm(realm.AString);
+  authInfo.GetUsername(user.AString);
+  authInfo.GetPassword(pass.AString);
+  authInfo.GetDomain(domain.AString);
+
+  dsUser := user.ToString; //dsはDelphi Stringの略。命名規則もへったくれもねーなウヘァ 
+  dsPass := pass.ToString;
+
+  Result := sPromptForm.PromptUserAndPass('ユーザー名とパスワードを入力してください',
+                                          '"' + domain.ToString + '"の' +
+                                          realm.ToString + 'に対するユーザー名とパスワードを入力してください',
+                                          checkboxLabel,
+                                          dsUser, dsPass, checkValue);
+  authInfo.SetUsername(NewString(dsUser).AString);
+  authInfo.SetPassword(NewString(dsPass).AString);  
+
+  sPromptForm.Free;
+end;
+
+function TPromptServiceImpl.AsyncPromptAuth(aParent: nsIDOMWindow; aChannel: nsIChannel; aCallback: nsIAuthPromptCallback; aContext: nsISupports; level: PRUint32; authInfo: nsIAuthInformation; const checkboxLabel: PWideChar; out checkValue: PRBool): nsICancelable; safecall;
+begin
+  //TODO:
+end;
+
 
 end.

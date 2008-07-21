@@ -27,6 +27,7 @@ uses
   WindowUtils, //nsIDOMWindow関連のユーティリティー関数
   SelectionUtils, //Selection関係
   TKMigemo, //Migemo
+  LoginManagerPrompter, //nsILoginManagerPrompterの実装
 
   ActiveX,          //OleInitialize
   buinIntelliMouse, //マウス関連の定数

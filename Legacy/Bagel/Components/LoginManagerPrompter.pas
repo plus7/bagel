@@ -37,7 +37,8 @@ unit LoginManagerPrompter;
 
 interface
 
-uses nsTypes, nsXPCOM, nsGeckoStrings, nsLogin;
+uses nsTypes, nsXPCOM, nsGeckoStrings, nsXPCOMGlue, nsInit, nsLogin, nsError,
+     SysUtils;
 
 type
 
@@ -70,6 +71,7 @@ implementation
 uses Classes;
 
 var
+  sLoginPromptFactory: nsIFactory;
   LoginPromptListener : TInterfaceList;
 
 constructor TLoginManagerFactory.Create;
@@ -144,10 +146,43 @@ begin
   end;
 end;
 
+procedure InitLoginPromptFactory;
+var
+  rv: Cardinal;
+  factory: nsIFactory;
+  compReg: nsiComponentRegistrar;
+begin
+    rv := GRE_Startup;
+    if NS_FAILED(rv) then
+      raise Exception.Create('GRE_Startup');
+
+    if not Assigned(sLoginPromptFactory) then
+    begin
+      factory := TLoginManagerFactory.Create;
+
+      if not Assigned(factory) then
+        EOutOfMemory.Create('Cannot create THelperDialogFactory');
+
+      sLoginPromptFactory := factory;
+
+      rv := NS_GetComponentRegistrar(compReg);
+      compReg.RegisterFactory(NS_ILOGINMANAGERPROMPTER_IID, 'Bagel LoginManagerPrompter',
+                              '@mozilla.org/login-manager/prompter;1', factory);
+
+    end;
+end;
+
+procedure TermLoginPromptFactory;
+begin
+  sLoginPromptFactory := nil;
+end;
+
 initialization
   LoginPromptListener := TInterfaceList.Create;
+  InitLoginPromptFactory;
 
 finalization
+  TermLoginPromptFactory;
   LoginPromptListener.Free;
 
 end.

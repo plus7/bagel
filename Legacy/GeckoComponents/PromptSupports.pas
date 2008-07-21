@@ -19,6 +19,7 @@ type
   nsIPromptService2 = interface;
   nsIAuthInformation = interface;
   nsIAuthPromptCallback = interface;
+  nsICancelable = interface end;
   nsIPromptService2 = interface(nsIPromptService)
   ['{cf86d196-dbee-4482-9dfa-3477aa128319}']
     function PromptAuth(aParent: nsIDOMWindow; aChannel: nsIChannel; level: PRUint32; authInfo: nsIAuthInformation; const checkboxLabel: PWideChar; out checkValue: PRBool): PRBool; safecall;

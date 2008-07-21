@@ -1021,12 +1021,13 @@ type
     { Public 宣言 }
     AutoScrolling:Boolean; //オートスクロール中か？
     AutoScrollOrigPt:TPoint;
-    ISearchMode: Integer; //インクリメンタル検索のモード
+    FISearchMode: Integer; //インクリメンタル検索のモード
     {
       1bit目:検索中か？
       2bit目:全文か、リンクのみか？
       3bit目:通常のインクリメンタル検索か、Migemoか？
     }
+    FISearchBuffer: String; //
     //コンテキストメニュー
     tabBarCtxTarget:Integer; //タブバーの右クリックで選択されたタブ
     //historyCtxTarget:xxx;  //履歴サイドバーで選択された履歴
@@ -1097,6 +1098,7 @@ type
     procedure UpdatePrefs;
     procedure UpdateSearch;
     property MigemoObj:TTKCMigemo read GetMigemoObj;
+    property ISearchMode: Integer read GetISearchMode write SetISearchMode;
   end;
 
 var

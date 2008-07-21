@@ -29,6 +29,8 @@ object frmPassMan: TfrmPassMan
     ExplicitHeight = 247
     object SavedPassSheet: TTabSheet
       Caption = #20445#23384#12373#12428#12390#12356#12427#12497#12473#12527#12540#12489
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 461
       ExplicitHeight = 220
       object lvSavedPassword: TListView
@@ -81,6 +83,8 @@ object frmPassMan: TfrmPassMan
     object TabSheet2: TTabSheet
       Caption = #12497#12473#12527#12540#12489#12434#20445#23384#12375#12394#12356#12469#12452#12488
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 461
       ExplicitHeight = 220
       object lvPasswordNeverSaved: TListView

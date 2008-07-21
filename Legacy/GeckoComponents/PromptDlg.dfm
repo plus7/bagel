@@ -30,14 +30,14 @@ object PromptDlg: TPromptDlg
     Height = 21
     Caption = 'Button1'
     Default = True
-    TabOrder = 0
+    TabOrder = 4
   end
   object PromptValue: TEdit
     Left = 8
     Top = 32
     Width = 377
     Height = 20
-    TabOrder = 1
+    TabOrder = 0
     Text = 'PromptValue'
   end
   object Button2: TButton
@@ -46,7 +46,7 @@ object PromptDlg: TPromptDlg
     Width = 81
     Height = 21
     Caption = 'Button2'
-    TabOrder = 2
+    TabOrder = 5
   end
   object Button3: TButton
     Left = 304
@@ -54,7 +54,7 @@ object PromptDlg: TPromptDlg
     Width = 81
     Height = 21
     Caption = 'Button3'
-    TabOrder = 3
+    TabOrder = 6
   end
   object PromptPassword: TEdit
     Left = 8
@@ -62,7 +62,7 @@ object PromptDlg: TPromptDlg
     Width = 377
     Height = 20
     PasswordChar = '*'
-    TabOrder = 4
+    TabOrder = 1
     Text = 'PromptPassword'
   end
   object PromptCheck: TCheckBox
@@ -71,7 +71,7 @@ object PromptDlg: TPromptDlg
     Width = 377
     Height = 17
     Caption = 'PromptCheck'
-    TabOrder = 5
+    TabOrder = 3
   end
   object PromptList: TComboBox
     Left = 8
@@ -80,6 +80,6 @@ object PromptDlg: TPromptDlg
     Height = 20
     Style = csDropDownList
     ItemHeight = 12
-    TabOrder = 6
+    TabOrder = 2
   end
 end

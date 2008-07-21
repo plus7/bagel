@@ -1742,7 +1742,7 @@ var
   b:TBagelBrowser;
 begin
   Result:=nil;
-  if (Index<0) or (index>TabControl.Tabs.Count-1) then exit;
+  if not IsValidIndex(Index) then exit;
   b:=TBagelBrowser(TabControl.Tabs.Objects[Index]);
   Result:=b;
 end;
@@ -4278,7 +4278,7 @@ var
   entry:TTabHistoryItem;
 begin
   index := TabControl.Tabs.IndexOfObject(Browser);
-  if (Index<0) or (index>=TabControl.Tabs.Count) then exit;
+  if not IsValidIndex(index) then exit;
 
   //Grepサイドバーの項目を削除。解放。
   c:=GrepList.Items.Count-1;
@@ -5014,11 +5014,11 @@ var
   s:nsIDOMHTMLSelectElement;
 begin
   targetNode:=aEvent.Target as nsIDOMNode;
-  if (aEvent.Button = 1) then
+  if (aEvent.Button = 1) then //中ボタン
   begin
     uri:=GetLinkStr(targetNode);
     //新しいタブで開くか？
-    if (uri<>'') and (Pos('javascript:',uri)<>1) then begin
+    if (uri<>'') and (Pos('javascript:',uri)<>1) then begin //JavaScriptを中ボタンで開いても意味茄子
       if Pref.InheritDocShell then
         docshell := GetDocShellSettingForB(TBagelBrowser(Sender))
       else
@@ -5031,7 +5031,7 @@ begin
              );
       b.AutoHighlight:=TBagelBrowser(Sender).AutoHighlight;
     end
-    else if not(
+    else if not( //リンク以外でかつフォーム部品上でもない
      Supports(targetNode,nsIDOMHTMLInputElement,input) or
      Supports(targetNode,nsIDOMHTMLTextAreaElement,t) or
      Supports(targetNode,nsIDOMHTMLButtonElement,button) or

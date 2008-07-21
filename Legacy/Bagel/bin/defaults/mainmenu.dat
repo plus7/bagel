@@ -1,0 +1,153 @@
+>MenuFile,ファイル(&F),0,0
+
+  >MenuNew,新規作成(&N),0,0
+    actAddTab,,0,0
+    actAddTabHome,,0,0
+    actAddTabCurr,,0,0
+    actAddTabClip,,0,0
+  <
+  actOpenFile,開く,0,0
+  actSaveAs,名前をつけて保存,0,0
+  RecentClosedURIMenu,,0,0
+  RecentOpenedURIMenu,,0,0
+  >MenuImport,インポート(&I),0,0
+  
+    actShowBkmkImportForm,Mozillaのブックマークのインポート,0,0
+    actShowIEImportForm,Internet Explorerのお気に入りのインポート,0,0
+  <
+  -
+  actPrint,印刷,,0
+  -
+  actWorkOffline,オフライン作業,0,0
+  -
+  actQuit,Bagelを終了,0,0
+<
+>MenuEdit,編集(&E),0,0
+
+  actCut,切り取り,0,0
+  actCopy,コピー,0,0
+  ExtCopyMenu,,0,0
+  actPaste,貼り付け,0,0
+  actSelectAll,全て選択,0,0
+  scrCopySelectionSource,選択範囲のソースをコピー,0,0
+  -
+  actFindDialog,ページ内検索,0,0
+  actFind,検索,0,0
+  actFindBackwards,後方検索,0,0
+  -
+  actOpenSelection,選択範囲を開く,0,0
+  scrOpenSelectionLinks,選択範囲内のリンクを開く,0,0
+  -
+  actSearchSelection,選択範囲を検索,0,0
+<
+>MenuView,表示(&V),0,0
+
+  >MenuToolbar,ツールバー,0,0
+  
+    actToggleLinkbarVisible,リンクバー,0,0
+    actToggleMainbarVisible,メインツールバー,0,0
+    actToggleMenubarVisible,メニューバー,0,0
+    actToggleSearchBarVisible,検索バー,0,0
+    actToggleTabbarVisible,タブバー,0,0
+    actToggleURLbarVisible,アドレスバー,0,0
+    -
+    actToggleMultilineTab,多段タブ,0,0
+    actShowToolbarSettings,ツールバー設定...,0,0
+    actToggleNoGripper,ツールバーを固定する,0,0
+  <
+  >MenuSidebar,サイドバー,0,0
+    actBookmarkSidebar,,0,0
+    actHistorySidebar,,0,0
+    actGrepSidebar,,0,0
+    actLinkSidebar,,0,0
+    actScriptSidebar,,0,0
+    actClipboardSidebar,,0,0
+    actMemoSidebar,,0,0
+    actTransferSidebar,,0,0
+    actUserDefinedSidebar,,0,0
+  <
+  actToggleStatusbarVisible,ステータスバー,0,0
+  -
+  EncodeMenu,,0,0
+  actZoomIn,文字拡大,0,0
+  actZoomOut,文字縮小,0,0
+  >MenuZoom,ズーム,,0
+  
+    ImgZoomUp,画像を拡大する,,0
+    ImgZoomDown,画像を縮小する,,0
+    ImgZoomOrg,画像を元に戻す,,0
+    ImgOpacity,画像を薄く縮小して表示,,0
+  <
+  -
+  >MenuFocus,フォーカス(&F),0,0
+  
+    actFocusURL,URLにフォーカス,0,0
+    actFocusSearch,検索バーにフォーカス,0,0
+    actFocusSearchEngine,検索エンジンにフォーカス,0,0
+    actFocusSidebar,サイドバーにフォーカス,0,0
+    actFocusTab,現在のタブにフォーカス,0,0
+  <
+  actStop,停止,0,0
+  actStopAll,全て停止,0,0
+  actReload,再読み込み,0,0
+  actReloadAll,全て再読み込み,0,0
+  actFullScreen,全画面表示,0,0
+  -
+  actViewSource,ソースを表示,0,0
+  actIEView,IEで表示,0,0
+  actTaskTray,タスクトレイに格納,0,0
+<
+>MenuGo,移動(&G),0,0
+
+  actGoUp,一つ上の階層へ,0,0
+  actGoBack,戻る,0,0
+  actGoForward,進む,0,0
+<
+BookmarkMenu,ブックマーク(&B),0,0
+TabMenu,タブ(&T),0,0
+>MenuTool,ツール(&O),0,0
+
+  >MenuQuickPref,クイック設定(&Q),0,0
+    actPopupDisableDuringLoad,,0,0
+    actDisableCtxMenuEvt,,0,0
+    actBlockTargetNewWin,,0,0
+    actDisableFrames,,0,0
+    actEnableFrameResize,,0,0
+    >MenuReferer,リファラ,0,0
+      actRefererDontSend,,0,0
+      actRefererLink,,0,0
+      actRefererAll,,0,0
+    <
+  <
+  cmdRunAppTest2,Firefoxで開く,,0
+  ExtAppMenu,,0,0
+  -
+  UASwitchMenu,,0,0
+  ProxySwitchMenu,,0,0
+  StyleSwitchMenu,,0,0
+  -
+  >MenuCustomize,カスタマイズ,,0
+  
+    actEditMainMenu,メインメニューの編集,,0
+    actEditTabMenu,タブメニューの編集,,0
+    actEditCtxMenu,ページメニューの編集,,0
+  <
+  -
+  actShowAdblockMan,広告ブロック管理,0,0
+  actShowPopupMan,ポップアップマネージャ,0,0
+  actShowImgMan,画像マネージャ,0,0
+  CookieConfigMenu,,0,0
+  actShowPassMan,パスワードマネージャ,0,0
+  -
+  actSettings,詳細設定...,0,0
+  actOpenAboutConfig,マニアック設定(about:config)...,0,0
+<
+>MenuHelp,ヘルプ(&H),0,0
+
+  actBagelHelp,Bagelのヘルプ,0,0
+  actForDonutUsers,Donutユーザのために,0,0
+  -
+  scrOpenBagelFolder,Bagelのフォルダを開く,0,0
+  scrAbout,about:を開く,0,0
+  actAboutBagel,Bagelについて,0,0
+<

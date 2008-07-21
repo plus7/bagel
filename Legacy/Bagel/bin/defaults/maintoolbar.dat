@@ -1,0 +1,10 @@
+actGoBack,戻る,,0
+actGoForward,進む,,0
+actStop,停止,,0
+actReload,再読み込み,,0
+RecentClosedURIMenu,最近閉じたファイル,,0
+actSettings,詳細設定,,0
+-
+actBookmarkSidebar,ブックマーク,,0
+actHistorySidebar,履歴,,0
+actClipboardSidebar,クリップボード,,0

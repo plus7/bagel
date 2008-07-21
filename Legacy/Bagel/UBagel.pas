@@ -536,7 +536,6 @@ type
     function GetPrintSettings:nsIPrintSettings;
     function GetNewTabPos(OpenMode:Integer):Integer;
     function GetMDITabPos(OpenMode:Integer):Integer;
-    function GetDocShellForFrame(aFrame:nsIDOMAbstractView):nsIDocShell;
     function GetCurrentBrowser:TBagelBrowser;
     function GetBrowser(Index:Integer):TBagelBrowser;
     function GetBrowserById(Id:Cardinal):TBagelBrowser;
@@ -1559,18 +1558,6 @@ begin
   NS_GetInterface(GetCurrentBrowser.WebBrowser,NS_ICLIPBOARDCOMMANDS_IID,clipCmd);
   clipCmd.SelectAll;
 end;
-
-function TBagelMainForm.GetDocShellForFrame(aFrame:nsIDOMAbstractView):nsIDocShell;
-var
-  ir:nsIInterfaceRequestor;
-  webNav:nsIWebNavigation;
-  ds:nsIDocShell;
-begin
-  aFrame.QueryInterface(NS_IInterfaceRequestor_IID,ir);
-  ir.GetInterface(nsIWebNavigation,webNav);
-  webNav.QueryInterface(ns_IDocShell_IID,ds);
-  Result:=ds;
-end;                    
 
 function TBagelMainForm.IsValidIndex(i:Integer):Boolean;
 begin

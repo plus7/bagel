@@ -1337,6 +1337,11 @@ object BagelMainForm: TBagelMainForm
       ImageIndex = 41
       OnExecute = actAllowJSExecute
     end
+    object actPageUp: TAction
+      Category = #34920#31034
+      Caption = 'actPageUp'
+      OnExecute = actPageUpExecute
+    end
     object actAllowImg: TAction
       Category = #12475#12461#12517#12522#12486#12451
       AutoCheck = True
@@ -2045,6 +2050,11 @@ object BagelMainForm: TBagelMainForm
     object actIncrementalSearch: TAction
       Category = #26908#32034
       Caption = #12452#12531#12463#12522#12513#12531#12479#12523#26908#32034
+    end
+    object actPageDown: TAction
+      Category = #34920#31034
+      Caption = 'actPageDown'
+      OnExecute = actPageDownExecute
     end
   end
   object ImageList1: TImageList

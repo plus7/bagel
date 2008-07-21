@@ -531,6 +531,8 @@ type
     actFind: TAction;
     NotificationPanel: TPanel;
     actIncrementalSearch: TAction;
+    actPageUp: TAction;
+    actPageDown: TAction;
 
     function GetLinkBkmkList:TBookmarkList;
     function GetPrintSettings:nsIPrintSettings;
@@ -963,6 +965,10 @@ type
     procedure HistorySortByDateClick(Sender: TObject);
     procedure HistorySortBySiteClick(Sender: TObject);
     procedure DummyProc(Sender: TObject);
+    procedure SetISearchMode(Value : Integer);
+    function GetISearchMode:Integer;
+    procedure actPageUpExecute(Sender: TObject);
+    procedure actPageDownExecute(Sender: TObject);
   protected
     procedure CreateWnd; override;
     procedure DestroyWnd; override;
@@ -3149,6 +3155,22 @@ begin
   end;
 end;
 
+procedure TBagelMainForm.actPageUpExecute(Sender: TObject);
+var
+  focusedwin:nsIDOMWindow;
+begin
+  if GetBrowser(tabBarCtxTarget)=nil then exit;
+  focusedwin:=(GetBrowser(tabBarCtxTarget).WebBrowser as nsIWebBrowserFocus).FocusedWindow;
+  if focusedwin<>nil then begin
+    GetSelConByWin(focusedwin)
+    .ScrollPage(false);
+  end
+  else begin
+    GetSelConByWin(GetBrowser(tabBarCtxTarget).ContentWindow)
+    .ScrollPage(false);
+  end;
+end;
+
 procedure TBagelMainForm.actPasteBookmarkExecute(Sender: TObject);
 var
   i:integer;
@@ -3336,6 +3358,22 @@ end;
 procedure TBagelMainForm.actQuitExecute(Sender: TObject);
 begin
   Self.Close;
+end;
+
+procedure TBagelMainForm.actPageDownExecute(Sender: TObject);
+var
+  focusedwin:nsIDOMWindow;
+begin
+  if GetBrowser(tabBarCtxTarget)=nil then exit;
+  focusedwin:=(GetBrowser(tabBarCtxTarget).WebBrowser as nsIWebBrowserFocus).FocusedWindow;
+  if focusedwin<>nil then begin
+    GetSelConByWin(focusedwin)
+    .ScrollPage(true);
+  end
+  else begin
+    GetSelConByWin(GetBrowser(tabBarCtxTarget).ContentWindow)
+    .ScrollPage(true);
+  end;
 end;
 
 procedure TBagelMainForm.actPageEndExecute(Sender: TObject);
@@ -5764,7 +5802,7 @@ procedure TBagelMainForm.FormCreate(Sender: TObject);
 
     TabPopup := TBagelPopupMenu.Create(Self);
     TabPopup.Name := 'TabPopup';
-    
+
     CreateToolbars;
 
     //Profile
@@ -10610,6 +10648,16 @@ begin
 end;
 
 procedure TBagelMainForm.DummyProc(Sender: TObject);
+begin
+  //
+end;
+
+function TBagelMainForm.GetISearchMode:Integer;
+begin
+  //
+end;
+
+procedure TBagelMainForm.SetISearchMode(Value : Integer);
 begin
   //
 end;

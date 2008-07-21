@@ -37,7 +37,7 @@ unit GeckoSimplePrompt;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Forms, nsTypes,
+  Windows, Messages, SysUtils, Classes, Forms, Dialogs, nsTypes,
   nsXPCOM, PromptSupports{, nsHelperAppLauncher};
 
 type
@@ -165,12 +165,8 @@ begin
 end;
 
 procedure TPromptServiceImpl.Alert(aParent: nsIDOMWindow; const aDialogTitle: PWideChar; const aText: PWideChar);
-var
-  sPromptForm:TPromptDlg;
 begin
-  sPromptForm := TPromptDlg.Create(Application);
-  sPromptForm.Alert(aDialogTitle, aText);
-  sPromptForm.Free;
+  MessageBoxW(0, aText, aDialogTitle, MB_OK or MB_ICONEXCLAMATION);
 end;
 
 procedure TPromptServiceImpl.AlertCheck(aParent: nsIDOMWindow; const aDialogTitle: PWideChar; const aText: PWideChar; const aCheckMsg: PWideChar; out aCheckState: PRBool);
@@ -183,12 +179,8 @@ begin
 end;
 
 function TPromptServiceImpl.Confirm(aParent: nsIDOMWindow; const aDialogTitle: PWideChar; const aText: PWideChar): PRBool;
-var
-  sPromptForm:TPromptDlg;
 begin
-  sPromptForm := TPromptDlg.Create(Application);
-  Result := sPromptForm.Confirm(aDialogTitle, aText);
-  sPromptForm.Free;
+  Result := (MessageBoxW(0, aText, aDialogTitle, MB_OKCANCEL or MB_ICONQUESTION) <> IDCANCEL);
 end;
 
 function TPromptServiceImpl.ConfirmEx(aParent: nsIDOMWindow; const aDialogTitle: PWideChar; const aText: PWideChar; aButtonFlags: PRUint32; const aButton0Title: PWideChar; const aButton1Title: PWideChar; const aButton2Title: PWideChar; const aCheckMsg: PWideChar; out aCheckState: PRBool): PRInt32;

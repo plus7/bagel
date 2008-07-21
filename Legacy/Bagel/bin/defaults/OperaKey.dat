@@ -2,3 +2,5 @@ Bksp=actGoBack
 z=actGoBack
 x=actGoForward
 b=actPageUp
+1=actPrevTab
+2=actNextTab

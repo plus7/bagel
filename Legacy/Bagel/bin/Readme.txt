@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////
 y ƒ\ƒtƒg–¼ zBagel
 yƒo[ƒWƒ‡ƒ“zv0.5pre
-y  ì¬“ú  z2008/07/21
+y  ì¬“ú  z2008/07/22
 y§  ì  Òzplus7
 y •K—vŠÂ‹« zWindowsXP SP2ˆÈ~ + XULRunner 1.9
 y »ìŠÂ‹« zTurbo Delphi Explorer

@@ -26,6 +26,7 @@ uses
   DOMUtils, //DOM関連のユーティリティー関数
   WindowUtils, //nsIDOMWindow関連のユーティリティー関数
   SelectionUtils, //Selection関係
+  TKMigemo, //Migemo
 
   ActiveX,          //OleInitialize
   buinIntelliMouse, //マウス関連の定数
@@ -63,6 +64,11 @@ const
   RANGE_MODE_NEXT=1;
   RANGE_MODE_BACK=2;
   RANGE_MODE_INCREMENT=3;
+    {
+      1bit目:検索中か？
+      2bit目:全文か、リンクのみか？
+      3bit目:通常のインクリメンタル検索か、Migemoか？
+    }
 type
   TBagelBookmarkRecord = record
     Name:String;
@@ -524,6 +530,7 @@ type
     actEditToolbar: TAction;
     actFind: TAction;
     NotificationPanel: TPanel;
+    actIncrementalSearch: TAction;
 
     function GetLinkBkmkList:TBookmarkList;
     function GetPrintSettings:nsIPrintSettings;
@@ -964,6 +971,7 @@ type
 
   private
     { Private 宣言 }
+    FMigemoObj: TTKCMigemo;
     SplitterPressed:Boolean;  //サイドバーのスプリッタが押されているかどうか
     SplitterStptROffset:Integer; //クリックしはじめたX座標
     TabZOrder:TList; // タブのZ-Orderを記憶する
@@ -1008,10 +1016,17 @@ type
     mKioskMenuBarVisible:Boolean;
     mKioskStatusBarVisible:Boolean;
     procedure STPSubClassProc(var Msg:TMessage);//サイドバー切り替えパネルの新しいWndProc
+    function GetMigemoObj:TTKCMigemo;
   public
     { Public 宣言 }
     AutoScrolling:Boolean; //オートスクロール中か？
     AutoScrollOrigPt:TPoint;
+    ISearchMode: Integer; //インクリメンタル検索のモード
+    {
+      1bit目:検索中か？
+      2bit目:全文か、リンクのみか？
+      3bit目:通常のインクリメンタル検索か、Migemoか？
+    }
     //コンテキストメニュー
     tabBarCtxTarget:Integer; //タブバーの右クリックで選択されたタブ
     //historyCtxTarget:xxx;  //履歴サイドバーで選択された履歴
@@ -1081,6 +1096,7 @@ type
     procedure CloseTab(Index:integer); overload;
     procedure UpdatePrefs;
     procedure UpdateSearch;
+    property MigemoObj:TTKCMigemo read GetMigemoObj;
   end;
 
 var
@@ -6179,6 +6195,9 @@ end;
 {フォームの破棄}
 procedure TBagelMainForm.FormDestroy(Sender: TObject);
 begin
+  //Migemoオブジェクトが生成されていれば破棄
+  if Assigned(FMigemoObj) then FMigemoObj.Free;
+  
   StatusWidgetList.Free;
 
   //プロファイルのクローズ
@@ -9415,6 +9434,33 @@ begin
   end;
 end;
 
+function TBagelMainForm.GetMigemoObj:TTKCMigemo;
+  function LoadDic(MigemoObj:TTKCMigemo):Boolean;
+  var
+    DicFolderPath:String;
+  begin
+    DicFolderPath := ExcludeTrailingPathDelimiter(Pref.MigemoDicFolder);
+    MigemoObj.LoadFromDicFile(MIGEMO_DICTID_MIGEMO, DicFolderPath + '\migemo-dict');
+    MigemoObj.LoadFromDicFile(MIGEMO_DICTID_ROMA2HIRA, DicFolderPath + '\roma2hira.dat');
+    MigemoObj.LoadFromDicFile(MIGEMO_DICTID_HIRA2KATA, DicFolderPath + 'hira2kata.dat');
+    MigemoObj.LoadFromDicFile(MIGEMO_DICTID_HAN2ZEN, DicFolderPath + '\han2zen.dat');
+  end;
+begin
+  if Assigned(FMigemoObj) then
+    Result := FMigemoObj
+  else begin
+    try
+      FMigemoObj := TTKCMigemo.Create(Pref.MigemoDllPath);
+      if not LoadDic(FMigemoObj) then begin
+        FMigemoObj.Free;
+        FMigemoObj := nil;
+      end;
+    except
+      FMigemoObj := nil;
+    end;
+    Result := FMigemoObj;
+  end;
+end;
 
 procedure TBagelMainForm.cmbGrepKeywordKeyPress(Sender: TObject; var Key: Char);
 var

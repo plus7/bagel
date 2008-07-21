@@ -4,3 +4,21 @@ Legacy/ <- Bagel0.x
   GeckoComponents/ <- Geckoを使うためのDelphiコンポーネントなど
   GeckoSDK/ <- Delphi移植版GeckoSDK
   xpidlpas/ <- IDLをPascalのインターフェース定義に変換する
+
+■XULRunnerをシステムに登録するには
+  ftp://ftp.mozilla.org/pub/xulrunner/releases/1.9.0.0/runtimes/xulrunner-1.9.en-US.win32.zip
+  をDL、解凍の後、コマンドプロンプトにてxulrunner --register-userを実行する
+
+■Bagel0.xをビルドするには
+1.git cloneする(詳細はググれカス)
+2.以下のコンポーネントを取ってくる
+  - TNkMemIniFile (http://www.asahi-net.or.jp/~ha3t-nkmr/deldown.htm)
+  - SKRegExp (http://www.asahi-net.or.jp/~qz1s-kmy/skregexp/)
+  - TTKCMigemo (http://textexpage.s154.xrea.com/software/ttkcmigemo/)
+3.Legacy\lib\に配置する
+4.Bagel.bdsprojを開いてF9を押す
+5.Legacy\Bagel\bin\にBagel.exeが作られる。
+  XULRunnerが登録さえされていれば正常に起動できるはず。
+
+当然ながらTurbo Delphi Explorerが必要
+Cygwinもあると便利

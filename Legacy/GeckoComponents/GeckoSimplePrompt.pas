@@ -37,7 +37,7 @@ unit GeckoSimplePrompt;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Forms, Dialogs, nsTypes,
+  Windows, Messages, SysUtils, Classes, Forms, Dialogs, nsTypes, nsMemory,
   nsXPCOM, PromptSupports{, nsHelperAppLauncher};
 
 type
@@ -84,8 +84,6 @@ uses
 var
   sPromptFactory: nsIFactory;
   sRefCnt: Integer = 0;
-  work1: array[0..1023] of WideChar;
-  work2: array[0..1023] of WideChar;
 
 constructor TGeckoSimplePrompt.Create(AOwner: TComponent);
 var
@@ -215,11 +213,17 @@ function TPromptServiceImpl.Prompt(aParent: nsIDOMWindow; const aDialogTitle: PW
 var
   sPromptForm:TPromptDlg;
   Str: String;
+  temp: PWideChar;
 begin
   sPromptForm := TPromptDlg.Create(Application);
   Str := aValue;
   Result := sPromptForm.Prompt(aDialogTitle, aText, aCheckMsg, Str, aCheckState);
-  aValue := GetWork(work1, Str);
+
+  temp := PWideChar(nsMemory.Alloc(sizeof(PRUnichar) * (Length(Str) + 1)));
+  GetWork(temp, Str);
+  nsMemory.Free(aValue);
+  aValue := temp;
+
   sPromptForm.Free;
 end;
 
@@ -227,13 +231,23 @@ function TPromptServiceImpl.PromptUsernameAndPassword(aParent: nsIDOMWindow; con
 var
   sPromptForm:TPromptDlg;
   User, Pass: String;
+  temp: PWideChar;
 begin
   sPromptForm := TPromptDlg.Create(Application);
   User := aUsername;
   Pass := aPassword;
   Result := sPromptForm.PromptUserAndPass(aDialogTitle, aText, aCheckMsg, User, Pass, aCheckState);
-  aUsername := GetWork(work1, User);
-  aPassword := GetWork(work2, Pass);
+
+  temp := PWideChar(nsMemory.Alloc(sizeof(PRUnichar) * (Length(User) + 1)));
+  GetWork(temp, User);
+  nsMemory.Free(aUsername);
+  aUsername := temp;
+
+  temp := PWideChar(nsMemory.Alloc(sizeof(PRUnichar) * (Length(Pass) + 1)));
+  GetWork(temp, Pass);
+  nsMemory.Free(aPassword);
+  aPassword := temp;
+
   sPromptForm.Free;
 end;
 
@@ -241,11 +255,17 @@ function TPromptServiceImpl.PromptPassword(aParent: nsIDOMWindow; const aDialogT
 var
   sPromptForm:TPromptDlg;
   Pass: String;
+  temp: PWideChar;
 begin
   sPromptForm := TPromptDlg.Create(Application);
   Pass := aPassword;
   Result := sPromptForm.PromptPass(aDialogTitle, aText, aCheckMsg, Pass, aCheckState);
-  aPassword := GetWork(work1, Pass);
+  
+  temp := PWideChar(nsMemory.Alloc(sizeof(PRUnichar) * (Length(Pass) + 1)));
+  GetWork(temp, Pass);
+  nsMemory.Free(aPassword);
+  aPassword := temp;
+
   sPromptForm.Free;
 end;
 

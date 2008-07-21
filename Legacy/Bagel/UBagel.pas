@@ -1304,6 +1304,14 @@ begin
   if (kbdObj<>nil) and (kbdObj is TCustomAction) then
   begin
     TCustomAction(kbdObj).Execute;
+  end
+  else if Pref.OperaKeyEnabled then begin
+    kbdName:=Pref.OperaKeyList.Values[Str];
+    kbdObj:=FindAction(kbdName);
+    if (kbdObj<>nil) and (kbdObj is TCustomAction) then
+    begin
+      TCustomAction(kbdObj).Execute;
+    end;
   end;
 end;
 
@@ -5037,8 +5045,26 @@ begin
 end;
 
 procedure TBagelMainForm.BrowserDOMKeyPress(Sender: TObject; aEvent:nsIDOMKeyEvent);
+var
+  textarea: nsIDOMHTMLTextareaElement;
+  input: nsIDOMHTMLInputElement;
+  button: nsIDOMHTMLButtonElement;
+  s: nsIDOMHTMLSelectElement;
 begin
-  //
+  if Pref.OperaKeyEnabled then begin
+    //テキスト入力エリアならばExit
+    if Supports(aEvent.Target, nsIDOMHTMLTextareaElement, textarea) or
+       Supports(aEvent.Target, nsIDOMHTMLInputElement, input) or
+       Supports(aEvent.Target, nsIDOMHTMLButtonElement,button) or
+       Supports(aEvent.Target, nsIDOMHTMLSelectElement,s)
+      then Exit;
+    if aEvent.CharCode > 0 then begin
+      FireShortcut(Chr(aEvent.CharCode));
+    end
+    else begin
+      FireShortcut(ShortCutToText(aEvent.KeyCode));
+    end;
+  end;
 end;
 
 procedure TBagelMainForm.BrowserDOMLinkAdded(Sender: TObject; aEvent:nsIDOMEvent);

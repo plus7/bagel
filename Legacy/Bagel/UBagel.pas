@@ -5555,19 +5555,140 @@ procedure TBagelMainForm.FormCreate(Sender: TObject);
     MenuToolbar.Container := TestActionContainer2;
 
   end;
-  procedure CreateControls;
+  
+  procedure CreateAutoReloadMenu;
   var
-    i:Integer;
-//    hi:THotkeyItem;
-    tmpItem:TBagelActionContainer;
+    tmpItem: TBagelActionContainer;
   begin
-
-    GeckoPopup := TBagelPopupMenu.Create(Self);
-    GeckoPopup.Name := 'GeckoPopup';
-
-    TabPopup := TBagelPopupMenu.Create(Self);
-    TabPopup.Name := 'TabPopup';
-
+    AutoReloadMenu := TBagelActionContainer.Create(Self);
+    AutoReloadMenu.Name := 'AutoReloadMenu';
+    AutoReloadMenu.Caption := '自動再読み込み';
+    tmpItem := TBagelActionContainer.Create(Self);
+    tmpItem.Caption := 'なし';
+    AutoReloadMenu.Add(tmpItem);
+    tmpItem := TBagelActionContainer.Create(Self);
+    tmpItem.Caption := '5秒おき';
+    AutoReloadMenu.Add(tmpItem);
+    tmpItem := TBagelActionContainer.Create(Self);
+    tmpItem.Caption := '10秒おき';
+    AutoReloadMenu.Add(tmpItem);
+    tmpItem := TBagelActionContainer.Create(Self);
+    tmpItem.Caption := '30秒おき';
+    AutoReloadMenu.Add(tmpItem);
+    tmpItem := TBagelActionContainer.Create(Self);
+    tmpItem.Caption := '1分おき';
+    AutoReloadMenu.Add(tmpItem);
+    tmpItem := TBagelActionContainer.Create(Self);
+    tmpItem.Caption := '5分おき';
+    AutoReloadMenu.Add(tmpItem);
+    tmpItem := TBagelActionContainer.Create(Self);
+    tmpItem.Caption := '10分おき';
+    AutoReloadMenu.Add(tmpItem);
+    tmpItem := TBagelActionContainer.Create(Self);
+    tmpItem.Caption := '30分おき';
+    AutoReloadMenu.Add(tmpItem);
+    tmpItem := TBagelActionContainer.Create(Self);
+    tmpItem.Caption := '1時間おき';
+    AutoReloadMenu.Add(tmpItem);
+    tmpItem := TBagelActionContainer.Create(Self);
+    tmpItem.Caption := '-';
+    AutoReloadMenu.Add(tmpItem);
+    tmpItem := TBagelActionContainer.Create(Self);
+    tmpItem.Caption := 'ユーザー設定';
+    AutoReloadMenu.Add(tmpItem);
+  end;
+  
+  procedure CreateCookieMenu(tmpItem: TBagelActionContainer);
+  begin
+    tmpItem := TBagelActionContainer.Create(Self);
+    tmpItem.Caption := 'デフォルトのCookie設定に従う';
+    tmpItem.OnClick := ThisSiteCookieClick;
+    tmpItem.Tag := 0;
+    CookieConfigMenu.Add(tmpItem);
+    tmpItem := TBagelActionContainer.Create(Self);
+    tmpItem.Caption := 'このサイトからのCookieを許可する';
+    tmpItem.OnClick := ThisSiteCookieClick;
+    tmpItem.Tag := 1;
+    CookieConfigMenu.Add(tmpItem);
+    tmpItem := TBagelActionContainer.Create(Self);
+    tmpItem.Caption := 'このサイトからのCookieをセッション間だけ許可';
+    tmpItem.OnClick := ThisSiteCookieClick;
+    tmpItem.Tag := 8;
+    CookieConfigMenu.Add(tmpItem);
+    tmpItem := TBagelActionContainer.Create(Self);
+    tmpItem.Caption := 'このサイトからのCookieを拒否する';
+    tmpItem.OnClick := ThisSiteCookieClick;
+    tmpItem.Tag := 2;
+    CookieConfigMenu.Add(tmpItem);
+    tmpItem := TBagelActionContainer.Create(Self);
+    tmpItem.Caption := '-';
+    CookieConfigMenu.Add(tmpItem);
+  end;
+  
+  procedure CreateSidebarChilds;
+  begin
+    //WebPanel生成
+    WebPanel := TGeckoBrowser.Create(Self);
+    WebPanel.Parent := WebPanelSheet;
+    WebPanel.Align := alClient;
+    WebPanel.Visible := True;
+    WebPanel.OnNewWindow := WebPanelNewWindow;
+    WebPanel.OnDOMClick := WebPanelDOMClick;
+    //BookmarksTree生成
+    BookmarksTree := TBookmarkTreeView.Create(Self);
+    BookmarksTree.Parent := BookmarkSheet;
+    BookmarksTree.Align := alClient;
+    BookmarksTree.Visible := True;
+    BookmarksTree.Images := ImageList1;
+    BookmarksTree.HideSelection := False;
+    BookmarksTree.HotTrack := True;
+    BookmarksTree.RowSelect := True;
+    BookmarksTree.ShowButtons := False;
+    BookmarksTree.ShowLines := False;
+    BookmarksTree.ShowRoot := False;
+    BookmarksTree.DragMode := dmAutomatic;
+    BookmarksTree.OnKeyDown := Self.BookmarksTreeKeyDown;
+    BookmarksTree.OnClick := Self.BookmarksTreeClick;
+    BookmarksTree.OnMouseDown := Self.BookmarksTreeMouseDown;
+    BookmarksTree.OnDragDrop := Self.BookmarksTreeDragDrop;
+    BookmarksTree.OnDragOver := Self.BookmarksTreeDragOver;
+    BookmarksTree.PopupMenu := BookmarksPopup;
+    //GlobalHotkey生成
+    //    GlobalHotkey := TGlobalHotkey.Create(Self);
+    //    hi := GlobalHotkey.Items.Add;
+    //    hi.Hotkey:=TextToHotkey('Alt+F1');
+    //ダウンロードサイドバー生成
+    lvTransfer := TDownloadListView.Create(Self);
+    lvTransfer.Align := alClient;
+    lvTransfer.Parent := DLSheet;
+    lvTransfer.Visible := True;
+    lvTransfer.OnDblClick := lvTransferDblClick;
+    //履歴ツリー生成
+    HistoryTree := THistoryTreeView.Create(Self);
+    HistoryTree.Align := alClient;
+    HistoryTree.Parent := HistorySheet;
+    HistoryTree.Visible := True;
+    HistoryTree.SortingType := hstLastVisited;
+    HistoryTree.OnClick := HistoryItemClicked;
+    HistoryTree.OnMouseDown := HistoryTreeMouseDown;
+    HistoryTree.HideSelection := False;
+    HistoryTree.HotTrack := True;
+    HistoryTree.RowSelect := True;
+    //HistoryTree.DoSearch('e');
+    //ファイルツリー生成
+    FileTreeView := TShellTreeView.Create(Self);
+    FileTreeView.Parent := UsrTabSheet;
+    FileTreeView.HideSelection := false;
+    FileTreeView.BorderStyle := bsNone;
+    FileTreeView.Align := alClient;
+    FileTreeView.OnDblClick := Self.FileTreeViewDblClick;
+    FileTreeView.ObjectTypes := [otFolders, otNonFolders];
+    if Pref.UserDefinedFolder <> '' then
+      FileTreeView.Root := Pref.UserDefinedFolder;
+  end;
+  
+  procedure CreateToolbars;
+  begin
     MainCoolbar := TBagelCoolbar.Create(Self);
     MainCoolbar.Parent := Self;
     MainCoolbar.Align := alTop;
@@ -5588,10 +5709,8 @@ procedure TBagelMainForm.FormCreate(Sender: TObject);
     MenuToolbar.ShowCaptions := True;
     MenuToolbar.AutoSize := True;
     MenuToolbar.OnResize := Self.MenuToolbarResize;
-
     SearchBar.Parent := MainCoolbar;
     //MainCoolbar.Bands[1].Control := Searchbar;
-
     //ControlToolBar生成
     ControlToolbar := TBagelToolBar.Create(Self);
     ControlToolbar.Parent := MainCoolbar;
@@ -5604,10 +5723,8 @@ procedure TBagelMainForm.FormCreate(Sender: TObject);
     ControlToolbar.Wrapable := False;
     ControlToolbar.AutoSize := True;
     ControlToolbar.OnResize := ControlToolbarResize;
-
     LocationBar.Parent := MainCoolbar;
     //MainCoolbar.Bands[3].Control := LocationBar;
-
     //Linkbar生成
     Linkbar := TBagelLinkbar.Create(MainCoolbar);
     Linkbar.Parent := MainCoolbar;
@@ -5618,23 +5735,37 @@ procedure TBagelMainForm.FormCreate(Sender: TObject);
     Linkbar.Images := Self.ImageList1;
     Linkbar.Wrapable := False;
     Linkbar.OnResize := LinkbarResize;
-
     //TabControl生成
     TabControl := TTabbedToolbar.Create(MainCoolbar);
     TabControl.Parent := MainCoolbar;
     //MainCoolbar.Bands[5].Control := TabControl;
     TabControl.Visible := True;
-    TabControl.DoubleBuffered:=true;
-    TabControl.OnChange    := Self.TabControlChange;
-    TabControl.OnDrawTab   := Self.TabControlDrawTab;
+    TabControl.DoubleBuffered := true;
+    TabControl.OnChange := Self.TabControlChange;
+    TabControl.OnDrawTab := Self.TabControlDrawTab;
     TabControl.OnMouseMove := Self.TabControlMouseMove;
-    TabControl.OnDragOver  := Self.TabControlDragOver;
-    TabControl.OnDblClick  := Self.TabControlDblClick;
-    TabControl.OnMouseDown   := Self.TabControlMouseDown;
-    TabControl.OnMouseUp   :=Self.TabControlMouseUp;
-    TabControl.OnDragDrop  :=Self.TabControlDragDrop;
-//    TabControl.OnContextPopup :=
-    TabControl.PopupMenu   := Self.TabPopup;
+    TabControl.OnDragOver := Self.TabControlDragOver;
+    TabControl.OnDblClick := Self.TabControlDblClick;
+    TabControl.OnMouseDown := Self.TabControlMouseDown;
+    TabControl.OnMouseUp := Self.TabControlMouseUp;
+    TabControl.OnDragDrop := Self.TabControlDragDrop;
+    //    TabControl.OnContextPopup :=
+    TabControl.PopupMenu := Self.TabPopup;
+  end;
+  procedure CreateControls;
+  var
+    i:Integer;
+//    hi:THotkeyItem;
+    tmpItem:TBagelActionContainer;
+  begin
+
+    GeckoPopup := TBagelPopupMenu.Create(Self);
+    GeckoPopup.Name := 'GeckoPopup';
+
+    TabPopup := TBagelPopupMenu.Create(Self);
+    TabPopup.Name := 'TabPopup';
+    
+    CreateToolbars;
 
     //Profile
     SimpleProfile := TGeckoSimpleProfile.Create(Self);
@@ -5674,64 +5805,8 @@ procedure TBagelMainForm.FormCreate(Sender: TObject);
     ProgressBar.Height := StatusBar.Height-2;
     ProgressBar.Smooth:=true;
     ProgressBar.DoubleBuffered:=true;
-    //WebPanel生成
-    WebPanel := TGeckoBrowser.Create(Self);
-    WebPanel.Parent := WebPanelSheet;
-    WebPanel.Align := alClient;
-    WebPanel.Visible := True;
-    WebPanel.OnNewWindow:=WebPanelNewWindow;
-    WebPanel.OnDOMClick := WebPanelDOMClick;
-    //BookmarksTree生成
-    BookmarksTree := TBookmarkTreeView.Create(Self);
-    BookmarksTree.Parent      := BookmarkSheet;
-    BookmarksTree.Align       := alClient;
-    BookmarksTree.Visible     := True;
-    BookmarksTree.Images      := ImageList1;
-    BookmarksTree.HideSelection := False;
-    BookmarksTree.HotTrack    := True;
-    BookmarksTree.RowSelect   := True;
-    BookmarksTree.ShowButtons := False;
-    BookmarksTree.ShowLines   := False;
-    BookmarksTree.ShowRoot    := False;
-    BookmarksTree.DragMode    := dmAutomatic;
-    BookmarksTree.OnKeyDown   := Self.BookmarksTreeKeyDown;
-    BookmarksTree.OnClick     := Self.BookmarksTreeClick;
-    BookmarksTree.OnMouseDown := Self.BookmarksTreeMouseDown;
-    BookmarksTree.OnDragDrop  := Self.BookmarksTreeDragDrop;
-    BookmarksTree.OnDragOver  := Self.BookmarksTreeDragOver;
-    BookmarksTree.PopupMenu   := BookmarksPopup;
-    //GlobalHotkey生成
-//    GlobalHotkey := TGlobalHotkey.Create(Self);
-//    hi := GlobalHotkey.Items.Add;
-//    hi.Hotkey:=TextToHotkey('Alt+F1');
-    //ダウンロードサイドバー生成
-    lvTransfer := TDownloadListView.Create(Self);
-    lvTransfer.Align := alClient;
-    lvTransfer.Parent := DLSheet;
-    lvTransfer.Visible := True;
-    lvTransfer.OnDblClick := lvTransferDblClick;
-    //履歴ツリー生成
-    HistoryTree := THistoryTreeView.Create(Self);
-    HistoryTree.Align := alClient;
-    HistoryTree.Parent := HistorySheet;
-    HistoryTree.Visible := True;
-    HistoryTree.SortingType := hstLastVisited;
-    HistoryTree.OnClick := HistoryItemClicked;
-    HistoryTree.OnMouseDown := HistoryTreeMouseDown;
-    HistoryTree.HideSelection := False;
-    HistoryTree.HotTrack    := True;
-    HistoryTree.RowSelect   := True;
-    //HistoryTree.DoSearch('e');
-    //ファイルツリー生成
-    FileTreeView:=TShellTreeView.Create(Self);
-    FileTreeView.Parent := UsrTabSheet;
-    FileTreeView.HideSelection:=false;
-    FileTreeView.BorderStyle:=bsNone;
-    FileTreeView.Align:=alClient;
-    FileTreeView.OnDblClick:=Self.FileTreeViewDblClick;
-    FileTreeView.ObjectTypes := [otFolders,otNonFolders];
-    if Pref.UserDefinedFolder<>'' then
-      FileTreeView.Root := Pref.UserDefinedFolder;
+    
+    CreateSidebarChilds;
 
     swProxySelector:=TStatusWidget.Create(Self);
     swProxySelector.Visible := False;
@@ -5755,43 +5830,8 @@ procedure TBagelMainForm.FormCreate(Sender: TObject);
     BookmarkMenu.Name := 'BookmarkMenu';
     BookmarkMenu.Caption := 'ブックマーク(&B)';
     BookmarkMenu.OnClick := BookmarkMenuClick;
-
-    AutoReloadMenu := TBagelActionContainer.Create(Self);
-    AutoReloadMenu.Name := 'AutoReloadMenu';
-    AutoReloadMenu.Caption := '自動再読み込み';
-    tmpItem := TBagelActionContainer.Create(Self);
-    tmpItem.Caption := 'なし';
-    AutoReloadMenu.Add(tmpItem);
-    tmpItem := TBagelActionContainer.Create(Self);
-    tmpItem.Caption := '5秒おき';
-    AutoReloadMenu.Add(tmpItem);
-    tmpItem := TBagelActionContainer.Create(Self);
-    tmpItem.Caption := '10秒おき';
-    AutoReloadMenu.Add(tmpItem);
-    tmpItem := TBagelActionContainer.Create(Self);
-    tmpItem.Caption := '30秒おき';
-    AutoReloadMenu.Add(tmpItem);
-    tmpItem := TBagelActionContainer.Create(Self);
-    tmpItem.Caption := '1分おき';
-    AutoReloadMenu.Add(tmpItem);
-    tmpItem := TBagelActionContainer.Create(Self);
-    tmpItem.Caption := '5分おき';
-    AutoReloadMenu.Add(tmpItem);
-    tmpItem := TBagelActionContainer.Create(Self);
-    tmpItem.Caption := '10分おき';
-    AutoReloadMenu.Add(tmpItem);
-    tmpItem := TBagelActionContainer.Create(Self);
-    tmpItem.Caption := '30分おき';
-    AutoReloadMenu.Add(tmpItem);
-    tmpItem := TBagelActionContainer.Create(Self);
-    tmpItem.Caption := '1時間おき';
-    AutoReloadMenu.Add(tmpItem);
-    tmpItem := TBagelActionContainer.Create(Self);
-    tmpItem.Caption := '-';
-    AutoReloadMenu.Add(tmpItem);
-    tmpItem := TBagelActionContainer.Create(Self);
-    tmpItem.Caption := 'ユーザー設定';
-    AutoReloadMenu.Add(tmpItem);
+    
+    CreateAutoReloadMenu;
 
     TabSecurityMenu := TBagelActionContainer.Create(Self);
     TabSecurityMenu.Name := 'TabSecurityMenu';
@@ -5816,34 +5856,7 @@ procedure TBagelMainForm.FormCreate(Sender: TObject);
     CookieConfigMenu.Name := 'CookieConfigMenu';
     CookieConfigMenu.Caption := 'Cookieマネージャ';
     CookieConfigMenu.OnClick := CookieConfigMenuClick;
-
-    tmpItem := TBagelActionContainer.Create(Self);
-    tmpItem.Caption := 'デフォルトのCookie設定に従う';
-    tmpItem.OnClick := ThisSiteCookieClick;
-    tmpItem.Tag := 0;
-    CookieConfigMenu.Add(tmpItem);
-
-    tmpItem := TBagelActionContainer.Create(Self);
-    tmpItem.Caption := 'このサイトからのCookieを許可する';
-    tmpItem.OnClick := ThisSiteCookieClick;
-    tmpItem.Tag := 1;
-    CookieConfigMenu.Add(tmpItem);
-
-    tmpItem := TBagelActionContainer.Create(Self);
-    tmpItem.Caption := 'このサイトからのCookieをセッション間だけ許可';
-    tmpItem.OnClick := ThisSiteCookieClick;
-    tmpItem.Tag := 8;
-    CookieConfigMenu.Add(tmpItem);
-
-    tmpItem := TBagelActionContainer.Create(Self);
-    tmpItem.Caption := 'このサイトからのCookieを拒否する';
-    tmpItem.OnClick := ThisSiteCookieClick;
-    tmpItem.Tag := 2;
-    CookieConfigMenu.Add(tmpItem);
-
-    tmpItem := TBagelActionContainer.Create(Self);
-    tmpItem.Caption := '-';
-    CookieConfigMenu.Add(tmpItem);
+    CreateCookieMenu(tmpItem);
 
     actPopupDisableDuringLoad := TGeckoPrefAction.Create(Self);
     actPopupDisableDuringLoad.Name := 'actPopupDisableDuringLoad';

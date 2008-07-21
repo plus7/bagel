@@ -3,55 +3,61 @@
 interface
 
 uses
+  //Delphi
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, ComCtrls, StdCtrls, ToolWin, Buttons, StdActns,
-  ActnList, ActnMan, ActnCtrls, XPStyleActnCtrls, XPMan, StdStyleActnCtrls,Clipbrd,
-  ImgList, AboutBagel, Menus, AppEvnts, TabbedToolBar, BagelPref,
-  {GlobalHotkey,} ShellCtrls, BrwsFldr, StatusWidget, (*ActnGen,*)
-
-  nsInit,  BagelBrowser, nsXPCOM, nsDOMEvent,
-  nsXPCOMGlue,  GeckoBrowser, nsGeckoStrings, nsNetUtil,
-  BrowserSupports, nsPerm, nsFileProtocolHandler,nsTextToURI,
-  nsMemory, nsStyleSheetService, nsDocumentCharsetInfo,
-  nsAtom, nsFind, nsDOM, nsSelection,  nsSHistory, nsCache,
-  nsDownload, //nsIDownload
-  nsGlobalHistory, //nsIGlobalHistory2
-  nsPlaces, //History, Bookmark
-  nsDocShell, //nsIDocShell
-  nsPrintSettingsService, //nsIPrintSettingService
-  GeckoSimpleProfile, //Profile
-  GeckoSimpleHALDialog, //Helper Application Dialog
-  GeckoSimplePrompt, //Prompt Service
-  StyleSheetUtils, //CSS関連のユーティリティー関数
-  DOMUtils, //DOM関連のユーティリティー関数
-  WindowUtils, //nsIDOMWindow関連のユーティリティー関数
-  SelectionUtils, //Selection関係
-  TKMigemo, //Migemo
-  LoginManagerPrompter, //nsILoginManagerPrompterの実装
-
+  ActnList, ActnMan, ActnCtrls, XPStyleActnCtrls, XPMan, StdStyleActnCtrls,
+  Clipbrd, ImgList, Menus, AppEvnts, ShellCtrls, IniFiles,
   ActiveX,          //OleInitialize
-  buinIntelliMouse, //マウス関連の定数
-  StrUtils,         //AnsiEndsStr
-  CommandAction,    //Bagel独自のアクション
-  ScriptAction,
-  SkRegExpW,         //正規表現
-  unique,           //二重起動防止
-  NkMemIniFile,     //速いMemIniFile
   ShellAPI,         //ShellExecute
   CommCtrl,         //TReBarBandInfo
   ShlObj,           //SHGetSpecialFolderPath
-  SplitJoin,        //文字列の連結と分離
+  StrUtils,         //AnsiEndsStr
+  
+  //Gecko Components
+  nsInit, nsXPCOM, nsXPCOMGlue, nsGeckoStrings, nsNetUtil, GeckoBrowser,
+  BrowserSupports, nsMemory,
+
+  //Additional Gecko Components
+  GeckoSimpleProfile, GeckoSimpleHALDialog, GeckoSimplePrompt, 
+  LoginManagerPrompter, //nsILoginManagerPrompterの実装
+  StyleSheetUtils,      //CSS関連のユーティリティー関数
+  DOMUtils,             //DOM関連のユーティリティー関数
+  WindowUtils,          //nsIDOMWindow関連のユーティリティー関数
+  SelectionUtils,       //Selection関連のユーティリティー関数
+  ContentAreaUtils,     //保存関連のユーティリティー関数
+
+  //Gecko Interfaces
+  nsAtom, nsCache, nsDocumentCharsetInfo, nsDocShell, nsDOM, nsDOMEvent,
+  nsDownload, nsFileProtocolHandler, nsFind, nsGlobalHistory, nsPerm,
+  nsPlaces, nsPrintSettingsService, nsSelection, nsSHistory, nsStyleSheetService,
+  nsTextToURI,
+
+  //Bagel Components
+  BagelBrowser, TabbedToolBar, BagelPref, AboutBagel, UBookmark,
   BookmarkListView, //ブックマーク用ウィジェット
   BookmarkTreeView,
   DownloadListView, //Downloader
   HistoryTreeView,  //履歴ツリー
+  BagelActnMan,
+  BagelToolbar,
+  UTabList,         //タブのセッション
+  CommandAction,    //Bagel独自のアクション
+  ScriptAction,
   AutoExec,
-  IniFiles,UBookmark,
-  BagelActnMan,BagelToolbar,
-  UTabList, //タブのセッション
-  NkDropTarget, //検索バーをドロップターゲットにする
-  ContentAreaUtils //保存関連のUtils
+  StatusWidget,
+  
+  //3rd party Components
+  TKMigemo,         //Migemo
+  SplitJoin,        //文字列の連結と分離
+  buinIntelliMouse, //マウス関連の定数
+  SkRegExpW,        //正規表現
+  unique,           //二重起動防止
+  NkMemIniFile,     //速いMemIniFile
+  NkDropTarget,     //検索バーをドロップターゲットにする
+  BrwsFldr
   ;
+
 
 const
   NOPROXY = '直接接続';

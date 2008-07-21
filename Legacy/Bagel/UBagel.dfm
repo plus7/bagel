@@ -364,6 +364,10 @@ object BagelMainForm: TBagelMainForm
               Caption = #12502#12483#12463#12510#12540#12463
               ImageIndex = 6
               TabVisible = False
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel5: TPanel
                 Left = 0
                 Top = 0
@@ -388,6 +392,10 @@ object BagelMainForm: TBagelMainForm
               Caption = #23653#27508
               ImageIndex = 1
               TabVisible = False
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel7: TPanel
                 Left = 0
                 Top = 21
@@ -441,6 +449,10 @@ object BagelMainForm: TBagelMainForm
               Caption = #12522#12531#12463
               ImageIndex = 2
               TabVisible = False
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel4: TPanel
                 Left = 0
                 Top = 20
@@ -636,6 +648,10 @@ object BagelMainForm: TBagelMainForm
               Caption = 'Grep'
               ImageIndex = 5
               TabVisible = False
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel6: TPanel
                 Left = 0
                 Top = 0
@@ -707,6 +723,10 @@ object BagelMainForm: TBagelMainForm
               Caption = 'Web'#12497#12493#12523
               ImageIndex = 4
               TabVisible = False
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object XPToolBar1: TToolBar
                 Left = 0
                 Top = 0
@@ -897,6 +917,10 @@ object BagelMainForm: TBagelMainForm
               Caption = #12480#12454#12531#12525#12540#12480
               ImageIndex = 8
               TabVisible = False
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object ToolBar3: TToolBar
                 Left = 0
                 Top = 0
@@ -976,6 +1000,10 @@ object BagelMainForm: TBagelMainForm
               Caption = 'OutPut'
               ImageIndex = 9
               TabVisible = False
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object lstOutPut: TListBox
                 Left = 0
                 Top = 0
@@ -992,6 +1020,10 @@ object BagelMainForm: TBagelMainForm
               Caption = #12518#12540#12470#12540#23450#32681
               ImageIndex = 10
               TabVisible = False
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object ToolBar1: TToolBar
                 Left = 0
                 Top = 0

@@ -1558,8 +1558,13 @@ begin
   Result := FWebBrowser as nsIWebBrowserFind;
 end;
 function TCustomGeckoBrowser.GetWebBrowserPrint: nsIWebBrowserPrint;
+var
+  ir:nsIInterfaceRequestor;
+  wbp:nsIWebBrowserPrint;
 begin
-  Result := FWebBrowser as nsIWebBrowserPrint;
+  ContentWindow.QueryInterface(nsIInterfaceRequestor,ir);
+  ir.GetInterface(nsIWebBrowserPrint, wbp);
+  Result := wbp;
 end;
 function TCustomGeckoBrowser.GetWebNavigation: nsIWebNavigation;
 begin

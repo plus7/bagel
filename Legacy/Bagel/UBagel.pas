@@ -3347,8 +3347,19 @@ end;
 
 procedure TBagelMainForm.actPrintPreviewExecute(Sender: TObject);
 begin
-  DoPrintPreview;
-  PrepareForPP;
+  if actPrintPreview.Checked then begin
+    PrepareForPP;
+    try
+      DoPrintPreview;
+    except
+      RestorePrePPState;
+      actPrintPreview.Checked := False;
+    end;
+  end
+  else begin
+    RestorePrePPState;
+    ExitPrintPreview;
+  end;
 end;
 
 procedure TBagelMainForm.actQuitExecute(Sender: TObject);
@@ -7167,14 +7178,11 @@ begin
   b:=GetCurrentBrowser;
   if b=nil then Exit;
   //actPrintPreview.Checked:=not actprintPreview.checked;
-  //if actprintPreview.Checked then begin
-
-
+  if actprintPreview.Checked then begin
     Print:=b.WebBrowserPrint;
     ps:=GetPrintSettings;
-
     Print.PrintPreview(ps,nil,nil);
-  //end;
+  end;
 end;
 procedure TBagelMainForm.edtMemoSearchChange(Sender: TObject);
 begin

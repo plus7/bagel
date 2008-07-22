@@ -5250,8 +5250,7 @@ end;
 
 procedure TBagelMainForm.btnPPCloseClick(Sender: TObject);
 begin
-  ExitPrintPreview;
-  RestorePrePPState;
+  actPrintPreview.Execute;
 end;
 
 {ブラウザのURIが変わった}

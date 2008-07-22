@@ -1908,7 +1908,7 @@ procedure TBagelMainForm.actClearHistoryExecute(Sender: TObject);
 var
   browserHistory:nsIBrowserHistory;
 begin
-  NS_GetService('@mozilla.org/browser/global-history;2',nsIBrowserHistory,browserHistory);
+  NS_GetService('@mozilla.org/browser/nav-history-service;1',nsIBrowserHistory,browserHistory);
   browserHistory.RemoveAllPages;
 end;
 

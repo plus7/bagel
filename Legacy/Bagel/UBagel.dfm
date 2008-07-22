@@ -1029,8 +1029,6 @@ object BagelMainForm: TBagelMainForm
       Align = alClient
       AutoSize = True
       BevelOuter = bvNone
-      BorderWidth = 1
-      BorderStyle = bsSingle
       Color = clAppWorkSpace
       TabOrder = 3
       OnResize = ViewPanelResize
@@ -1145,9 +1143,9 @@ object BagelMainForm: TBagelMainForm
         end
       end
       object NotificationPanel: TPanel
-        Left = 1
-        Top = 1
-        Width = 460
+        Left = 0
+        Top = 0
+        Width = 466
         Height = 25
         Align = alTop
         BevelEdges = []
@@ -1155,6 +1153,10 @@ object BagelMainForm: TBagelMainForm
         Caption = 'LoginPrompt'
         Color = clInfoBk
         TabOrder = 2
+        Visible = False
+        ExplicitLeft = 1
+        ExplicitTop = 1
+        ExplicitWidth = 464
       end
     end
     object LocationBar: TToolBar

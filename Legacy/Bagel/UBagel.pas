@@ -6246,6 +6246,8 @@ begin
   if Assigned(FMigemoObj) then FMigemoObj.Free;
   
   StatusWidgetList.Free;
+  
+  SearchBoxDropTarget.Free;
 
   //プロファイルのクローズ
   SimpleProfile.Free;

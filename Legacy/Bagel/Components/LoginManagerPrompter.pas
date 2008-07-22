@@ -174,7 +174,9 @@ end;
 
 procedure TermLoginPromptFactory;
 begin
+  sLoginPromptFactory._Release;
   sLoginPromptFactory := nil;
+  GRE_Shutdown;
 end;
 
 initialization
@@ -182,7 +184,7 @@ initialization
   InitLoginPromptFactory;
 
 finalization
-  TermLoginPromptFactory;
   LoginPromptListener.Free;
+  TermLoginPromptFactory;
 
 end.

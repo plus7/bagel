@@ -111,8 +111,10 @@ begin
   if not (csDesigning in ComponentState) then
   begin
     Dec(sRefCnt);
-    if sRefCnt=0 then
+    if sRefCnt=0 then begin
+      sHALDialogFactory._Release;
       sHALDialogFactory := nil;
+    end;
   end;
 
   inherited;

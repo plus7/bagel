@@ -121,8 +121,10 @@ begin
   if not (csDesigning in ComponentState) then
   begin
     Dec(sRefCnt);
-    if sRefCnt=0 then
+    if sRefCnt=0 then begin
+      sPromptFactory._Release;
       sPromptFactory := nil;
+    end;
   end;
 
   inherited;

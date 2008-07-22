@@ -976,6 +976,7 @@ type
     function GetISearchMode:Integer;
     procedure actPageUpExecute(Sender: TObject);
     procedure actPageDownExecute(Sender: TObject);
+    procedure UsrTabSheetShow(Sender: TObject);
   protected
     procedure CreateWnd; override;
     procedure DestroyWnd; override;
@@ -5719,16 +5720,6 @@ procedure TBagelMainForm.FormCreate(Sender: TObject);
     HistoryTree.HotTrack := True;
     HistoryTree.RowSelect := True;
     //HistoryTree.DoSearch('e');
-    //ファイルツリー生成
-    FileTreeView := TShellTreeView.Create(Self);
-    FileTreeView.Parent := UsrTabSheet;
-    FileTreeView.HideSelection := false;
-    FileTreeView.BorderStyle := bsNone;
-    FileTreeView.Align := alClient;
-    FileTreeView.OnDblClick := Self.FileTreeViewDblClick;
-    FileTreeView.ObjectTypes := [otFolders, otNonFolders];
-    if Pref.UserDefinedFolder <> '' then
-      FileTreeView.Root := Pref.UserDefinedFolder;
   end;
   
   procedure CreateToolbars;
@@ -9862,6 +9853,24 @@ begin
     EngineBox.AddItem(Pref.Engines.Values[name],nil);
   end;
   EngineBox.ItemIndex := 1;
+end;
+
+procedure TBagelMainForm.UsrTabSheetShow(Sender: TObject);
+begin
+  //ファイルツリービューはファイル数に比例して生成がどんどん遅くなるので遅延生成する
+  if (PageControl1.Pages[PageControl1.ActivePageIndex] = UsrTabSheet)
+     and (not Assigned(FileTreeView)) then begin
+    //ファイルツリー生成
+    FileTreeView := TShellTreeView.Create(Self);
+    FileTreeView.Parent := UsrTabSheet;
+    FileTreeView.HideSelection := false;
+    FileTreeView.BorderStyle := bsNone;
+    FileTreeView.Align := alClient;
+    FileTreeView.OnDblClick := Self.FileTreeViewDblClick;
+    FileTreeView.ObjectTypes := [otFolders, otNonFolders];
+    if Pref.UserDefinedFolder <> '' then
+      FileTreeView.Root := Pref.UserDefinedFolder;
+  end;
 end;
 
 procedure TBagelMainForm.SSSMenuClick(Sender: TObject);

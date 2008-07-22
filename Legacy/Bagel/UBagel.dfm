@@ -992,6 +992,7 @@ object BagelMainForm: TBagelMainForm
               Caption = #12518#12540#12470#12540#23450#32681
               ImageIndex = 10
               TabVisible = False
+              OnShow = UsrTabSheetShow
               object ToolBar1: TToolBar
                 Left = 0
                 Top = 0

@@ -11,7 +11,7 @@ uses
   {ShellCtrls,} ActnList,nsGeckoStrings,nsPerm,nsNetUtil, Menus, ShlObj, Registry,
   ImgList, {ColorGrd,} BrwsFldr, IniFiles, SearchListItem, USearchEdit, nsPref, nsInit;
 
-type
+type                                                      
 
 
 

@@ -80,7 +80,7 @@ object BagelSettingForm: TBagelSettingForm
     Top = 4
     Width = 489
     Height = 361
-    ActivePage = TabSheet3
+    ActivePage = TabSheet2
     MultiLine = True
     ParentShowHint = False
     ShowHint = False

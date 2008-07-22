@@ -5727,6 +5727,7 @@ procedure TBagelMainForm.FormCreate(Sender: TObject);
     MainCoolbar.Parent := Self;
     MainCoolbar.Align := alTop;
     MainCoolbar.AutoSize := True;
+    MainCoolbar.EdgeBorders := [];
     //MenuToolBar生成
     MenuToolbar := TBagelToolBar.Create(Self);
     MenuToolbar.Parent := MainCoolbar;

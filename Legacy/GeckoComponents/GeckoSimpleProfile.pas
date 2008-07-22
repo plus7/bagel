@@ -112,8 +112,10 @@ begin
     SavePreferences;
 
     Dec(sRefCnt);
-    if sRefCnt=0 then
+    if sRefCnt=0 then begin
+      sProfileDirServiceProvider._Release;
       sProfileDirServiceProvider := nil;
+    end;
   end;
 
   inherited;

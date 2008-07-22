@@ -65,7 +65,6 @@ program Bagel;
 {%TogetherDiagram 'ModelSupport_Bagel\AboutBagel\default.txvpck'}
 
 uses
-  ShareMem,
   Forms,
   UBagel in 'UBagel.pas' {BagelMainForm},
   Version in 'Version.pas',

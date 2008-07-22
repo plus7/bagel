@@ -2470,23 +2470,26 @@ procedure TBagelMainForm.actFullScreenExecute(Sender: TObject);
 var
   dwStyle: DWORD;         //ウィンドウスタイル
 begin
-
   if TAction(Sender).Checked=true then
   begin
+    //もともとのWindowの位置を保存
     mSelfLeft:= Self.Left;
     mSelfTop := Self.Top ;
     mSelfWidth := Self.Width;
     mSelfHeight := Self.Height;
+
     //現在のフォームのスタイルからキャプションと縁を除く
     dwStyle := GetWindowLong(Self.Handle, GWL_STYLE);
     dwStyle := dwStyle xor (WS_CAPTION or WS_THICKFRAME);
     SetWindowLong(Self.Handle, GWL_STYLE, dwStyle);
 
+    //Windowを画面いっぱいに
     Self.Left := 0;
     Self.Top := 0;
     Self.Width := Screen.Width;
     Self.Height := Screen.Height;
 
+    //もともとのバーの表示状況を保存
     mKioskTabBarVisible    :=TabControl.Visible;
     mKioskSearchBarVisible :=SearchBar.Visible;
     mKioskLinkBarVisible   :=LinkBar.Visible;
@@ -2494,15 +2497,8 @@ begin
     mKioskMainBarVisible   :=ControlToolbar.Visible;
     mKioskMenuBarVisible   :=MenuToolbar.Visible;
     mKioskStatusBarVisible :=StatusBar.Visible;
-  //  MainCoolbar.Bands.FindBand(TabControl).Visible
 
-  {  TabControl.Visible   := Pref.KioskTabBarVisible;
-    SearchBar.Visible     := Pref.KioskSearchBarVisible;
-    LinkBar.Visible       := Pref.KioskLinkBarVisible;
-    URLbar.Visible        := Pref.KioskAddressBarVisible;
-    ControlToolbar.Visible:= Pref.KioskMainBarVisible;
-    MenuToolbar.Visible   := Pref.KioskMenuBarVisible;}
-
+    //全画面表示時の設定を適用
     StatusBar.Visible    := Pref.KioskStatusBarVisible;
     MainCoolbar.Bands.FindBand(TabControl).Visible := Pref.KioskTabBarVisible;
     MainCoolbar.Bands.FindBand(SearchBar).Visible := Pref.KioskSearchBarVisible;
@@ -2510,7 +2506,6 @@ begin
     MainCoolbar.Bands.FindBand(LocationBar).Visible := Pref.KioskAddressBarVisible;
     MainCoolbar.Bands.FindBand(ControlToolbar).Visible := Pref.KioskMainBarVisible;
     MainCoolbar.Bands.FindBand(MenuToolbar).Visible := Pref.KioskMenuBarVisible;
-
   end
   else begin
     //現在のフォームのスタイルにキャプションと縁を加える
@@ -2518,17 +2513,13 @@ begin
     dwStyle := dwStyle xor (WS_CAPTION or WS_THICKFRAME);
     SetWindowLong(Self.Handle, GWL_STYLE, dwStyle);
 
+    //Windowの位置を復帰
     Self.Left:= mSelfLeft;
     Self.Top := mSelfTop ;
     Self.Width := mSelfWidth;
     Self.Height := mSelfHeight;
 
-  {  TabControl.Visible   := mKioskTabBarVisible;
-    SearchBar.Visible     := mKioskSearchBarVisible;
-    LinkBar.Visible       := mKioskLinkBarVisible;
-    URLbar.Visible        := mKioskAddressBarVisible;
-    ControlToolbar.Visible:= mKioskMainBarVisible;
-    MenuToolbar.Visible   := mKioskMenuBarVisible;}
+    //バーの表示状況を復帰
     MainCoolbar.Bands.FindBand(TabControl).Visible   := mKioskTabBarVisible;
     MainCoolbar.Bands.FindBand(SearchBar).Visible     := mKioskSearchBarVisible;
     MainCoolbar.Bands.FindBand(LinkBar).Visible       := mKioskLinkBarVisible;
@@ -2537,8 +2528,6 @@ begin
     MainCoolbar.Bands.FindBand(MenuToolbar).Visible   := mKioskMenuBarVisible;
     StatusBar.Visible    := mKioskStatusBarVisible;
   end;
-  //bsSizable
-  //[biSystemMenu,biMinimize,biMaximize]
 end;
 
 //戻る

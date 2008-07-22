@@ -16,6 +16,7 @@
     actShowIEImportForm,Internet Explorerのお気に入りのインポート,0,0
   <
   -
+  actShowPageSetup,ページ設定...,,0
   actPrintPreview,印刷プレビュー...,,0
   actPrint,印刷,,0
   -

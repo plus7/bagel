@@ -124,6 +124,7 @@ uses
 {$R *.res}
 
 begin
+  ReportMemoryLeaksOnShutdown := True; 
   Application.Initialize;
   Application.CreateForm(TBagelMainForm, BagelMainForm);
   Application.Run;

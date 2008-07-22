@@ -5853,23 +5853,23 @@ procedure TBagelMainForm.FormCreate(Sender: TObject);
     
     CreateSidebarChilds;
 
-    swProxySelector:=TStatusWidget.Create(Self);
+    {swProxySelector:=TStatusWidget.Create(Self);
     swProxySelector.Visible := False;
     swProxySelector.Caption:=NOPROXY;
     swProxySelector.Name:='swProxySelector';
     swProxySelector.ImageIndex:=-1;
-    swProxySelector.ShowCaption:=true;
+    swProxySelector.ShowCaption:=true;}
     //swProxySelector.Style:=1;//selector
     //swProxySelector.Width:=200;
     //swProxySelector.Left:=0;
     //swProxySelector.ImageList:=StatusImageList;
 
-    swAgentSelector:=TStatusWidget.Create(Self);
+    {swAgentSelector:=TStatusWidget.Create(Self);
     swAgentSelector.Visible := False;
     swAgentSelector.Caption:=NOOVERRIDEAGENT;
     swAgentSelector.Name:='swAgentSelector';
     swAgentSelector.ImageIndex:=-1;
-    swAgentSelector.ShowCaption:=true;
+    swAgentSelector.ShowCaption:=true;}
 
     BookmarkMenu := TBagelBookmarkContainer.Create(Self);
     BookmarkMenu.Name := 'BookmarkMenu';
@@ -6246,6 +6246,8 @@ begin
   if Assigned(FMigemoObj) then FMigemoObj.Free;
   
   StatusWidgetList.Free;
+  //swProxySelector.Free;
+  //swAgentSelector.Free;
   
   SearchBoxDropTarget.Free;
 

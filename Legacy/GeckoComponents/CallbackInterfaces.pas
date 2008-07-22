@@ -182,4 +182,10 @@ begin
   Result := HRESULT(NS_ERROR_FAILURE);
 end;
 
+initialization
+
+finalization
+  if Assigned(sTargets) then
+    sTargets.Free;
+
 end.

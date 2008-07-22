@@ -977,6 +977,8 @@ type
     procedure actPageUpExecute(Sender: TObject);
     procedure actPageDownExecute(Sender: TObject);
     procedure UsrTabSheetShow(Sender: TObject);
+    procedure actToggleSidebarVisibleClick(Sender: TObject);
+    procedure SidebarCloseButtonClick(Sender: TObject);
   protected
     procedure CreateWnd; override;
     procedure DestroyWnd; override;
@@ -7787,6 +7789,16 @@ begin
 end;
 
 {スプリッタの動作}
+procedure TBagelMainForm.actToggleSidebarVisibleClick(Sender: TObject);
+begin
+  actToggleSidebarVisible.Execute;
+end;
+
+procedure TBagelMainForm.SidebarCloseButtonClick(Sender: TObject);
+begin
+  actToggleSidebarVisible.Execute;
+end;
+
 procedure TBagelMainForm.SidebarHeaderButtonbarResize(Sender: TObject);
 begin
   if SidebarHeaderButtonbar.Height+4<>SidebarHeaderPanel.Height then

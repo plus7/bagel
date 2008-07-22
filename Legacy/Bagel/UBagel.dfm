@@ -321,7 +321,7 @@ object BagelMainForm: TBagelMainForm
               Layout = blGlyphBottom
               ParentFont = False
               Spacing = 0
-              OnClick = actToggleSidebarVisibleExecute
+              OnClick = SidebarCloseButtonClick
             end
           end
         end

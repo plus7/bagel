@@ -980,7 +980,6 @@ type
     procedure UsrTabSheetShow(Sender: TObject);
     procedure actToggleSidebarVisibleClick(Sender: TObject);
     procedure SidebarCloseButtonClick(Sender: TObject);
-    procedure EditUI(PContainer:PBagelActionContainer; FileName:String; UI:IBagelUI);
   protected
     procedure CreateWnd; override;
     procedure DestroyWnd; override;
@@ -9871,8 +9870,7 @@ end;
 procedure TBagelMainForm.UsrTabSheetShow(Sender: TObject);
 begin
   //ファイルツリービューはファイル数に比例して生成がどんどん遅くなるので遅延生成する
-  if (PageControl1.Pages[PageControl1.ActivePageIndex] = UsrTabSheet)
-     and (not Assigned(FileTreeView)) then begin
+  if (not Assigned(FileTreeView)) then begin
     //ファイルツリー生成
     FileTreeView := TShellTreeView.Create(Self);
     FileTreeView.Parent := UsrTabSheet;

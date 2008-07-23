@@ -1,3 +1,7 @@
 *.dcu
 *.*~
 #*#
+*.local
+*.cfg
+*.identcache
+*.exe

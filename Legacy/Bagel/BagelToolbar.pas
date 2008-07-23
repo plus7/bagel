@@ -27,6 +27,15 @@ type
 	TNMRebarChevron = tagNMRebarChevron;
   TChevronClickEvent = procedure(Sender: TObject; RebarChevron: PNMRebarChevron) of object;
 
+  IBagelUI = interface;
+
+  IBagelUI = interface(IInterface)
+  ['{06D75C06-9967-41b7-867A-F05701547499}']
+    function  GetContainer:TBagelActionContainer;
+    procedure SetContainer(Value:TBagelActionContainer);
+    property Container:TBagelActionContainer read GetContainer write SetContainer;
+  end;
+
   TBagelCoolbar = class(TCoolbar)
   private
     FOnChevronClick: TChevronClickEvent;
@@ -37,58 +46,63 @@ type
     property OnChevronClick: TChevronClickEvent read FOnChevronClick write FOnChevronClick;
   end;
 
-  TBagelMenuItem = class(TMenuItem)
+  TBagelMenuItem = class(TMenuItem,IBagelUI)
   private
     FContainer:TBagelActionContainer;
+    function  GetContainer:TBagelActionContainer;
     procedure SetContainer(Value:TBagelActionContainer);
   public
     property Container:TBagelActionContainer
-      read FContainer write SetContainer;
+      read GetContainer write SetContainer;
     procedure Click; override;
   end;
 
-  TBagelPopupMenu = class (TPopupMenu)
+  TBagelPopupMenu = class (TPopupMenu,IBagelUI)
   private
     FContainer:TBagelActionContainer;
     FShowFlags:Integer;
+    function  GetContainer:TBagelActionContainer;
     procedure SetContainer(Value:TBagelActionContainer);
     procedure Refresh;
   public
     property Container:TBagelActionContainer
-      read FContainer write SetContainer;
+      read GetContainer write SetContainer;
     property ShowFlags:Integer read FShowFlags write FShowFlags default -1; 
     procedure Popup(X:Integer;Y:Integer); override;
   end;
 
-  TBagelToolButton = class(TToolButton)
+  TBagelToolButton = class(TToolButton,IBagelUI)
   private
     FContainer:TBagelActionContainer;
     FParentMenu:TBagelPopupMenu;
     FIsMenu:Boolean;
+    function  GetContainer:TBagelActionContainer;
     procedure SetContainer(Value:TBagelActionContainer);
   public
     property Container:TBagelActionContainer
-      read FContainer write SetContainer;
+      read GetContainer write SetContainer;
     property IsMenu:Boolean read FIsMenu write FIsMenu;
   end;
 
-  TBagelMainMenu = class(TMainMenu)
+  TBagelMainMenu = class(TMainMenu,IBagelUI)
   private
     FContainer:TBagelActionContainer;
+    function  GetContainer:TBagelActionContainer;
     procedure SetContainer(Value:TBagelActionContainer);
   public
     property Container:TBagelActionContainer
-      read FContainer write SetContainer;
+      read GetContainer write SetContainer;
   end;
 
-  TBagelToolbar = class (TToolbar)
+  TBagelToolbar = class (TToolbar,IBagelUI)
   private
     FContainer:TBagelActionContainer;
     FIsMenu:Boolean;
+    function  GetContainer:TBagelActionContainer;
     procedure SetContainer(Value:TBagelActionContainer);
   public
     property Container:TBagelActionContainer
-      read FContainer write SetContainer;
+      read GetContainer write SetContainer;
     property IsMenu:Boolean read FIsMenu write FIsMenu;
   end;
 
@@ -203,6 +217,11 @@ begin
   inherited Popup(X,Y);
 end;
 
+function TBagelPopupMenu.GetContainer:TBagelActionContainer;
+begin
+  Result := FContainer;
+end;
+
 procedure TBagelPopupMenu.SetContainer(Value:TBagelActionContainer);
 begin
   FContainer := Value;
@@ -238,6 +257,11 @@ begin
   inherited Click;
 end;
 
+function TBagelMenuItem.GetContainer:TBagelActionContainer;
+begin
+  Result := FContainer;
+end;
+
 procedure TBagelMenuItem.SetContainer(Value:TBagelActionContainer);
 //var
 //  mi:TMenuItem;
@@ -254,6 +278,11 @@ begin
 
     end;
   end;}
+end;
+
+function TBagelMainMenu.GetContainer:TBagelActionContainer;
+begin
+  Result := FContainer;
 end;
 
 procedure TBagelMainMenu.SetContainer(Value:TBagelActionContainer);
@@ -279,6 +308,11 @@ begin
 	for i := 0 to ToolBar.ButtonCount - 1 do
 		if ToolBar.Buttons[i].Visible then
 			Result := Result + ToolBar.Buttons[i].Width;
+end;
+
+function TBagelToolButton.GetContainer:TBagelActionContainer;
+begin
+  Result := FContainer;
 end;
 
 procedure TBagelToolButton.SetContainer(Value:TBagelActionContainer);
@@ -340,6 +374,11 @@ begin
       tb.MenuItem := TMenuItem(FContainer.Item[i].Action);
     end;
   end;}
+end;
+
+function TBagelToolbar.GetContainer:TBagelActionContainer;
+begin
+  Result := FContainer;
 end;
 
 procedure TBagelToolbar.SetContainer(Value:TBagelActionContainer);

@@ -98,6 +98,7 @@ type
     isLink:Boolean;
   end;
 
+  PBagelActionContainer = ^TBagelActionContainer;
 
   TBagelExtSSAction = class(TBagelActionContainer)
   private
@@ -979,6 +980,7 @@ type
     procedure UsrTabSheetShow(Sender: TObject);
     procedure actToggleSidebarVisibleClick(Sender: TObject);
     procedure SidebarCloseButtonClick(Sender: TObject);
+    procedure EditUI(PContainer:PBagelActionContainer; FileName:String; UI:IBagelUI);
   protected
     procedure CreateWnd; override;
     procedure DestroyWnd; override;
@@ -2270,7 +2272,6 @@ procedure SaveMenu(c:TBagelActionContainer;name:String);
 begin
   c.SaveToFile(GetSettingDir() + name + '.dat');
 end;
-
 
 //タブメニュー編集ダイアログを表示し、編集結果を反映
 procedure TBagelMainForm.actEditTabMenuExecute(Sender: TObject);

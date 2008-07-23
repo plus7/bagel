@@ -253,6 +253,8 @@ begin
   try
     For i:=0 to Self.Count - 1 do begin
       sl.Add(Self.Item[i].ConvertToText);
+      if sl.Strings[sl.Count -1]='' then
+        sl.Delete(sl.Count - 1);
     end;
     sl.SaveToFile(FileName);
   finally

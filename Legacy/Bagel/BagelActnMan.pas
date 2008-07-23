@@ -187,7 +187,7 @@ begin
         NewItem := TBagelActionContainer.Create(Self);
         System.Delete(CurrentLine,1,1);
         CurrentLineArr := btSplitToArray(CurrentLine,',');
-        NewItem.Name := CurrentLineArr[0];
+        NewItem.Id := CurrentLineArr[0];
         NewItem.Caption := CurrentLineArr[1];
         NewItem.ShowFlags := StrToIntDef(CurrentLineArr[3],0);
         Current.Add(NewItem);
@@ -205,7 +205,7 @@ begin
       else begin
         NewItem := TBagelActionContainer.Create(Self);
         CurrentLineArr := btSplitToArray(CurrentLine,',');
-        //NewItem.Name := CurrentLineArr[0];
+        //NewItem.Id := CurrentLineArr[0];
         NewItem.Caption := CurrentLineArr[1];
         NewItem.ShowFlags := StrToIntDef(CurrentLineArr[3],0);
         NewItem.Action := Owner.FindComponent(CurrentLineArr[0]);
@@ -231,12 +231,12 @@ begin
         Result := '-' + #13#10;
       end
       else begin
-        Result := '>' + Self.Name + ',' + Self.Caption + ',,' + IntToStr(Self.ShowFlags) + #13#10 + '<' + #13#10;
+        Result := '>' + Self.Id + ',' + Self.Caption + ',,' + IntToStr(Self.ShowFlags) + #13#10 + '<' + #13#10;
       end;
     end;
   end
   else begin
-    tmp := '>' + Self.Name + ',' + Self.Caption + ',,' + IntToStr(Self.ShowFlags) + #13#10;
+    tmp := '>' + Self.id + ',' + Self.Caption + ',,' + IntToStr(Self.ShowFlags) + #13#10;
     For i:= 0 to Self.Count - 1 do begin
       tmp := tmp + Self.Item[i].ConvertToText; 
     end;

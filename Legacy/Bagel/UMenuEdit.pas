@@ -368,7 +368,7 @@ procedure TfrmMenuEdit.FormShow(Sender: TObject);
       if ID.Action <> nil then
         ID.Id:=ab.Item[i].Action.Name
       else
-        ID.Id:=ab.Item[i].Name;
+        ID.Id:=ab.Item[i].Id;
       //TODO:
       //ID.IconIndex:=ab.Item[i].IconIndex;
       //ID.Icon:=ab.Item[i].Icon;
@@ -429,7 +429,7 @@ begin
 
     if Source.Item[i].Action = nil then begin
       ID.Caption  := Source.Item[i].Caption;
-      ID.Id := Source.Item[i].Name
+      ID.Id := Source.Item[i].Id;
     end
     else begin
       if Source.Item[i].Action is TBagelActionContainer then
@@ -649,6 +649,7 @@ begin
     Result.ShowFlags:=Id.ShowFlags;
     //Result.IconIndex:=id.IconIndex;
     Result.Caption:=ID.Caption;
+    Result.Id := Id.Id;
     //Result.Id:=ID.Action.Name;
     //Result.Icon:=Id.Icon;
   end;

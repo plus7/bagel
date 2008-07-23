@@ -2305,7 +2305,7 @@ begin
     Self.CtrlTbActionContainer := c;
   end;
   f.Free;
-  SaveMenu(Self.CtrlTbActionContainer,'tabmenu');
+  SaveMenu(Self.CtrlTbActionContainer,'maintoolbar');
 end;
 
 //コンテキストメニュー編集

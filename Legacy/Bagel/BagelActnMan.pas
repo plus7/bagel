@@ -231,7 +231,7 @@ begin
         Result := '-' + #13#10;
       end
       else begin
-        Result := '>' + Self.Id + ',' + Self.Caption + ',,' + IntToStr(Self.ShowFlags) + #13#10 + '<' + #13#10;
+        Result := Self.Id + ',' + Self.Caption + ',,' + IntToStr(Self.ShowFlags) + #13#10;
       end;
     end;
   end

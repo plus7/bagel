@@ -32,6 +32,7 @@ type
     FTag:Integer;
     FChecked: Boolean;
     FOnClick:TNotifyEvent;
+    FId:String;
   	procedure SetAction(Value:TComponent);
     function GetItem(Index:Integer):TBagelActionContainer;
     function GetCount:Integer;
@@ -58,6 +59,7 @@ type
     property Tag:Integer read FTag write FTag;
     property OnClick:TNotifyEvent read FOnClick write FOnClick;
     property Checked:Boolean read FChecked write FChecked;
+    property Id:String read FId write FId;
   end;
 
   TBagelBookmarkContainer = class(TBagelActionContainer)
@@ -221,26 +223,37 @@ var
   i:Integer;
 begin
   if Self.Count = 0 then begin
-    Result := Self.Action.Name + #13#10;
+    if Self.Action <> nil then begin
+      Result := Self.Action.Name + ',' + Self.Caption + ',,' + IntToStr(Self.ShowFlags) + #13#10;
+    end
+    else begin
+      if Self.Caption = '-' then begin
+        Result := '-' + #13#10;
+      end
+      else begin
+        Result := '>' + Self.Name + ',' + Self.Caption + ',,' + IntToStr(Self.ShowFlags) + #13#10 + '<' + #13#10;
+      end;
+    end;
   end
   else begin
-    tmp:='>'+Self.Action.Name+#13#10;
+    tmp := '>' + Self.Name + ',' + Self.Caption + ',,' + IntToStr(Self.ShowFlags) + #13#10;
     For i:= 0 to Self.Count - 1 do begin
       tmp := tmp + Self.Item[i].ConvertToText; 
     end;
     tmp:=tmp+'<'+#13#10;
+    Result := tmp;
   end;
 end;
 procedure TBagelActionContainer.SaveToFile(const FileName:String);
 var
   sl:TStringList;
+  i:Integer;
 begin
   sl:=TStringList.Create;
   try
-  //  For i:=0 to Self.Count - 1 do begin
-
-//    end;
-    sl.Add(Self.ConvertToText);
+    For i:=0 to Self.Count - 1 do begin
+      sl.Add(Self.Item[i].ConvertToText);
+    end;
     sl.SaveToFile(FileName);
   finally
     sl.Free;

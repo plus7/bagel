@@ -133,6 +133,7 @@ TabMenu,タブ(&T),0,0
     actEditMainMenu,メインメニューの編集,,0
     actEditTabMenu,タブメニューの編集,,0
     actEditCtxMenu,ページメニューの編集,,0
+    actEditToolbar,ツールバーの編集,,0
   <
   -
   actShowAdblockMan,広告ブロック管理,0,0

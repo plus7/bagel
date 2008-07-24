@@ -40,7 +40,7 @@ uses
   Windows, Messages, SysUtils, Classes, Controls, nsTypes, nsConsts, nsXPCOM, nsError,
   nsInit, nsGeckoStrings, CallbackInterfaces, nsXPCOMGlue, BrowserSupports,
   nsDocShell, nsMarkupDocumentViewer, nsDocumentCharsetInfo,
-  nsDOMEvent;
+  nsDOMEvent, Dialogs;
 
 resourcestring
   SGeckoBrowserInitError = 'èâä˙âªÇ…é∏îsÇµÇ‹ÇµÇΩÅB';
@@ -90,7 +90,7 @@ type
   TGeckoBrowserKeyEventHandler = procedure (Sender: TObject; aEvent:nsIDOMKeyEvent) of object;
   TGeckoBrowserHistoryMove = procedure (Sender: TObject; aURI: nsIURI; out aContinue: LongBool; var Handled: Boolean) of object;
   TGeckoBrowserHistoryGoTo = procedure (Sender: TObject; aIndex: Longint; aURI: nsIURI; out aContinue: LongBool; var Handled: Boolean) of object;
-  
+
   TGeckoBrowserHisoty = record
     URI: AnsiString;
     Title: WideString;
@@ -1488,15 +1488,21 @@ begin
 end;
 
 procedure TGeckoBrowserChrome.GetInterface(const uuid: TGUID; out _result);
+var
+  window:nsIDOMWindow;
 begin
   if IsEqualGUID(uuid, nsIDOMWindow) then
   begin
     // nsIDOMWindow ÇèàóùÇµÇ»Ç¢Ç∆ nsIWindowCreator.CreateChromeWindow Ç≈ÉGÉâÅ[Ç…Ç»ÇÈ
-    nsIDOMWindow(_result) := FBrowser.FBrowser.ContentDOMWindow;
-  end else
+    window := FBrowser.FWebBrowser.ContentDOMWindow;
+    window.QueryInterface(nsIDOMWindow, _result);
+  end
+  else
   begin
     if not Supports(Self, uuid, _Result) then
+    begin
       System.Error(reIntfCastError);
+    end;
   end;
 end;
 
@@ -1534,7 +1540,7 @@ begin
     newWin := nil;
     OnNewWindow(Self, chromeFlags, newWin);
     if Assigned(newWin) then
-      Result := newWin.FChrome;
+      Result := newWin.WebBrowser.ContainerWindow;
   end;
 end;
 

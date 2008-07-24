@@ -5035,7 +5035,7 @@ begin
     //brwsr.ShouldFocus:=true;
   end;
   brwsr.Visible := true;
-  brwsr.LoadURI('about:blank');
+  //brwsr.LoadURI('about:blank');
   if brwsr.DocShell<>nil then
     brwsr.DocShell.UseErrorPages := True;
 

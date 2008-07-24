@@ -6,7 +6,6 @@ Shift+Ctrl+Tab=actPrevTab
 Ctrl+;=actZoomIn
 Ctrl+-=actZoomOut
 F5=actReload
-BkSp=actGoBack
 Alt+Left=actGoBack
 Alt+Right=actGoForward
 Esc=actStop

@@ -133,6 +133,7 @@ destructor THistoryTreeView.Destroy;
 var
   history:nsINavHistoryService;
 begin
+  Self.Clear;
   inherited;
 end;
 

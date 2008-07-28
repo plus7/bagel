@@ -15,6 +15,9 @@
 BagelはFirefoxなどに使われているレンダリングエンジン、Geckoの機能を使ったタブブラウザです。
 Donutに似せたインターフェイスを持っており、それなりにカスタマイズできます。
 
+■なにこのアイコン
+糸井重里に言え
+
 ■インストール
 実行の前に、XULRunner1.9が必要です。
 http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/1.9.0.0/runtimes/

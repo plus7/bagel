@@ -14,7 +14,6 @@ object AboutBagelForm: TAboutBagelForm
   OldCreateOrder = False
   Position = poMainFormCenter
   OnClose = FormClose
-  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 12
@@ -26,7 +25,6 @@ object AboutBagelForm: TAboutBagelForm
     ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
-    OnChange = PageControl1Change
     object TabSheet1: TTabSheet
       Caption = 'Bagel'
       object Label2: TLabel
@@ -50,8 +48,8 @@ object AboutBagelForm: TAboutBagelForm
         Caption = #12356#12435#12373#12540#12392#12288#12418#12387#12392#12288#12402#12354#65281
       end
       object Image1: TImage
-        Left = 16
-        Top = 8
+        Left = 23
+        Top = 3
         Width = 33
         Height = 33
         Picture.Data = {
@@ -147,36 +145,22 @@ object AboutBagelForm: TAboutBagelForm
         ViewStyle = vsReport
       end
     end
-    object TabSheet2: TTabSheet
-      Caption = 'Gecko'
-      ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
-    end
     object TabSheet3: TTabSheet
       Caption = #12496#12464#22577#21578
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label3: TLabel
         Left = 8
         Top = 8
-        Width = 433
-        Height = 36
-        Caption = 
-          #12392#12426#12354#12360#12378'Gecko'#12392'Bagel'#12398#24773#22577#12399#26360#12356#12390#12354#12427#12398#12391#12289#36969#23452#33258#20998#12398#29872#22659#12398#24773#22577#12434#22475#12417#12390#22577#21578#26178#12395#36028#12387#12390#12367#12384#12373#12356#12290#65288#12371#12371#12434#12393#12358#20351#12358#12363#20998 +
-          #12363#12425#12394#12356#20154#12399#12381#12418#12381#12418#12486#12473#12488#29256#12398'Bagel'#12434#12414#12384#20351#12431#12394#12356#12411#12358#12364#33391#12356#12424#12358#12394#12290#65289
+        Width = 210
+        Height = 12
+        Caption = #12496#12464#22577#21578#12486#12531#12503#12524#12391#12377#12290#27963#29992#12375#12390#12367#12384#12373#12356#12290
         WordWrap = True
       end
       object Memo1: TMemo
         Left = 8
-        Top = 56
+        Top = 26
         Width = 441
-        Height = 185
+        Height = 215
         Lines.Strings = (
           #12304'OS'#12305
           'Windows98'

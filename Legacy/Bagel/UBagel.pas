@@ -5253,7 +5253,8 @@ end;
 
 procedure TBagelMainForm.btnPPCloseClick(Sender: TObject);
 begin
-  actPrintPreview.Execute;
+  actPrintPreview.Checked := False;
+  actPrintPreviewExecute(Self);
 end;
 
 {ブラウザのURIが変わった}

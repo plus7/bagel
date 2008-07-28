@@ -364,10 +364,6 @@ object BagelMainForm: TBagelMainForm
               Caption = #12502#12483#12463#12510#12540#12463
               ImageIndex = 6
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel5: TPanel
                 Left = 0
                 Top = 0
@@ -392,10 +388,6 @@ object BagelMainForm: TBagelMainForm
               Caption = #23653#27508
               ImageIndex = 1
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel7: TPanel
                 Left = 0
                 Top = 21
@@ -449,10 +441,6 @@ object BagelMainForm: TBagelMainForm
               Caption = #12522#12531#12463
               ImageIndex = 2
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel4: TPanel
                 Left = 0
                 Top = 20
@@ -466,7 +454,7 @@ object BagelMainForm: TBagelMainForm
                   Top = 4
                   Width = 161
                   Height = 21
-                  ItemHeight = 0
+                  ItemHeight = 13
                   TabOrder = 0
                   OnKeyPress = cboExtractPatternKeyPress
                   Items.Strings = (
@@ -483,7 +471,7 @@ object BagelMainForm: TBagelMainForm
                   Width = 69
                   Height = 21
                   Style = csDropDownList
-                  ItemHeight = 0
+                  ItemHeight = 13
                   ItemIndex = 0
                   TabOrder = 1
                   Text = 'URL'
@@ -648,10 +636,6 @@ object BagelMainForm: TBagelMainForm
               Caption = 'Grep'
               ImageIndex = 5
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel6: TPanel
                 Left = 0
                 Top = 0
@@ -666,7 +650,7 @@ object BagelMainForm: TBagelMainForm
                   Top = 0
                   Width = 201
                   Height = 21
-                  ItemHeight = 0
+                  ItemHeight = 13
                   TabOrder = 0
                   OnKeyPress = cmbGrepKeywordKeyPress
                 end
@@ -676,7 +660,7 @@ object BagelMainForm: TBagelMainForm
                   Width = 201
                   Height = 21
                   Style = csDropDownList
-                  ItemHeight = 0
+                  ItemHeight = 13
                   ItemIndex = 0
                   TabOrder = 1
                   Text = #26222#36890#12398#26908#32034
@@ -691,7 +675,7 @@ object BagelMainForm: TBagelMainForm
                   Width = 201
                   Height = 21
                   Style = csDropDownList
-                  ItemHeight = 0
+                  ItemHeight = 13
                   ItemIndex = 0
                   TabOrder = 2
                   Text = #29694#22312#12398#12479#12502
@@ -723,10 +707,6 @@ object BagelMainForm: TBagelMainForm
               Caption = 'Web'#12497#12493#12523
               ImageIndex = 4
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object XPToolBar1: TToolBar
                 Left = 0
                 Top = 0
@@ -761,10 +741,6 @@ object BagelMainForm: TBagelMainForm
               Caption = #12473#12463#12522#12503#12488
               ImageIndex = 5
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object ScriptList: TListBox
                 Left = 0
                 Top = 0
@@ -779,10 +755,6 @@ object BagelMainForm: TBagelMainForm
               Caption = #12463#12522#12483#12503#12508#12540#12489
               ImageIndex = 6
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object ObserveClipList: TListBox
                 Left = 0
                 Top = 37
@@ -925,10 +897,6 @@ object BagelMainForm: TBagelMainForm
               Caption = #12480#12454#12531#12525#12540#12480
               ImageIndex = 8
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object ToolBar3: TToolBar
                 Left = 0
                 Top = 0
@@ -1008,10 +976,6 @@ object BagelMainForm: TBagelMainForm
               Caption = 'OutPut'
               ImageIndex = 9
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object lstOutPut: TListBox
                 Left = 0
                 Top = 0
@@ -1234,7 +1198,7 @@ object BagelMainForm: TBagelMainForm
       Width = 671
       Height = 22
       AutoSize = True
-      ButtonWidth = 45
+      ButtonWidth = 43
       Caption = #26908#32034#12496#12540
       GradientEndColor = 14077651
       Images = ImageList1
@@ -1291,9 +1255,7 @@ object BagelMainForm: TBagelMainForm
         Left = 343
         Top = 0
         AutoSize = True
-        Caption = 'ddd'
         ImageIndex = 46
-        Style = tbsTextButton
         OnClick = tbGrepSearchBarTextClick
       end
     end

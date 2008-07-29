@@ -355,7 +355,7 @@ object BagelMainForm: TBagelMainForm
             Top = 0
             Width = 200
             Height = 213
-            ActivePage = UsrTabSheet
+            ActivePage = TabSheet1
             HotTrack = True
             RaggedRight = True
             Style = tsButtons
@@ -980,12 +980,13 @@ object BagelMainForm: TBagelMainForm
                 Left = 0
                 Top = 0
                 Width = 192
-                Height = 109
-                Align = alTop
+                Height = 203
+                Align = alClient
                 ItemHeight = 13
                 Items.Strings = (
                   '('#65439#1044#65439')'#65308#12487#12496#12483#12464#29992)
                 TabOrder = 0
+                ExplicitHeight = 145
               end
             end
             object UsrTabSheet: TTabSheet
@@ -6690,6 +6691,10 @@ object BagelMainForm: TBagelMainForm
     end
     object N42: TMenuItem
       Action = actUserDefinedSidebar
+      AutoCheck = True
+    end
+    object Output1: TMenuItem
+      Action = actOutputSidebar
       AutoCheck = True
     end
   end

@@ -109,6 +109,7 @@ type
     property OnHeightChange: TNotifyEvent read FOnHeightChange write FOnHeightChange;
     //property OnChanging: TTabChangingEvent read FOnChanging write FOnChanging;
     property OnDrawTab: TDrawTabEvent read FOnDrawTab write FOnDrawTab;{}
+    property OnContextPopup;
     property RowCount:Integer read GetRowCount default 1;
     property ShowSeparator: Boolean read FShowSeparator write SetShowSeparator default true;
     property TabHeight:Integer read FTabHeight write SetTabHeight default 20;

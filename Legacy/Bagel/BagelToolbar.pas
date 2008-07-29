@@ -184,7 +184,7 @@ begin
     For i := 0 To FContainer.Count-1 do begin
       if (FContainer.Item[i].Caption<>'-') and
          (Self.ShowFlags > 0) and
-         ((FContainer.Item[i].ShowFlags and Self.ShowFlags) = 0) then continue;
+         (((not FContainer.Item[i].ShowFlags) and Self.ShowFlags) = 0) then continue;
       if FContainer.Item[i].Action is TBagelActionContainer then
       begin
         Child := TBagelMenuItem.Create(Self);

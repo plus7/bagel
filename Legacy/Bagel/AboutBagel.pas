@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, nsXPCOM, nsXPCOMGlue,nsError, GeckoBrowser,
   ComCtrls, nsHttp, nsGeckoStrings, nsNetUtil,BagelConst,Version,
-  Graphics;
+  Graphics, ShellAPI;
 
 type
   TAboutBagelForm = class(TForm)
@@ -21,6 +21,7 @@ type
     Memo1: TMemo;
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure DrawIcon;
   private
     { Private éŒ¾ }
   public
@@ -34,6 +35,26 @@ implementation
 
 {$R *.dfm}
 
+procedure TAboutBagelForm.DrawIcon;
+var
+  SHFileInfo:TShFileInfo;
+  IconHandle:HICON;
+  icon:TIcon;
+begin
+  SHGetFileInfo(
+    PChar(Application.ExeName),
+    0, SHFileInfo, Sizeof(TSHFileInfo),
+    SHGFI_SYSICONINDEX or SHGFI_USEFILEATTRIBUTES or
+    SHGFI_ICON or SHGFI_TYPENAME);
+  IconHandle := SHFileInfo.hIcon;
+  DrawIconEx(
+    Image1.Canvas.Handle,
+    0,0,
+    IconHandle, 32, 32, 0, 0,
+    DI_NORMAL);
+  DestroyIcon(IconHandle);
+end;
+
 procedure TAboutBagelForm.FormShow(Sender: TObject);
 var
   item:TListItem;
@@ -45,6 +66,9 @@ var
   tmp:String;
   info: OSVERSIONINFO;
 begin
+
+  DrawIcon;
+
   ListVIew1.Clear;
   tmp:='BagelìŽÒ=plus7'+#13#10;
   tmp:=tmp+'TGeckoBrowserìŽÒ=>>74'+#13#10;

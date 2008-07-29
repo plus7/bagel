@@ -640,7 +640,11 @@ var
   ActiveTabRect:TRect;
   baseOffset:Integer;
 begin
-  FTabIndex:=Value;
+
+  if FTabIndex<>Value then begin
+    FTabIndex:=Value;
+    if Assigned(FOnChange) then FOnChange(Self);
+  end;
 
   if FTabStyle = btsFlatButtons then begin
     baseOffset:=0;
@@ -786,7 +790,6 @@ begin
       end;
     end;}
     Self.TabIndex:=FLastClickedPos;
-    if Assigned(FOnChange) then FOnChange(Self);
   end;
 
 end;

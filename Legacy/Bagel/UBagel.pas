@@ -6378,6 +6378,7 @@ var
   i:integer;
 begin
   i:=TabControl.TabIndex;
+  TabBarCtxIndex := i;
   SelectTab(i);
 end;
 

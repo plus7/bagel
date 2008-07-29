@@ -134,9 +134,9 @@ type
     procedure SetChrome(aChrome: TCustomGeckoBrowserChrome);
     procedure SetListener(aListener: TCustomGeckoBrowserListener);
 
+    procedure WMGetDlgCode(var Message: TWMGetDlgCode); message WM_GETDLGCODE;
     procedure WMKeyDown(var Msg: TWMKeyDown); message CN_KEYDOWN;
-    procedure WMKeyUp(var Msg: TMessage); message CN_CHAR;
-    procedure WMEraseBkGnd(var Msg: TMessage); message WM_ERASEBKGND;
+    {procedure WMKeyUp(var Msg: TMessage); message CN_CHAR;        }
     function GetContentDocument: nsIDOMDocument;
     function GetContentWindow: nsIDOMWindow;
     function GetCanGoBack: Boolean;
@@ -1066,16 +1066,22 @@ begin
   if Assigned(old) then old._Release;
 end;
 
+procedure TCustomGeckoBrowser.WMGetDlgCode(var Message: TWMGetDlgCode);
+begin
+  inherited;
+  Message.Result := Message.Result or DLGC_WANTARROWS;
+end;
+
 procedure TCustomGeckoBrowser.WMKeyDown(var Msg: TWMKeyDown);
 begin
   if Msg.CharCode <> 9 then
     inherited;
 end;
 
-procedure TCustomGeckoBrowser.WMKeyUp(var Msg: TMessage);
+{procedure TCustomGeckoBrowser.WMKeyUp(var Msg: TMessage);
 begin
-
-end;
+  //
+end;}
 
 constructor TGeckoBrowserChrome.Create(Browser: TGeckoBrowser);
 begin
@@ -1598,12 +1604,6 @@ end;
 function TCustomGeckoBrowser.GetDocumentCharsetInfo: nsIDocumentCharsetInfo;
 begin
   Result := DocShell.GetDocumentCharsetInfo;
-end;
-
-procedure TCustomGeckoBrowser.WMEraseBkGnd(var Msg: TMessage);
-begin
-  // ‚¿‚ç‚Â‚«–hŽ~
-  //Msg.Result := 0;
 end;
 
 function TCustomGeckoBrowser.GetCanGoBack: Boolean;

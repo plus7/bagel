@@ -541,6 +541,7 @@ type
     actIncrementalSearch: TAction;
     actPageUp: TAction;
     actPageDown: TAction;
+    Output1: TMenuItem;
 
     function GetLinkBkmkList:TBookmarkList;
     function GetPrintSettings:nsIPrintSettings;
@@ -1045,7 +1046,7 @@ type
     }
     FISearchBuffer: String; //
     //コンテキストメニュー
-    tabBarCtxTarget:Integer; //タブバーの右クリックで選択されたタブ
+    FTabBarCtxIndex:Integer; //タブバーの右クリックで選択されたタブ
     //historyCtxTarget:xxx;  //履歴サイドバーで選択された履歴
     bkmkCtxTarget:TBkmkBase; //ブックマークサイドバーまたはリンクバーで選択されたブックマーク
 
@@ -1113,8 +1114,11 @@ type
     procedure CloseTab(Index:integer); overload;
     procedure UpdatePrefs;
     procedure UpdateSearch;
+    procedure SetTabBarCtxIndex(Value: Integer);
+    function GetTabBarCtxIndex:Integer;
     property MigemoObj:TTKCMigemo read GetMigemoObj;
     property ISearchMode: Integer read GetISearchMode write SetISearchMode;
+    property TabBarCtxIndex: Integer read GetTabBarCtxIndex write SetTabBarCtxIndex;
   end;
 
 var
@@ -1270,6 +1274,17 @@ begin
   Result:=path.ToString;// ファイルのパスを帰す
 end;
 
+procedure TBagelMainForm.SetTabBarCtxIndex(Value: Integer);
+begin
+  lstOutPut.AddItem(IntToStr(Value),nil);
+  FTabBarCtxIndex := Value;
+end;
+
+function TBagelMainForm.GetTabBarCtxIndex:Integer;
+begin
+  Result := FTabBarCtxIndex;
+end;
+
 function TBagelMainForm.GetLinkBkmkList:TBookmarkList;
 var
   i:Integer;
@@ -1310,7 +1325,7 @@ var
   gestObj:TObject;
   gestName:String;
 begin
-  tabBarCtxTarget:=TabControl.TabIndex;
+  TabBarCtxIndex:=TabControl.TabIndex;
   gestName:=Pref.GestList.Values[Str];
   gestObj:=FindAction(gestName);
   if (TabControl.Tabs.Count>0) and GetMouseInPane(ViewPanel) then begin end;
@@ -1332,7 +1347,7 @@ var
   kbdObj:TObject;
   kbdName:String;
 begin
-  tabBarCtxTarget:=TabControl.TabIndex;
+  TabBarCtxIndex:=TabControl.TabIndex;
   kbdName:=Pref.KbdList.Values[Str];
   kbdObj:=FindAction(kbdName);
   if (kbdObj<>nil) and (kbdObj is TCustomAction) then
@@ -1355,7 +1370,7 @@ var
   obj:TObject;
 //  kbdName:String;
 begin
-  tabBarCtxTarget:=TabControl.TabIndex;
+  TabBarCtxIndex:=TabControl.TabIndex;
   obj:=FindAction(str);
   if (obj<>nil) and (obj is TCustomAction) then
   begin
@@ -1687,7 +1702,7 @@ begin
 
   i := TabControl.Tabs.IndexOfObject(TObject(brwsr));
   TabControl.TabIndex:=i;
-  tabBarCtxTarget:=i;
+  TabBarCtxIndex:=i;
   brwsr.Visible := true;
   if Application.Active then
   begin
@@ -1800,7 +1815,7 @@ end;
 
 procedure TBagelMainForm.actCloseTabExecute(Sender: TObject);
 begin
-  CloseTab(tabBarCtxTarget);
+  CloseTab(TabBarCtxIndex);
 end;
 
 //ブックマークにターゲットのブラウザのページを追加
@@ -1811,9 +1826,9 @@ begin
   f:=TBookmarkForm.Create(Self);
   f.mode:='create';
   f.ParentBkmk:=bookmarks;
-  if GetBrowser(tabBarCtxTarget)<>nil then begin
-    f.Title:=GetBrowser(tabBarCtxTarget).Title;
-    f.URI:=GetBrowser(tabBarCtxTarget).URI;
+  if GetBrowser(TabBarCtxIndex)<>nil then begin
+    f.Title:=GetBrowser(TabBarCtxIndex).Title;
+    f.URI:=GetBrowser(TabBarCtxIndex).URI;
   end;
   if (f.ShowModal=mrOk) then begin
     RegisterBookmark(f.URI,f.Title,bookmarks,bookmarks.Count,f.DocShellState);
@@ -1826,7 +1841,7 @@ procedure TBagelMainForm.actAddDenyTitleExecute(Sender: TObject);
 var
   b:TBagelBrowser;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   if B=nil then Exit;
   Pref.DenyTitleList.Add(b.Title);
 end;
@@ -1836,7 +1851,7 @@ procedure TBagelMainForm.actAddDenyURIExecute(Sender: TObject);
 var
   b:TBagelBrowser;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   if B=nil then Exit;
   Pref.DenyURLList.Add(b.URI);
 end;
@@ -1848,9 +1863,9 @@ var
 begin
   f:=TBookmarkForm.Create(Self);
   f.mode:='panelcreate';
-  if GetBrowser(tabBarCtxTarget)<>nil then begin
-    f.Title:=GetBrowser(tabBarCtxTarget).Title;
-    f.URI:=GetBrowser(tabBarCtxTarget).URI;
+  if GetBrowser(TabBarCtxIndex)<>nil then begin
+    f.Title:=GetBrowser(TabBarCtxIndex).Title;
+    f.URI:=GetBrowser(TabBarCtxIndex).URI;
   end;
   if f.ShowModal = mrOk then begin
     //
@@ -1949,7 +1964,7 @@ procedure TBagelMainForm.actCloseLeftExecute(Sender: TObject);
 var
   i: Integer;
 begin
-  for i := 0 to tabBarCtxTarget-1 do
+  for i := 0 to TabBarCtxIndex-1 do
   begin
     CloseTab(0);
   end;
@@ -1962,7 +1977,7 @@ var
   c: Integer;
   c2: Integer;
 begin
-  c:=tabBarCtxTarget+1;//TabControl1.TabIndex+1;
+  c:=TabBarCtxIndex+1;//TabControl1.TabIndex+1;
   c2:=TabControl.Tabs.Count-1;
   for i := c to c2 do
   begin
@@ -1988,7 +2003,7 @@ begin
   end;
 
 
-  c:=tabBarCtxTarget;//TabControl1.TabIndex;
+  c:=TabBarCtxIndex;//TabControl1.TabIndex;
   c2:=TabControl.Tabs.Count;
   for i := 0 to c-1 do
   begin
@@ -2012,7 +2027,7 @@ var
   clipCmd:nsIClipboardCommands;
   b:TBagelBrowser;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   if b=nil then Exit;
   NS_GetInterface(b.WebBrowser,NS_ICLIPBOARDCOMMANDS_IID,clipCmd);
   if clipCmd.CanCopySelection then clipCmd.CopySelection;
@@ -2023,7 +2038,7 @@ procedure TBagelMainForm.actCopyTitleAndURIExecute(Sender: TObject);
 var
   b:TGeckoBrowser;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   if b=nil then Exit;
   Clipboard.AsText := b.Title+#13+b.URI;
 end;
@@ -2033,7 +2048,7 @@ procedure TBagelMainForm.actCopyTitleExecute(Sender: TObject);
 var
   b:TGeckoBrowser;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   Clipboard.AsText := b.Title;
 end;
 
@@ -2042,7 +2057,7 @@ procedure TBagelMainForm.actCopyURIExecute(Sender: TObject);
 var
   b:TGeckoBrowser;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   if b=nil then Exit;
   Clipboard.AsText := b.URI;
 end;
@@ -2237,7 +2252,7 @@ var
   clipCmd:nsIClipboardCommands;
   b:TBagelBrowser;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   if b=nil then Exit;
   NS_GetInterface(b.WebBrowser,NS_ICLIPBOARDCOMMANDS_IID,clipCmd);
   if clipCmd.CanCutSelection then clipCmd.CutSelection;
@@ -2392,7 +2407,7 @@ var
   b:TBagelBrowser;
   SearchStr:String;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   if b=nil then Exit;
 
   //TODO:
@@ -2572,9 +2587,9 @@ var
   str:String;
 begin
   if TabControl.Tabs.Count<1 then Exit;
-  str:=GetBrowser(tabBarCtxTarget).uri;
+  str:=GetBrowser(TabBarCtxIndex).uri;
   str:=ExtractUp(str);
-  if (str<>'') or (str<>'http:/')then GetBrowser(tabBarCtxTarget).LoadURI(str);
+  if (str<>'') or (str<>'http:/')then GetBrowser(TabBarCtxIndex).LoadURI(str);
 end;
 
 //Grepサイドバーを表示
@@ -3119,7 +3134,7 @@ var
   win:nsIDOMWindow;
   b:TBagelBrowser;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   if b=nil then Exit;
   win := (b.WebBrowser as nsIWebBrowserFocus).FocusedWindow;
   if win=nil then Exit;
@@ -3142,14 +3157,14 @@ procedure TBagelMainForm.actPageHomeExecute(Sender: TObject);
 var
   focusedwin:nsIDOMWindow;
 begin
-  if GetBrowser(tabBarCtxTarget)=nil then exit;
-  focusedwin:=(GetBrowser(tabBarCtxTarget).WebBrowser as nsIWebBrowserFocus).FocusedWindow;
+  if GetBrowser(TabBarCtxIndex)=nil then exit;
+  focusedwin:=(GetBrowser(TabBarCtxIndex).WebBrowser as nsIWebBrowserFocus).FocusedWindow;
   if focusedwin<>nil then begin
     GetSelConByWin(focusedwin)
     .CompleteScroll(false);
   end
   else begin
-    GetSelConByWin(GetBrowser(tabBarCtxTarget).ContentWindow)
+    GetSelConByWin(GetBrowser(TabBarCtxIndex).ContentWindow)
     .CompleteScroll(false);
   end;
 end;
@@ -3158,14 +3173,14 @@ procedure TBagelMainForm.actPageUpExecute(Sender: TObject);
 var
   focusedwin:nsIDOMWindow;
 begin
-  if GetBrowser(tabBarCtxTarget)=nil then exit;
-  focusedwin:=(GetBrowser(tabBarCtxTarget).WebBrowser as nsIWebBrowserFocus).FocusedWindow;
+  if GetBrowser(TabBarCtxIndex)=nil then exit;
+  focusedwin:=(GetBrowser(TabBarCtxIndex).WebBrowser as nsIWebBrowserFocus).FocusedWindow;
   if focusedwin<>nil then begin
     GetSelConByWin(focusedwin)
     .ScrollPage(false);
   end
   else begin
-    GetSelConByWin(GetBrowser(tabBarCtxTarget).ContentWindow)
+    GetSelConByWin(GetBrowser(TabBarCtxIndex).ContentWindow)
     .ScrollPage(false);
   end;
 end;
@@ -3305,7 +3320,7 @@ var
   clipCmd:nsIClipboardCommands;
   b:TBagelBrowser;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   if b=nil then Exit;
   NS_GetInterface(b.WebBrowser,NS_ICLIPBOARDCOMMANDS_IID,clipCmd);
   if clipCmd.CanPaste then clipCmd.Paste;
@@ -3338,8 +3353,8 @@ var
   PrintService:nsIPrintSettingsService;
   Print:nsIWebBrowserPrint;
 begin
-  if GetBrowser(tabBarCtxTarget)<>nil then begin
-    Print:=GetBrowser(tabBarCtxTarget).WebBrowserPrint;
+  if GetBrowser(TabBarCtxIndex)<>nil then begin
+    Print:=GetBrowser(TabBarCtxIndex).WebBrowserPrint;
     Settings:=GetPrintSettings;
     Print.Print(Settings,nil);
     NS_GetService('@mozilla.org/gfx/printsettings-service;1',nsIPrintSettingsService,PrintService);
@@ -3374,14 +3389,14 @@ procedure TBagelMainForm.actPageDownExecute(Sender: TObject);
 var
   focusedwin:nsIDOMWindow;
 begin
-  if GetBrowser(tabBarCtxTarget)=nil then exit;
-  focusedwin:=(GetBrowser(tabBarCtxTarget).WebBrowser as nsIWebBrowserFocus).FocusedWindow;
+  if GetBrowser(TabBarCtxIndex)=nil then exit;
+  focusedwin:=(GetBrowser(TabBarCtxIndex).WebBrowser as nsIWebBrowserFocus).FocusedWindow;
   if focusedwin<>nil then begin
     GetSelConByWin(focusedwin)
     .ScrollPage(true);
   end
   else begin
-    GetSelConByWin(GetBrowser(tabBarCtxTarget).ContentWindow)
+    GetSelConByWin(GetBrowser(TabBarCtxIndex).ContentWindow)
     .ScrollPage(true);
   end;
 end;
@@ -3390,14 +3405,14 @@ procedure TBagelMainForm.actPageEndExecute(Sender: TObject);
 var
   focusedwin:nsIDOMWindow;
 begin
-  if GetBrowser(tabBarCtxTarget)=nil then exit;
-  focusedwin:=(GetBrowser(tabBarCtxTarget).WebBrowser as nsIWebBrowserFocus).FocusedWindow;
+  if GetBrowser(TabBarCtxIndex)=nil then exit;
+  focusedwin:=(GetBrowser(TabBarCtxIndex).WebBrowser as nsIWebBrowserFocus).FocusedWindow;
   if focusedwin<>nil then begin
     GetSelConByWin(focusedwin)
     .CompleteScroll(true);
   end
   else begin
-    GetSelConByWin(GetBrowser(tabBarCtxTarget).ContentWindow)
+    GetSelConByWin(GetBrowser(TabBarCtxIndex).ContentWindow)
     .CompleteScroll(true);
   end;
 end;
@@ -3415,7 +3430,7 @@ end;
 procedure TBagelMainForm.actReloadExecute(Sender: TObject);
 begin
   if TabControl.Tabs.Count<1 then Exit;
-  GetBrowser(tabBarCtxTarget).Reload;
+  GetBrowser(TabBarCtxIndex).Reload;
 end;
 
 
@@ -3487,7 +3502,7 @@ end;
 procedure TBagelMainForm.actStopExecute(Sender: TObject);
 begin
   if TabControl.Tabs.Count<1 then Exit;
-  StopTab(tabBarCtxTarget);
+  StopTab(TabBarCtxIndex);
 end;
 
 procedure TBagelMainForm.actToggleSearchBarVisibleExecute(Sender: TObject);
@@ -3603,12 +3618,12 @@ end;
 
 procedure TBagelMainForm.actToggleLockTabExecute(Sender: TObject);
 begin
-  if GetBrowser(tabBarCtxTarget)<>nil then GetBrowser(tabBarCtxTarget).Locked:= actToggleLockTab.Checked;
+  if GetBrowser(TabBarCtxIndex)<>nil then GetBrowser(TabBarCtxIndex).Locked:= actToggleLockTab.Checked;
 end;
 
 procedure TBagelMainForm.actToggleLockTabUpdate(Sender: TObject);
 begin
-  if GetBrowser(tabBarCtxTarget)<>nil then actToggleLockTab.Checked := GetBrowser(tabBarCtxTarget).Locked;
+  if GetBrowser(TabBarCtxIndex)<>nil then actToggleLockTab.Checked := GetBrowser(TabBarCtxIndex).Locked;
 end;
 
 procedure TBagelMainForm.actToggleMainbarVisibleExecute(Sender: TObject);
@@ -3684,7 +3699,7 @@ end;
 
 procedure TBagelMainForm.actViewSourceExecute(Sender: TObject);
 begin
-  AddTab('view-source:' + GetBrowser(tabBarCtxTarget).URI,Pref.OpenModeViewsource,0,'',Pref.DocShellDefault)
+  AddTab('view-source:' + GetBrowser(TabBarCtxIndex).URI,Pref.OpenModeViewsource,0,'',Pref.DocShellDefault)
 end;
 
 procedure TBagelMainForm.actWebPanelExecute(Sender: TObject);
@@ -3722,7 +3737,7 @@ procedure TBagelMainForm.actZoomInExecute(Sender: TObject);
 var
   b:TGeckoBrowser;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   if b=nil then exit;
   b.ContentWindow.TextZoom := b.ContentWindow.TextZoom * 1.2;
 end;
@@ -3731,7 +3746,7 @@ procedure TBagelMainForm.actZoomNormalExecute(Sender: TObject);
 var
   b:TGeckoBrowser;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   if b=nil then exit;
   b.ContentWindow.TextZoom := 1;
 end;
@@ -3740,7 +3755,7 @@ procedure TBagelMainForm.actZoomOutExecute(Sender: TObject);
 var
   b:TGeckoBrowser;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   if b=nil then Exit;
   b.ContentWindow.TextZoom := b.ContentWindow.TextZoom * 5 / 6;
 end;
@@ -4140,7 +4155,7 @@ begin
   Browser.Enabled := true;
   //Browser.ShouldFocus := true;
   Browser.TabStop := true;
-  //tabBarCtxTarget:=Index;
+  //TabBarCtxIndex:=Index;
   //FGBProgress.Position:=0;
 
 //文字列
@@ -4220,7 +4235,7 @@ var
   b:TGeckoBrowser;
   ds:nsIDocShell;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   ds:=b.DocShell;
   ds.AllowSubFrames:=TMenuItem(Sender).Checked;
 end;
@@ -4230,7 +4245,7 @@ var
   b:TGeckoBrowser;
   ds:nsIDocShell;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   ds:=b.DocShell;
   ds.AllowImages:=TMenuItem(Sender).Checked;
 end;
@@ -4240,7 +4255,7 @@ var
   b:TGeckoBrowser;
   ds:nsIDocShell;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   ds:=b.DocShell;
   ds.AllowJavascript:=TMenuItem(Sender).Checked;
 end;
@@ -4250,7 +4265,7 @@ var
   b:TGeckoBrowser;
   ds:nsIDocShell;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   ds:=b.DocShell;
   ds.AllowMetaRedirects:=(TMenuItem(Sender).Checked);
 end;
@@ -4260,7 +4275,7 @@ var
   b:TGeckoBrowser;
   ds:nsIDocShell;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   ds:=b.DocShell;
   ds.AllowPlugins:=(TMenuItem(Sender).Checked);
 end;
@@ -4388,7 +4403,7 @@ begin
     HighlightButton.Marked:=False;
     Self.Caption := 'Bagel';
     Application.Title := 'Bagel';
-    //tabBarCtxTarget:=-1;
+    //TabBarCtxIndex:=-1;
   end
   else begin
     if (Pref.WhenCloseTabChoose = 0) then
@@ -4409,7 +4424,7 @@ begin
 
     TabControl.Tabs.Delete(Index);
 
-    //tabBarCtxTarget:=TabControl.TabIndex;
+    //TabBarCtxIndex:=TabControl.TabIndex;
     Browser.Free;
   end;
   
@@ -4552,7 +4567,7 @@ begin
   begin
     i := TabControl.Tabs.IndexOfObject(TObject(brwsr));
     TabControl.TabIndex:=i;
-    tabBarCtxTarget:=i;
+    TabBarCtxIndex:=i;
     brwsr.Visible := true;
     if Application.Active then
     begin
@@ -5030,7 +5045,7 @@ begin
   begin
     i := TabControl.Tabs.IndexOfObject(TObject(brwsr));
     TabControl.TabIndex:=i;
-    tabBarCtxTarget:=i;
+    TabBarCtxIndex:=i;
 //    brwsr.Enabled:=true;
     //brwsr.ShouldFocus:=true;
   end;
@@ -5788,8 +5803,8 @@ procedure TBagelMainForm.FormCreate(Sender: TObject);
     TabControl.OnMouseDown := Self.TabControlMouseDown;
     TabControl.OnMouseUp := Self.TabControlMouseUp;
     TabControl.OnDragDrop := Self.TabControlDragDrop;
-    //    TabControl.OnContextPopup :=
-    TabControl.PopupMenu := Self.TabPopup;
+    TabControl.OnContextPopup := Self.TabControlContextPopup;
+    //TabControl.PopupMenu := Self.TabPopup;
   end;
   procedure CreateControls;
   var
@@ -6372,7 +6387,7 @@ var
   actName:String;
   obj:TObject;
 begin
-  tabBarCtxTarget:=TabControl.IndexOfTabAt(MousePos.X,MousePos.Y);
+  TabBarCtxIndex:=TabControl.IndexOfTabAt(MousePos.X,MousePos.Y);
   currentCtxURI:='';
   currentCtxImg:='';
   currentCtxBgImg:='';
@@ -6390,6 +6405,10 @@ begin
     TCustomAction(obj).Execute;
     StatusBar.Panels[0].Text:=TCustomAction(obj).Caption;
     Handled:=True;
+  end
+  else begin
+    TabPopup.Popup(MousePos.X,MousePos.Y);
+    TabBarCtxIndex := TabControl.TabIndex; 
   end;
 end;
 
@@ -6560,7 +6579,7 @@ var
 begin
   if Button=mbMiddle then
   begin
-    tabBarCtxTarget := TabControl.IndexOfTabAt(X, Y);
+    TabBarCtxIndex := TabControl.IndexOfTabAt(X, Y);
     gestName:=Pref.TabMiddleClickAct;
     obj:=FindAction(gestName);
     //gestIndex:=cmdTable.IndexOf(gestName);
@@ -6643,7 +6662,7 @@ procedure TBagelMainForm.AReloadClick(Sender: TObject);
 var
   b:TBagelBrowser;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   b.ReloadTime:=TMenuItem(Sender).Tag*1000;
 end;
 
@@ -6669,7 +6688,7 @@ end;
 {
 AReloadCustom.Caption:='ユーザー設定('+IntToStr(Pref.AutoReloadCustomIntv)+'秒)';
 AReloadCustom.Tag:=Pref.AutoReloadCustomIntv;
-b:=GetBrowser(tabBarCtxTarget);
+b:=GetBrowser(TabBarCtxIndex);
 intv:=b.ReloadTime;
 for i:=0 to TabPAutoReload.Count-1 do
 begin
@@ -6685,7 +6704,7 @@ var
   b:TGeckoBrowser;
   ds:nsIDocShell;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   if b=nil then begin
     {SecPAllowImg.Checked:=false;
     SecPAllowImg.Enabled:=false;
@@ -7338,7 +7357,7 @@ var
   b:TBagelBrowser;
   aDOMW:nsIDOMWindow;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   if b=nil then Exit;
   //str := GetSelectionFromWin(b.ContentWindow);
   aDOMW := (b.WebBrowser as nsIWebBrowserFocus).FocusedWindow;
@@ -7392,7 +7411,7 @@ var
   clipCmd:nsIClipboardCommands;
   b:TBagelBrowser;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   if b=nil then Exit;
   NS_GetInterface(b.WebBrowser,NS_ICLIPBOARDCOMMANDS_IID,clipCmd);
   clipCmd.SelectAll;
@@ -7405,7 +7424,7 @@ var
   //canCopy:Longbool;
   b:TBagelBrowser;
 begin
-  b:=GetBrowser(tabBarCtxTarget);
+  b:=GetBrowser(TabBarCtxIndex);
   if b=nil then Exit;
   NS_GetInterface(b.WebBrowser,NS_ICLIPBOARDCOMMANDS_IID,clipCmd);
   clipCmd.SelectNone;
@@ -7513,7 +7532,7 @@ var
   uri:String;
 begin
   if TabControl.Tabs.Count>0 then begin
-    b:=GetBrowser(tabBarCtxTarget);
+    b:=GetBrowser(TabBarCtxIndex);
     f:=TfrmPageInfo.Create(Self);
     str:=NewString;
     cstr:=NewCString;
@@ -7853,36 +7872,36 @@ end;
 
 procedure TBagelMainForm.actAllowFramesExecute(Sender: TObject);
 begin
-  if GetBrowser(tabBarCtxTarget)<>nil then
-  GetBrowser(tabBarCtxTarget).DocShell.AllowSubframes:=(actAllowFrames.Checked);
+  if GetBrowser(TabBarCtxIndex)<>nil then
+  GetBrowser(TabBarCtxIndex).DocShell.AllowSubframes:=(actAllowFrames.Checked);
   actAllowFrames.Update;
 end;
 
 procedure TBagelMainForm.actAllowImgExecute(Sender: TObject);
 begin
-  if GetBrowser(tabBarCtxTarget)<>nil then
-  GetBrowser(tabBarCtxTarget).DocShell.AllowImages:=(actAllowImg.Checked);
+  if GetBrowser(TabBarCtxIndex)<>nil then
+  GetBrowser(TabBarCtxIndex).DocShell.AllowImages:=(actAllowImg.Checked);
   actAllowImg.Update;
 end;
 
 procedure TBagelMainForm.actAllowJSExecute(Sender: TObject);
 begin
-  if GetBrowser(tabBarCtxTarget)<>nil then
-  GetBrowser(tabBarCtxTarget).DocShell.AllowJavascript:=actAllowJS.Checked;
+  if GetBrowser(TabBarCtxIndex)<>nil then
+  GetBrowser(TabBarCtxIndex).DocShell.AllowJavascript:=actAllowJS.Checked;
   actAllowJS.Update;
 end;
 
 procedure TBagelMainForm.actAllowPluginsExecute(Sender: TObject);
 begin
-  if GetBrowser(tabBarCtxTarget)<>nil then
-  GetBrowser(tabBarCtxTarget).DocShell.AllowPlugins:=actAllowPlugins.Checked;
+  if GetBrowser(TabBarCtxIndex)<>nil then
+  GetBrowser(TabBarCtxIndex).DocShell.AllowPlugins:=actAllowPlugins.Checked;
   actAllowPlugins.Update;
 end;
 
 procedure TBagelMainForm.actAllowRedirectExecute(Sender: TObject);
 begin
-  if GetBrowser(tabBarCtxTarget)<>nil then
-  GetBrowser(tabBarCtxTarget).DocShell.AllowMetaRedirects :=
+  if GetBrowser(TabBarCtxIndex)<>nil then
+  GetBrowser(TabBarCtxIndex).DocShell.AllowMetaRedirects :=
     actAllowRedirect.Checked;
   actAllowRedirect.Update;
 end;
@@ -8092,13 +8111,13 @@ begin
   chost:=ichost.ACString;
 
   NS_GetService('@mozilla.org/permissionmanager;1',nsIPermissionManager,pm);
-  permission := pm.TestPermission(StrToURI(GetBrowser(tabBarCtxTarget).URI), PChar('cookie'));
+  permission := pm.TestPermission(StrToURI(GetBrowser(TabBarCtxIndex).URI), PChar('cookie'));
   if permission=Cardinal(TMenuItem(Sender).Tag) then exit;
   if TMenuItem(Sender).Tag=ns_IPermissionManager_UNKNOWN_ACTION then begin
-    StrToURI((GetBrowser(tabBarCtxTarget)).URI).GetHost(chost);
+    StrToURI((GetBrowser(TabBarCtxIndex)).URI).GetHost(chost);
     pm.Remove(chost,'cookie');
   end;
-  pm.Add(StrToURI(GetBrowser(tabBarCtxTarget).URI),PChar('cookie'),TMenuItem(Sender).Tag);
+  pm.Add(StrToURI(GetBrowser(TabBarCtxIndex).URI),PChar('cookie'),TMenuItem(Sender).Tag);
 //  pm.add(uri, "cookie", nsICookiePermission.ACCESS_SESSION);
   {case permission of
     NS_IPERMISSIONMANAGER_ALLOW_ACTION:AllowThisSiteCookie.Checked:=True;
@@ -8708,7 +8727,7 @@ begin
         TabZOrder.Insert(GetMDITabPos(0),TObject(brwsr));
         int := TabControl.Tabs.IndexOfObject(TObject(brwsr));
         TabControl.TabIndex:=int;
-        tabBarCtxTarget:=int;
+        TabBarCtxIndex:=int;
         brwsr.Visible := true;
         newSH := brwsr.WebNavigation.SessionHistory;
         shCount:=ini.ReadInteger('tab'+IntToStr(i),'history_count',0);
@@ -9000,7 +9019,7 @@ begin
 
   //このサイトのCookie
   NS_GetService('@mozilla.org/permissionmanager;1',nsIPermissionManager,pm);
-  permission:=pm.TestPermission(StrToURI(GetBrowser(tabBarCtxTarget).URI),PChar('cookie'));
+  permission:=pm.TestPermission(StrToURI(GetBrowser(TabBarCtxIndex).URI),PChar('cookie'));
   case permission of
     NS_IPERMISSIONMANAGER_ALLOW_ACTION:AllowThisSiteCookie.Checked:=True;
     8:AllowThisSiteSessionCookie.checked:=true;//ACCESS_SESSION
@@ -9153,10 +9172,10 @@ var
 begin
   StyleSwitchMenu.Clear;
 
-  tabBarCtxTarget:=TabControl.TabIndex;
-  if GetBrowser(tabBarCtxTarget)= nil then exit;
+  TabBarCtxIndex:=TabControl.TabIndex;
+  if GetBrowser(TabBarCtxIndex)= nil then exit;
 
-  doc:=GetBrowser(tabBarCtxTarget).ContentDocument;
+  doc:=GetBrowser(TabBarCtxIndex).ContentDocument;
   ssl := (doc as nsIDOMDocumentStyle).StyleSheets;
 
   title:=NewString('');
@@ -10187,9 +10206,9 @@ begin
   f:=TBookmarkForm.Create(Self);
   f.mode:='create';
   f.ParentBkmk:=TBookmarkList(TMenuItem(Sender).Tag);
-  if GetBrowser(tabBarCtxTarget)<>nil then begin
-    f.Title:=GetBrowser(tabBarCtxTarget).Title;
-    f.URI:=GetBrowser(tabBarCtxTarget).URI;
+  if GetBrowser(TabBarCtxIndex)<>nil then begin
+    f.Title:=GetBrowser(TabBarCtxIndex).Title;
+    f.URI:=GetBrowser(TabBarCtxIndex).URI;
   end;
   if (f.ShowModal=mrOk) then begin
     RegisterBookmark(f.URI,f.Title,bookmarks,bookmarks.Count,f.DocShellState);
@@ -10375,7 +10394,7 @@ var
   i,eqPos:Integer;
 begin
   Result:=false;
-  tabBarCtxTarget:=TabControl.TabIndex;
+  TabBarCtxIndex:=TabControl.TabIndex;
   for i:=0 to Pref.OperaKeyList.Count - 1 do begin
     if Str=Pref.OperaKeyList.Names[i] then begin
       kbdName:=Pref.OperaKeyList.Strings[i];

@@ -152,7 +152,7 @@ object BagelMainForm: TBagelMainForm
           Height = 21
           Style = csDropDownList
           Enabled = False
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 0
         end
         object ToolButton17: TToolButton
@@ -355,7 +355,7 @@ object BagelMainForm: TBagelMainForm
             Top = 0
             Width = 200
             Height = 213
-            ActivePage = TabSheet1
+            ActivePage = BookmarkSheet
             HotTrack = True
             RaggedRight = True
             Style = tsButtons
@@ -364,10 +364,6 @@ object BagelMainForm: TBagelMainForm
               Caption = #12502#12483#12463#12510#12540#12463
               ImageIndex = 6
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel5: TPanel
                 Left = 0
                 Top = 0
@@ -392,10 +388,6 @@ object BagelMainForm: TBagelMainForm
               Caption = #23653#27508
               ImageIndex = 1
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel7: TPanel
                 Left = 0
                 Top = 21
@@ -449,10 +441,6 @@ object BagelMainForm: TBagelMainForm
               Caption = #12522#12531#12463
               ImageIndex = 2
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel4: TPanel
                 Left = 0
                 Top = 20
@@ -648,10 +636,6 @@ object BagelMainForm: TBagelMainForm
               Caption = 'Grep'
               ImageIndex = 5
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel6: TPanel
                 Left = 0
                 Top = 0
@@ -666,7 +650,7 @@ object BagelMainForm: TBagelMainForm
                   Top = 0
                   Width = 201
                   Height = 21
-                  ItemHeight = 0
+                  ItemHeight = 13
                   TabOrder = 0
                   OnKeyPress = cmbGrepKeywordKeyPress
                 end
@@ -723,10 +707,6 @@ object BagelMainForm: TBagelMainForm
               Caption = 'Web'#12497#12493#12523
               ImageIndex = 4
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object XPToolBar1: TToolBar
                 Left = 0
                 Top = 0
@@ -761,10 +741,6 @@ object BagelMainForm: TBagelMainForm
               Caption = #12473#12463#12522#12503#12488
               ImageIndex = 5
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object ScriptList: TListBox
                 Left = 0
                 Top = 0
@@ -779,10 +755,6 @@ object BagelMainForm: TBagelMainForm
               Caption = #12463#12522#12483#12503#12508#12540#12489
               ImageIndex = 6
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object ObserveClipList: TListBox
                 Left = 0
                 Top = 37
@@ -827,10 +799,6 @@ object BagelMainForm: TBagelMainForm
               ImageIndex = 7
               TabVisible = False
               OnShow = MemoSheetShow
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Splitter3: TSplitter
                 Left = 0
                 Top = 133
@@ -929,10 +897,6 @@ object BagelMainForm: TBagelMainForm
               Caption = #12480#12454#12531#12525#12540#12480
               ImageIndex = 8
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object ToolBar3: TToolBar
                 Left = 0
                 Top = 0
@@ -1012,10 +976,6 @@ object BagelMainForm: TBagelMainForm
               Caption = 'OutPut'
               ImageIndex = 9
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object lstOutPut: TListBox
                 Left = 0
                 Top = 0
@@ -1026,7 +986,6 @@ object BagelMainForm: TBagelMainForm
                 Items.Strings = (
                   '('#65439#1044#65439')'#65308#12487#12496#12483#12464#29992)
                 TabOrder = 0
-                ExplicitHeight = 145
               end
             end
             object UsrTabSheet: TTabSheet
@@ -1034,10 +993,6 @@ object BagelMainForm: TBagelMainForm
               ImageIndex = 10
               TabVisible = False
               OnShow = UsrTabSheetShow
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object ToolBar1: TToolBar
                 Left = 0
                 Top = 0
@@ -1536,7 +1491,6 @@ object BagelMainForm: TBagelMainForm
     end
     object actToggleSidebarVisible: TAction
       Category = #12469#12452#12489#12496#12540
-      AutoCheck = True
       Caption = #12469#12452#12489#12496#12540#34920#31034#20999#26367
       ImageIndex = 30
       OnExecute = actToggleSidebarVisibleExecute
@@ -1630,90 +1584,80 @@ object BagelMainForm: TBagelMainForm
     end
     object actBookmarkSidebar: TAction
       Category = #12469#12452#12489#12496#12540
-      AutoCheck = True
       Caption = #12502#12483#12463#12510#12540#12463
       GroupIndex = 1
       ImageIndex = 36
-      OnExecute = actBookmarkSidebarExecute
+      OnExecute = actSomeSidebarExecute
     end
     object actHistorySidebar: TAction
       Category = #12469#12452#12489#12496#12540
-      AutoCheck = True
       Caption = #23653#27508
       GroupIndex = 1
       ImageIndex = 37
-      OnExecute = actHistorySidebarExecute
+      OnExecute = actSomeSidebarExecute
     end
     object actLinkSidebar: TAction
       Category = #12469#12452#12489#12496#12540
-      AutoCheck = True
       Caption = #12522#12531#12463
       GroupIndex = 1
       ImageIndex = 49
-      OnExecute = actLinkSidebarExecute
+      OnExecute = actSomeSidebarExecute
     end
     object actGrepSidebar: TAction
       Category = #12469#12452#12489#12496#12540
-      AutoCheck = True
       Caption = 'Grep'
       GroupIndex = 1
       ImageIndex = 48
-      OnExecute = actGrepSidebarExecute
+      OnExecute = actSomeSidebarExecute
     end
     object actWebPanel: TAction
       Category = #12469#12452#12489#12496#12540
-      AutoCheck = True
       Caption = 'Web'#12497#12493#12523
       GroupIndex = 1
       ImageIndex = 51
-      OnExecute = actWebPanelExecute
+      OnExecute = actSomeSidebarExecute
     end
     object actScriptSidebar: TAction
       Category = #12469#12452#12489#12496#12540
-      AutoCheck = True
       Caption = #12473#12463#12522#12503#12488
       GroupIndex = 1
       ImageIndex = 53
-      OnExecute = actScriptSidebarExecute
+      OnExecute = actSomeSidebarExecute
     end
     object actClipboardSidebar: TAction
       Category = #12469#12452#12489#12496#12540
-      AutoCheck = True
       Caption = #12463#12522#12483#12503#12508#12540#12489
       GroupIndex = 1
       ImageIndex = 38
-      OnExecute = actClipboardSidebarExecute
+      OnExecute = actSomeSidebarExecute
     end
     object actMemoSidebar: TAction
       Category = #12469#12452#12489#12496#12540
-      AutoCheck = True
       Caption = #12513#12514
       GroupIndex = 1
       ImageIndex = 50
-      OnExecute = actMemoSidebarExecute
+      OnExecute = actSomeSidebarExecute
     end
     object actTransferSidebar: TAction
       Category = #12469#12452#12489#12496#12540
-      AutoCheck = True
       Caption = #12480#12454#12531#12525#12540#12480
       GroupIndex = 1
       ImageIndex = 52
-      OnExecute = actTransferSidebarExecute
+      OnExecute = actSomeSidebarExecute
     end
     object actUserDefinedSidebar: TAction
       Category = #12469#12452#12489#12496#12540
-      AutoCheck = True
       Caption = #12518#12540#12470#12540#23450#32681
       GroupIndex = 1
       ImageIndex = 47
-      OnExecute = actUserDefinedSidebarExecute
+      OnExecute = actSomeSidebarExecute
     end
     object actOutputSidebar: TAction
       Category = #12469#12452#12489#12496#12540
       AutoCheck = True
       Caption = 'Output'
       GroupIndex = 1
-      OnExecute = actOutputSidebarExecute
+      OnExecute = actSomeSidebarExecute
     end
     object actShowPageInfo: TAction
       Category = #12501#12449#12452#12523
@@ -6703,39 +6647,30 @@ object BagelMainForm: TBagelMainForm
     Top = 228
     object N32: TMenuItem
       Action = actBookmarkSidebar
-      AutoCheck = True
     end
     object N33: TMenuItem
       Action = actHistorySidebar
-      AutoCheck = True
     end
     object N34: TMenuItem
       Action = actGrepSidebar
-      AutoCheck = True
     end
     object Grep1: TMenuItem
       Action = actLinkSidebar
-      AutoCheck = True
     end
     object Web2: TMenuItem
       Action = actScriptSidebar
-      AutoCheck = True
     end
     object N35: TMenuItem
       Action = actClipboardSidebar
-      AutoCheck = True
     end
     object N40: TMenuItem
       Action = actMemoSidebar
-      AutoCheck = True
     end
     object N41: TMenuItem
       Action = actTransferSidebar
-      AutoCheck = True
     end
     object N42: TMenuItem
       Action = actUserDefinedSidebar
-      AutoCheck = True
     end
     object Output1: TMenuItem
       Action = actOutputSidebar

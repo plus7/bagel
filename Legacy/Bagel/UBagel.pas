@@ -87,6 +87,12 @@ type
     Level:Integer;
   end;
 
+  TComponentDouble = record
+    first: TComponent;
+    second: TComponent;
+  end;
+  PComponentDouble = ^TComponentDouble;
+
   PGrepResult = ^TGrepResult;
   TGrepResult = record        //Grep結果の保持
     Browser:TGeckoBrowser;
@@ -559,6 +565,8 @@ type
       Y: Integer);
     procedure Panel1Resize(Sender: TObject);
     procedure actAboutBagelExecute(Sender: TObject);
+    procedure InitSidebarTuples;
+    procedure ClearSidebarTuples;
     procedure FormCreate(Sender: TObject);
 
     procedure OnURIEnter;
@@ -695,17 +703,7 @@ type
     procedure actAddDenyTitleExecute(Sender: TObject);
     procedure actAddDenyURIExecute(Sender: TObject);
     procedure actToggleSidebarVisibleExecute(Sender: TObject);
-    procedure actBookmarkSidebarExecute(Sender: TObject);
-    procedure actHistorySidebarExecute(Sender: TObject);
-    procedure actLinkSidebarExecute(Sender: TObject);
-    procedure actGrepSidebarExecute(Sender: TObject);
-    procedure actClipboardSidebarExecute(Sender: TObject);
-    procedure actScriptSidebarExecute(Sender: TObject);
-    procedure actMemoSidebarExecute(Sender: TObject);
-    procedure actTransferSidebarExecute(Sender: TObject);
-    procedure actOutputSidebarExecute(Sender: TObject);
-    procedure actUserDefinedSidebarExecute(Sender: TObject);
-    procedure actWebPanelExecute(Sender: TObject);
+    procedure actSomeSidebarExecute(Sender: TObject);
     procedure actShowPageInfoExecute(Sender: TObject);
     procedure actShowPageInfoUpdate(Sender: TObject);
     procedure actToggleStatusbarVisibleExecute(Sender: TObject);
@@ -992,6 +990,7 @@ type
     SplitterPressed:Boolean;  //サイドバーのスプリッタが押されているかどうか
     SplitterStptROffset:Integer; //クリックしはじめたX座標
     TabZOrder:TList; // タブのZ-Orderを記憶する
+    SidebarTuples: TList; //サイドバーを切り替えるアクションとタブシートの対応表
     StatusWidgetList:TList; //ステータスバーのウィジェットを記憶する
     moveGestureTemp: String; //マウスジェスチャの経過を記憶
     prevPoint: TPoint; //マウスジェスチャにおける直前のマウスの位置
@@ -1931,19 +1930,6 @@ begin
   browserHistory.RemoveAllPages;
 end;
 
-//クリップボードサイドバーを表示
-procedure TBagelMainForm.actClipboardSidebarExecute(Sender: TObject);
-begin
-  if actClipboardSidebar.Checked then begin
-    PageControl1.ActivePage:=ClipSheet;
-    SidebarSelector.Caption:=PageControl1.ActivePage.Caption;
-    if not actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end
-  else begin
-    if actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end;
-end;
-
 //すべて閉じる
 procedure TBagelMainForm.actCloseAllExecute(Sender: TObject);
 var
@@ -2592,33 +2578,6 @@ begin
   if (str<>'') or (str<>'http:/')then GetBrowser(TabBarCtxIndex).LoadURI(str);
 end;
 
-//Grepサイドバーを表示
-procedure TBagelMainForm.actGrepSidebarExecute(Sender: TObject);
-begin
-  if actGrepSidebar.Checked then begin
-    PageControl1.ActivePage:=GrepSheet;
-    SidebarSelector.Caption:=PageControl1.ActivePage.Caption;
-    if not actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-    cmbGrepKeyword.SetFocus;
-  end
-  else begin
-    if actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end;
-end;
-
-//履歴サイドバーを表示
-procedure TBagelMainForm.actHistorySidebarExecute(Sender: TObject);
-begin
-  if actHistorySidebar.Checked then begin
-    PageControl1.ActivePage:=HistorySheet;
-    SidebarSelector.Caption:=PageControl1.ActivePage.Caption;
-    if not actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end
-  else begin
-    if actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end;
-end;
-
 //IEを起動して表示
 procedure TBagelMainForm.actIEViewExecute(Sender: TObject);
 var
@@ -2818,32 +2777,6 @@ begin
   f:=TfrmWebPanelEditor.Create(Self);
   f.ShowModal;
 //  ViewMenuSidebar.Click;
-end;
-
-//リンクサイドバーを表示
-procedure TBagelMainForm.actLinkSidebarExecute(Sender: TObject);
-begin
-  if actLinkSidebar.Checked then begin
-    PageControl1.ActivePage:=LinkSheet;
-    SidebarSelector.Caption:=PageControl1.ActivePage.Caption;
-    if not actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end
-  else begin
-    if actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end;
-end;
-
-//メモサイドバーを表示
-procedure TBagelMainForm.actMemoSidebarExecute(Sender: TObject);
-begin
-  if actMemoSidebar.Checked then begin
-    PageControl1.ActivePage:=MemoSheet;
-    SidebarSelector.Caption:=PageControl1.ActivePage.Caption;
-    if not actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end
-  else begin
-    if actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end;
 end;
 
 //次のタブを選択
@@ -3139,18 +3072,6 @@ begin
   win := (b.WebBrowser as nsIWebBrowserFocus).FocusedWindow;
   if win=nil then Exit;
   AddTab(GetSelectionStrFromWin(win));
-end;
-
-procedure TBagelMainForm.actOutputSidebarExecute(Sender: TObject);
-begin
-  if actOutputSidebar.Checked then begin
-    PageControl1.ActivePage:=TabSheet1;
-    SidebarSelector.Caption:=PageControl1.ActivePage.Caption;
-    if not actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end
-  else begin
-    if actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end;
 end;
 
 procedure TBagelMainForm.actPageHomeExecute(Sender: TObject);
@@ -3633,8 +3554,9 @@ end;
 
 procedure TBagelMainForm.actToggleSidebarVisibleExecute(Sender: TObject);
 begin
-  if actToggleSidebarVisible.Checked then  //表示
+  if not SideBasePanel.Visible then  //表示
   begin
+    actToggleSidebarVisible.Checked := True;
     SideBasePanel.Visible:=True;
     if PageControl1.ActivePage=BookmarkSheet then actBookmarkSidebar.Checked:=true
     else if PageControl1.ActivePage=HistorySheet then actHistorySidebar.Checked:=true
@@ -3650,6 +3572,7 @@ begin
   end
   else
   begin                            //非表示
+    actToggleSidebarVisible.Checked := False;
     SideBasePanel.Visible:=False;
     if actBookmarkSidebar.Checked then actBookmarkSidebar.Checked:=false
     else if actHistorySidebar.Checked then actHistorySidebar.Checked:=false
@@ -3672,20 +3595,7 @@ begin
   StatusBar.Visible:=TAction(Sender).Checked;
 end;
 
-
-procedure TBagelMainForm.actTransferSidebarExecute(Sender: TObject);
-begin
-  if actTransferSidebar.Checked then begin
-    PageControl1.ActivePage:=DLSheet;
-    SidebarSelector.Caption:=PageControl1.ActivePage.Caption;
-    if not actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end
-  else begin
-    if actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end;
-end;
-
-procedure TBagelMainForm.actUserDefinedSidebarExecute(Sender: TObject);
+procedure TBagelMainForm.actSomeSidebarExecute(Sender: TObject);
 begin
   if actUserDefinedSidebar.Checked then begin
     PageControl1.ActivePage:=UsrTabSheet;
@@ -3700,18 +3610,6 @@ end;
 procedure TBagelMainForm.actViewSourceExecute(Sender: TObject);
 begin
   AddTab('view-source:' + GetBrowser(TabBarCtxIndex).URI,Pref.OpenModeViewsource,0,'',Pref.DocShellDefault)
-end;
-
-procedure TBagelMainForm.actWebPanelExecute(Sender: TObject);
-begin
-  if actWebPanel.Checked then begin
-    PageControl1.ActivePage:=WebPanelSheet;
-    SidebarSelector.Caption:=PageControl1.ActivePage.Caption;
-    if not actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end
-  else begin
-    if actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end;
 end;
 
 procedure TBagelMainForm.actWorkOfflineExecute(Sender: TObject);
@@ -4161,7 +4059,8 @@ begin
 //文字列
   str :=NewCString('');
 //URI
-  LocationBox.Text := URIToStr(Browser.WebNavigation.CurrentURI);
+  if Browser.WebNavigation <> nil then
+    LocationBox.Text := URIToStr(Browser.WebNavigation.CurrentURI);
   Self.Caption := Browser.Title + IfThen(Pref.ShowAppNameInTitle,'- Bagel') ;
   Application.Title := Self.Caption;
   actGoBack.Enabled:=Browser.CanGoBack;
@@ -4170,16 +4069,18 @@ begin
   actFastForward.Enabled:=actGoForward.Enabled;
 
 
-  actAllowJS.Checked:=Browser.DocShell.AllowJavascript;
-  actAllowJS.Update;
-  actAllowImg.Checked:=Browser.DocShell.AllowImages;
-  actAllowImg.Update;
-  actAllowFrames.Checked:=Browser.DocShell.AllowSubframes;
-  actAllowFrames.Update;
-  actAllowPlugins.Checked:=Browser.DocShell.AllowPlugins;
-  actAllowPlugins.Update;
-  actAllowRedirect.Checked:=Browser.DocShell.AllowMetaRedirects;
-  actAllowRedirect.Update;
+  if Browser.DocShell <> nil then begin
+    actAllowJS.Checked:=Browser.DocShell.AllowJavascript;
+    actAllowJS.Update;
+    actAllowImg.Checked:=Browser.DocShell.AllowImages;
+    actAllowImg.Update;
+    actAllowFrames.Checked:=Browser.DocShell.AllowSubframes;
+    actAllowFrames.Update;
+    actAllowPlugins.Checked:=Browser.DocShell.AllowPlugins;
+    actAllowPlugins.Update;
+    actAllowRedirect.Checked:=Browser.DocShell.AllowMetaRedirects;
+    actAllowRedirect.Update;
+  end;
   StatusBar.Refresh;
 
   //HighlightButton.Down := IsHilighted(Browser);
@@ -4366,6 +4267,7 @@ begin
 
   item:=TTabListItem.Create;
 
+  if Browser.WebNavigation <> nil then
   for i:=0 to Browser.WebNavigation.SessionHistory.Count-1 do begin
     entry:=TTabHistoryItem.Create;
     entry.URI := URIToStr(Browser.WebNavigation.
@@ -4377,7 +4279,10 @@ begin
   end;
   item.URI:=Browser.URI;
   item.Title:=Browser.Title;
-  item.HistoryPosition:=Browser.WebNavigation.SessionHistory.Index;
+  if Browser.WebNavigation <> nil then
+    item.HistoryPosition := Browser.WebNavigation.SessionHistory.Index
+  else
+    item.HistoryPosition := 0;
   Pref.RecentClosedURL.Insert(item,0);
   while Pref.RecentClosedURL.Count>Pref.RecentClosedMaxCount do begin
     item:=Pref.RecentClosedURL.Tabs[Pref.RecentClosedMaxCount];
@@ -5566,6 +5471,60 @@ begin
 //
 end;
 
+procedure TBagelMainForm.InitSidebarTuples;
+var
+  p: PComponentDouble;
+begin
+  New(p);
+  p^.first := actBookmarkSidebar;
+  p^.second := BookmarkSheet;
+  SidebarTuples.Add(p);
+  New(p);
+  p^.first := actHistorySidebar;
+  p^.second := HistorySheet;
+  SidebarTuples.Add(p);
+  New(p);
+  p^.first := actLinkSidebar;
+  p^.second := LinkSheet;
+  SidebarTuples.Add(p);
+  New(p);
+  p^.first := actGrepSidebar;
+  p^.second := GrepSheet;
+  SidebarTuples.Add(p);
+  New(p);
+  p^.first := actWebPanel;
+  p^.second := WebPanelSheet;
+  SidebarTuples.Add(p);
+  New(p);
+  p^.first := actScriptSidebar;
+  p^.second := ScriptSheet;
+  SidebarTuples.Add(p);
+  New(p);
+  p^.first := actClipboardSidebar;
+  p^.second := ClipSheet;
+  SidebarTuples.Add(p);
+  New(p);
+  p^.first := actMemoSidebar;
+  p^.second := MemoSheet;
+  SidebarTuples.Add(p);
+  New(p);
+  p^.first := actTransferSidebar;
+  p^.second := DLSheet;
+  SidebarTuples.Add(p);
+  New(p);
+  p^.first := actUserDefinedSidebar;
+  p^.second := UsrTabSheet;
+  SidebarTuples.Add(p);
+end;
+
+procedure TBagelMainForm.ClearSidebarTuples;
+begin
+  while SidebarTuples.Count > 0 do begin
+    Dispose(PComponentDouble(SidebarTuples.Items[0]));
+    SidebarTuples.Delete(0);
+  end;
+end;
+
 procedure TBagelMainForm.FormCreate(Sender: TObject);
 
   procedure LoadDataSources;
@@ -6150,27 +6109,30 @@ begin
     EndUpdate;
   end;
   //TabZOrder生成
-  TabZOrder:=TList.Create;
+  TabZOrder := TList.Create;
+  //SidebarTuples生成
+  SidebarTuples := TList.Create;
+  InitSidebarTuples;
   //オートスクロール基点マーカー初期化
   ASRgn := CreateEllipticRgn(0, 0, 29,29);
   SetWindowRgn(Panel10.Handle, ASRgn, True);
-  Panel10.Visible:=False;
+  Panel10.Visible := False;
   //クリップボードビューアのチェインに自ウインドウを追加する
   hNextViewer := SetClipboardViewer(Handle);
   //文字コードメニュー
   BuildCharsetMenu;
   //ドロップターゲット
-  InternalTargetList:=TStringList.Create;
+  InternalTargetList := TStringList.Create;
   InternalTargetList.Assign(Pref.DropTargetList);
   if TabControl2.Tabs.Count>0 then
-    for i:=0 to TabControl2.Tabs.Count-1 do begin
-      memo:=TBagelMemo(TabControl2.Tabs.Objects[i]);
-      tmpStr:=ExtractFileName(memo.Path);
+    for i := 0 to TabControl2.Tabs.Count-1 do begin
+      memo := TBagelMemo(TabControl2.Tabs.Objects[i]);
+      tmpStr := ExtractFileName(memo.Path);
       InternalTargetList.Add('text'+#9+'memo'+#9+tmpStr+#9+tmpStr);
     end;
 
   //アドレスバー拡張
-  ExtGolist:=TStringList.Create;
+  ExtGolist := TStringList.Create;
   if FileExists(GetSettingDir()+'ExtGo.dat') then ExtGolist.LoadFromFile(GetSettingDir()+'ExtGo.dat')
   else if FileExists(GetDefaultsDir()+'ExtGo.dat') then ExtGolist.LoadFromFile(GetDefaultsDir()+'ExtGo.dat');
 
@@ -6285,6 +6247,8 @@ begin
   ExtGoList.Free;
   WebPanelList.Free;
   TabZOrder.Free;
+  ClearSidebarTuples;
+  SidebarTuples.Free;
 end;
 
 procedure TBagelMainForm.FormMouseDown(Sender: TObject; Button: TMouseButton;
@@ -6409,7 +6373,7 @@ begin
   end
   else begin
     TabPopup.Popup(MousePos.X,MousePos.Y);
-    TabBarCtxIndex := TabControl.TabIndex; 
+    TabBarCtxIndex := TabControl.TabIndex;
   end;
 end;
 
@@ -7340,18 +7304,7 @@ begin
   if GetCurrentBrowser<>nil then
     SaveDocument(GetCurrentBrowser.ContentDocument,False);
 end;
-{スクリプトサイドバーを表示}
-procedure TBagelMainForm.actScriptSidebarExecute(Sender: TObject);
-begin
-  if actScriptSidebar.Checked then begin
-    PageControl1.ActivePage:=ScriptSheet;
-    SidebarSelector.Caption:=PageControl1.ActivePage.Caption;
-    if not actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end
-  else begin
-    if actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end;
-end;
+
 procedure TBagelMainForm.actSearchSelectionExecute(Sender: TObject);
 var
   selstr:String;
@@ -7977,14 +7930,31 @@ begin
   else actBookmarkProperty.Enabled := true;
 end;
 
-procedure TBagelMainForm.actBookmarkSidebarExecute(Sender: TObject);
+procedure TBagelMainForm.actSomeSidebarExecute(Sender: TObject);
+var
+  i:Integer;
+  tab:TTabSheet;
 begin
-  if actBookmarkSidebar.Checked then begin
-    PageControl1.ActivePage:=BookmarkSheet;
-    SidebarSelector.Caption:=PageControl1.ActivePage.Caption;
+  tab := nil;
+  if not (Sender is TAction) then exit;
+  for i := 0 to SidebarTuples.Count - 1 do begin
+    if PComponentDouble(SidebarTuples.Items[i])^.first = Sender then begin
+      tab := TTabSheet(PComponentDouble(SidebarTuples.Items[i])^.second);
+      break;
+    end;
+  end;
+  if tab = nil then Exit;
+
+  if not TAction(Sender).Checked then begin
+    PageControl1.ActivePage := tab;
+    SidebarSelector.Caption := PageControl1.ActivePage.Caption;
+    TAction(Sender).Checked := True;
+    TAction(Sender).Update;
     if not actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
   end
   else begin
+    TAction(Sender).Checked := False;
+    TAction(Sender).Update;
     if actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
   end;
 end;

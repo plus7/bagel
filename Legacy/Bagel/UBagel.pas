@@ -3595,18 +3595,6 @@ begin
   StatusBar.Visible:=TAction(Sender).Checked;
 end;
 
-procedure TBagelMainForm.actSomeSidebarExecute(Sender: TObject);
-begin
-  if actUserDefinedSidebar.Checked then begin
-    PageControl1.ActivePage:=UsrTabSheet;
-    SidebarSelector.Caption:=PageControl1.ActivePage.Caption;
-    if not actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end
-  else begin
-    if actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
-  end;
-end;
-
 procedure TBagelMainForm.actViewSourceExecute(Sender: TObject);
 begin
   AddTab('view-source:' + GetBrowser(TabBarCtxIndex).URI,Pref.OpenModeViewsource,0,'',Pref.DocShellDefault)

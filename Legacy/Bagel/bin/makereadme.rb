@@ -23,8 +23,8 @@ Donutに似せたインターフェイスを持っており、それなりにカ
 
 ■インストール
 実行の前に、XULRunner1.9が必要です。
-http://releases.mozilla.org/pub/mozilla.org/xulrunner/releases/1.9.0.0/runtimes/
-からxulrunner-1.9.en-US.win32.zipを取得、展開の上、
+http://ftp.mozilla.org/pub/xulrunner/releases/1.9.0.1/runtimes/
+からxulrunner-1.9.0.1.en-US.win32.zipを取得、展開の上、
 "xulrunner --register-user"
 を実行してください。管理者権限がある場合は--register-globalでもかまいません。
 あとはBagel.exeを実行してください。

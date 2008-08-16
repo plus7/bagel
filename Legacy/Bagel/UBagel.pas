@@ -704,6 +704,7 @@ type
     procedure actAddDenyURIExecute(Sender: TObject);
     procedure actToggleSidebarVisibleExecute(Sender: TObject);
     procedure actSomeSidebarExecute(Sender: TObject);
+    procedure actSomeSidebarUpdate(Sender: TObject);
     procedure actShowPageInfoExecute(Sender: TObject);
     procedure actShowPageInfoUpdate(Sender: TObject);
     procedure actToggleStatusbarVisibleExecute(Sender: TObject);
@@ -979,6 +980,7 @@ type
     procedure UsrTabSheetShow(Sender: TObject);
     procedure actToggleSidebarVisibleClick(Sender: TObject);
     procedure SidebarCloseButtonClick(Sender: TObject);
+    procedure actToggleSidebarVisibleUpdate(Sender: TObject);
   protected
     procedure CreateWnd; override;
     procedure DestroyWnd; override;
@@ -3588,6 +3590,11 @@ begin
   end;
 
   Pref.SidebarVisible:=actToggleSidebarVisible.Checked;
+end;
+
+procedure TBagelMainForm.actToggleSidebarVisibleUpdate(Sender: TObject);
+begin
+  actToggleSidebarVisible.Checked := SideBasePanel.Visible;
 end;
 
 procedure TBagelMainForm.actToggleStatusbarVisibleExecute(Sender: TObject);
@@ -7945,6 +7952,30 @@ begin
     TAction(Sender).Update;
     if actToggleSidebarVisible.Checked then actToggleSidebarVisible.Execute;
   end;
+end;
+
+procedure TBagelMainForm.actSomeSidebarUpdate(Sender: TObject);
+var
+  i:Integer;
+  tab:TTabSheet;
+begin
+  if not (Sender is TAction) then exit;
+  if not SideBasePanel.Visible then begin
+    TAction(Sender).Checked := False;
+    Exit;
+  end;
+
+  tab := nil;
+  for i := 0 to SidebarTuples.Count - 1 do begin
+    if PComponentDouble(SidebarTuples.Items[i])^.first = Sender then begin
+      tab := TTabSheet(PComponentDouble(SidebarTuples.Items[i])^.second);
+      break;
+    end;
+  end;
+  if tab = nil then Exit;
+
+  if PageControl1.ActivePage = tab then
+    TAction(Sender).Checked := True;
 end;
 
 //▼マウスジェスチャー関係

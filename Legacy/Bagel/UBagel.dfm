@@ -355,7 +355,7 @@ object BagelMainForm: TBagelMainForm
             Top = 0
             Width = 200
             Height = 213
-            ActivePage = BookmarkSheet
+            ActivePage = MemoSheet
             HotTrack = True
             RaggedRight = True
             Style = tsButtons
@@ -1494,6 +1494,7 @@ object BagelMainForm: TBagelMainForm
       Caption = #12469#12452#12489#12496#12540#34920#31034#20999#26367
       ImageIndex = 30
       OnExecute = actToggleSidebarVisibleExecute
+      OnUpdate = actToggleSidebarVisibleUpdate
     end
     object actGoHome: TAction
       Category = #31227#21205
@@ -1588,6 +1589,7 @@ object BagelMainForm: TBagelMainForm
       GroupIndex = 1
       ImageIndex = 36
       OnExecute = actSomeSidebarExecute
+      OnUpdate = actSomeSidebarUpdate
     end
     object actHistorySidebar: TAction
       Category = #12469#12452#12489#12496#12540
@@ -1595,6 +1597,7 @@ object BagelMainForm: TBagelMainForm
       GroupIndex = 1
       ImageIndex = 37
       OnExecute = actSomeSidebarExecute
+      OnUpdate = actSomeSidebarUpdate
     end
     object actLinkSidebar: TAction
       Category = #12469#12452#12489#12496#12540
@@ -1602,6 +1605,7 @@ object BagelMainForm: TBagelMainForm
       GroupIndex = 1
       ImageIndex = 49
       OnExecute = actSomeSidebarExecute
+      OnUpdate = actSomeSidebarUpdate
     end
     object actGrepSidebar: TAction
       Category = #12469#12452#12489#12496#12540
@@ -1609,6 +1613,7 @@ object BagelMainForm: TBagelMainForm
       GroupIndex = 1
       ImageIndex = 48
       OnExecute = actSomeSidebarExecute
+      OnUpdate = actSomeSidebarUpdate
     end
     object actWebPanel: TAction
       Category = #12469#12452#12489#12496#12540
@@ -1616,6 +1621,7 @@ object BagelMainForm: TBagelMainForm
       GroupIndex = 1
       ImageIndex = 51
       OnExecute = actSomeSidebarExecute
+      OnUpdate = actSomeSidebarUpdate
     end
     object actScriptSidebar: TAction
       Category = #12469#12452#12489#12496#12540
@@ -1623,6 +1629,7 @@ object BagelMainForm: TBagelMainForm
       GroupIndex = 1
       ImageIndex = 53
       OnExecute = actSomeSidebarExecute
+      OnUpdate = actSomeSidebarUpdate
     end
     object actClipboardSidebar: TAction
       Category = #12469#12452#12489#12496#12540
@@ -1630,6 +1637,7 @@ object BagelMainForm: TBagelMainForm
       GroupIndex = 1
       ImageIndex = 38
       OnExecute = actSomeSidebarExecute
+      OnUpdate = actSomeSidebarUpdate
     end
     object actMemoSidebar: TAction
       Category = #12469#12452#12489#12496#12540
@@ -1637,6 +1645,7 @@ object BagelMainForm: TBagelMainForm
       GroupIndex = 1
       ImageIndex = 50
       OnExecute = actSomeSidebarExecute
+      OnUpdate = actSomeSidebarUpdate
     end
     object actTransferSidebar: TAction
       Category = #12469#12452#12489#12496#12540
@@ -1644,6 +1653,7 @@ object BagelMainForm: TBagelMainForm
       GroupIndex = 1
       ImageIndex = 52
       OnExecute = actSomeSidebarExecute
+      OnUpdate = actSomeSidebarUpdate
     end
     object actUserDefinedSidebar: TAction
       Category = #12469#12452#12489#12496#12540
@@ -1651,6 +1661,7 @@ object BagelMainForm: TBagelMainForm
       GroupIndex = 1
       ImageIndex = 47
       OnExecute = actSomeSidebarExecute
+      OnUpdate = actSomeSidebarUpdate
     end
     object actOutputSidebar: TAction
       Category = #12469#12452#12489#12496#12540
@@ -1658,6 +1669,7 @@ object BagelMainForm: TBagelMainForm
       Caption = 'Output'
       GroupIndex = 1
       OnExecute = actSomeSidebarExecute
+      OnUpdate = actSomeSidebarUpdate
     end
     object actShowPageInfo: TAction
       Category = #12501#12449#12452#12523
@@ -1778,7 +1790,7 @@ object BagelMainForm: TBagelMainForm
     end
     object actShowExtGoEditor: TAction
       Category = #12484#12540#12523
-      Caption = 'actShowExtGoEditor'
+      Caption = #12450#12489#12524#12473#12496#12540#25313#24373#12398#32232#38598
       OnExecute = actShowExtGoEditorExecute
     end
     object actTaskTray: TAction

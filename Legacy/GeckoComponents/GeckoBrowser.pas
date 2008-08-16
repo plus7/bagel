@@ -1316,7 +1316,7 @@ begin
       OutputDebugString('GeckoBrowser.OnDocumentBegin');
       {$ENDIF}
       if Assigned(FBrowser.OnDocumentBegin) then
-        FBrowser.OnDocumentBegin(Self, str.ToString);
+        FBrowser.OnDocumentBegin(FBrowser, str.ToString);
     end else
     if (aStateFlags and STATE_STOP)<>0 then
     begin
@@ -1329,7 +1329,7 @@ begin
       OutputDebugString('GeckoBrowser.OnDocumentComplete');
       {$ENDIF}
       if Assigned(FBrowser.OnDocumentComplete) then
-        FBrowser.OnDocumentComplete(Self, str.ToString);
+        FBrowser.OnDocumentComplete(FBrowser, str.ToString);
     end;
   end;
   if (aStateFlags and STATE_IS_NETWORK)<>0 then
@@ -1347,7 +1347,7 @@ begin
         PChar('GeckoBrowser.OnDownloadBegin('+str.ToString+')'));
       {$ENDIF}
       if Assigned(FBrowser.OnDownloadBegin) then
-        FBrowser.OnDownloadBegin(Self, str.ToString);
+        FBrowser.OnDownloadBegin(FBrowser, str.ToString);
     end else
     if (aStateFlags and STATE_STOP)<>0 then
     begin
@@ -1361,7 +1361,7 @@ begin
         PChar('GeckoBrowser.OnDownloadComplete('+str.ToString+')'));
       {$ENDIF}
       if Assigned(FBrowser.OnDownloadComplete) then
-        FBrowser.OnDownloadComplete(Self, str.ToString);
+        FBrowser.OnDownloadComplete(FBrowser, str.ToString);
       if Assigned(FBrowser.OnStatusChange) then
         FBrowser.OnStatusChange(FBrowser, '');
     end;
@@ -1612,8 +1612,11 @@ var
   history: nsISHistory;
   index: PRInt32;
 begin
+  Result := False;
   nav := FWebBrowser as nsIWebNavigation;
+  if nav = nil then Exit;
   history := nav.SessionHistory;
+  if history = nil then Exit;
   index := history.Index;
 
   Result := (index > 0);
@@ -1625,8 +1628,12 @@ var
   history: nsISHistory;
   count, index: PRInt32;
 begin
+  Result := False;
   nav := FWebBrowser as nsIWebNavigation;
+  if nav = nil then Exit;
   history := nav.SessionHistory;
+  if history = nil then Exit;
+
   count := history.Count;
   index := history.Index;
 
@@ -1935,7 +1942,8 @@ begin
   Result:='';
   str :=NewCString('');
 //URI
-  Self.WebNavigation.CurrentURI.GetSpec(str.ACString);
+  if Self.WebNavigation <> nil then
+    Self.WebNavigation.CurrentURI.GetSpec(str.ACString);
   Result := str.ToString;
 end;
 

@@ -325,6 +325,9 @@ begin
   if FContainer.Count=0 then begin
     if FContainer.Action is TCustomAction then begin
       Self.Action := TCustomAction(FContainer.Action);
+      if (Self.Action is TAction) and (TAction(Self.Action).GroupIndex > 0) then
+        Self.Grouped := True;
+      
       if TCustomAction(FContainer.Action).ImageIndex < 0 then Self.Style := tbsTextButton;      
       if FContainer.Caption<>'' then Self.Caption := FContainer.Caption
       else Self.Caption := TCustomAction(FContainer.Action).Caption;
@@ -385,12 +388,16 @@ procedure TBagelToolbar.SetContainer(Value:TBagelActionContainer);
 var
   i:Integer;
   tb:TBagelToolButton;
+  btn:TControl;
 //  ParentMenu:TBagelMenuItem;
 begin
   Self.ShowHint := True;
   FContainer := Value;
-  For i:=0 to Self.ControlCount-1 do
-    Self.Controls[0].Free;
+  For i:=0 to Self.ControlCount-1 do begin
+    btn := Self.Controls[0];
+    Self.RemoveControl(btn);
+    btn.Free;
+  end;
 
 
   if FContainer<>nil then

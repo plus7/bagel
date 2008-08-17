@@ -33,7 +33,6 @@ program Bagel;
 {%TogetherDiagram 'ModelSupport_Bagel\buinIntelliMouse\default.txaPackage'}
 {%TogetherDiagram 'ModelSupport_Bagel\FileChangeWatcher\default.txaPackage'}
 {%TogetherDiagram 'ModelSupport_Bagel\UPageSetup\default.txaPackage'}
-{%TogetherDiagram 'ModelSupport_Bagel\UBagelMemo\default.txaPackage'}
 {%TogetherDiagram 'ModelSupport_Bagel\UCookieP3P\default.txaPackage'}
 {%TogetherDiagram 'ModelSupport_Bagel\BookmarkListView\default.txaPackage'}
 {%TogetherDiagram 'ModelSupport_Bagel\HistoryTreeView\default.txaPackage'}
@@ -75,7 +74,6 @@ uses
   unique in 'unique.pas',
   AboutBagel in 'AboutBagel.pas' {AboutBagelForm},
   BagelConst in 'BagelConst.pas',
-  UBagelMemo in 'UBagelMemo.pas',
   splitjoin in 'splitjoin.pas',
   buinIntelliMouse in 'buinIntelliMouse.pas',
   BufStream in 'BufStream.pas',
@@ -124,7 +122,7 @@ uses
 {$R *.res}
 
 begin
-  ReportMemoryLeaksOnShutdown := True; 
+  ReportMemoryLeaksOnShutdown := True;
   Application.Initialize;
   Application.CreateForm(TBagelMainForm, BagelMainForm);
   Application.Run;

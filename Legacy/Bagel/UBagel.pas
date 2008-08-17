@@ -136,7 +136,6 @@ type
 
   TBagelMainForm = class(TForm)
     ActionList1: TActionList;
-    AddToMemo: TMenuItem;
     AllowAllCookie: TMenuItem;
     AllowThisSiteCookie: TMenuItem;
     AllowThisSiteSessionCookie: TMenuItem;
@@ -172,8 +171,6 @@ type
     CopyLinkListBoth: TMenuItem;
     CopyLinkListText: TMenuItem;
     CopyLinkListURL: TMenuItem;
-    CreateMemo: TMenuItem;
-    CreateMemoItem: TMenuItem;
     DLAllImages: TMenuItem;
     DLPopupMenu: TPopupMenu;
     DLSheet: TTabSheet;
@@ -181,8 +178,6 @@ type
     DelayedSearchButtonCreator: TTimer;
     DelayedSidebarToggler: TTimer;
     Delete1: TMenuItem;
-    DeleteMemo: TMenuItem;
-    DeleteMemoItem: TMenuItem;
     DenyAllCookie: TMenuItem;
     DenyOtherSiteCookie: TMenuItem;
     DenyThisSiteCookie: TMenuItem;

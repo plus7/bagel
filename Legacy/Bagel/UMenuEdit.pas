@@ -488,7 +488,7 @@ begin
   SystemMenu13.Tag:=Integer(BagelMainForm.ToolPCookieConfig);
 //  SystemMenu14.Tag:=Integer(BagelMainForm.ExtCopyMenu);
 //  SystemMenu15.Tag:=Integer(BagelMainForm.ExtAppMenu);
-  SystemMenu16.Tag:=Integer(BagelMainForm.AddToMemo);
+//  SystemMenu16.Tag:=Integer(BagelMainForm.AddToMemo);
 end;
 
 

@@ -106,9 +106,13 @@ type
     property IsMenu:Boolean read FIsMenu write FIsMenu;
   end;
 
+  TOpenBookmarkEvent = procedure(Sender: TObject; Item: TBkmkBase) of object;
+
   TBagelLinkbar = class (TToolbar,IBookmarkObserver)
   private
     FRoot: TBookmarkList;
+    FOnOpenBookmark: TOpenBookmarkEvent;
+    FOnOpenAllBookmarks: TOpenBookmarkEvent;
     procedure SetRoot(Value: TBookmarkList);
     //IBookmarkObserver
     procedure Deleting(item:TBkmkBase);
@@ -121,16 +125,49 @@ type
     destructor Destroy; override;
     procedure RefreshLinkbar;
     property Root:TBookmarkList read FRoot write SetRoot;
+    property OnOpenBookmark:TOpenBookmarkEvent read FOnOpenBookmark write FOnOpenBookmark;
+    property OnOpenAllBookmarks:TOpenBookmarkEvent read FOnOpenAllBookmarks write FOnOpenAllBookmarks;
   end;
-    {
+
   TBagelBookmarkMenu = class (TMenuItem, IBookmarkObserver)
+  private
+    FBookmark: TBkmkBase;
+    FLinkbar: TBagelLinkbar; //TODO LinkbarŒÀ’è‚È‚Ì‚Í‚æ‚­‚È‚¢
+  public
     //IBookmarkObserver
     procedure Deleting(item:TBkmkBase);
     procedure Deleted(item:TBkmkBase);
     procedure Added(item:TBkmkBase);
     procedure Changed(item:TBkmkBase);
+    procedure SetBookmark(Value:TBkmkBase);
+    //TBagelBookmarkMenu
+    procedure CreateChilds;
+    function FindMenuItemByBookmark(item:TBkmkBase):TBagelBookmarkMenu;
+    property Bookmark:TBkmkBase read FBookmark write SetBookmark;
+    property Linkbar:TBagelLinkbar read FLinkbar write FLinkbar;
+    //TMenuItem
+    procedure Click; override;
   end;
-    }
+
+  TBagelBookmarkToolButton = class (TToolButton, IBookmarkObserver)
+  private
+    FBookmark: TBkmkBase;
+    FMenu: TBagelBookmarkMenu;
+    FLinkbar: TBagelLinkbar; //TODO
+  public
+    //IBookmarkObserver
+    procedure Deleting(item:TBkmkBase);
+    procedure Deleted(item:TBkmkBase);
+    procedure Added(item:TBkmkBase);
+    procedure Changed(item:TBkmkBase);
+    procedure SetBookmark(Value:TBkmkBase);
+    //TBagelBookmarkToolButton
+    property Bookmark:TBkmkBase read FBookmark write SetBookmark;
+    property Linkbar:TBagelLinkbar read FLinkbar write FLinkbar;
+    destructor Destroy; override;
+    procedure Click; override;
+  end;
+
 implementation
 
 procedure TBagelCoolbar.RBInsertBand(var Message: TMessage);
@@ -535,8 +572,9 @@ end;
 
 procedure TBagelLinkbar.SetRoot(Value: TBookmarkList);
 var
-  btn:TToolButton;
+  btn:TBagelBookmarkToolButton;
   i:Integer;
+  //m:TBagelBookmarkMenu;
 begin
 
   if Assigned(FRoot) then begin
@@ -550,19 +588,16 @@ begin
   if Value<>nil then begin
     for i := 0 to Value.Count - 1 do
     begin
-      btn := TToolButton.Create(Self);
-      btn.Caption := Value.Items[i].name;
+      btn := TBagelBookmarkToolButton.Create(Self);
+      btn.Style := tbsButton;
+      btn.Linkbar := Self;
+      btn.Bookmark := Value.Items[i];
       btn.AutoSize := True;
-      btn.Tag := Integer(Value.Items[i]);
-      if Value.Items[i] is TBookmarkList then
-        btn.ImageIndex := 7
-      else
-        btn.ImageIndex := 9;
+      btn.Grouped := True;
       btn.Parent := Self;
     end;
     BookmarkObserverService.AddObserver(Self,Value);
   end;
-
 end;
 
 procedure TBagelLinkbar.Deleting(item:TBkmkBase);
@@ -594,6 +629,156 @@ end;
 procedure TBagelLinkbar.RefreshLinkbar;
 begin
   //
+end;
+
+procedure TBagelBookmarkMenu.CreateChilds;
+var
+  menuitem:TBagelBookmarkMenu;
+  i:Integer;
+begin
+  if not (FBookmark is TBookmarkList) then Exit;
+  for i := 0 to TBookmarkList(FBookmark).Count - 1 do begin
+    menuitem := TBagelBookmarkMenu.Create(Self);
+    menuitem.Bookmark := TBookmarkList(FBookmark).Items[i];
+    menuitem.Linkbar := Self.Linkbar;
+    Self.Add(menuitem); 
+  end;
+end;
+
+function TBagelBookmarkMenu.FindMenuItemByBookmark(item:TBkmkBase):TBagelBookmarkMenu;
+var
+  menuitem:TBagelBookmarkMenu;
+  i:Integer;
+begin
+  Result := nil;
+  if not (FBookmark is TBookmarkList) then Exit;
+  for i := 0 to Self.Count - 1 do begin
+    if not (Items[i] is TBagelBookmarkMenu) then continue;
+    menuitem := TBagelBookmarkMenu(Items[i]);
+    if item = menuitem.Bookmark then begin
+      Result := menuitem;
+      Exit;
+    end;
+  end;
+end;
+
+procedure TBagelBookmarkMenu.Deleting(item:TBkmkBase);
+begin
+
+end;
+
+procedure TBagelBookmarkMenu.Deleted(item:TBkmkBase);
+var
+  menuitem:TBagelBookmarkMenu;
+begin
+  if item.parent <> FBookmark then Exit;
+  menuitem := FindMenuItemByBookmark(item);
+  menuitem.Free;
+end;
+
+procedure TBagelBookmarkMenu.Added(item:TBkmkBase);
+var
+  i:Integer;
+  newmenuitem:TBagelBookmarkMenu;
+begin
+  if item.parent <> FBookmark then Exit;
+  i := TBookmarkList(FBookmark).IndexOf(item);
+  newmenuitem := TBagelBookmarkMenu.Create(Self);
+  newmenuitem.Bookmark := item;
+  Self.Insert(i, newmenuitem);
+end;
+
+procedure TBagelBookmarkMenu.Changed(item:TBkmkBase);
+var
+  menuitem:TBagelBookmarkMenu;
+begin
+  if item = FBookmark then
+    Self.Caption := item.name;
+end;
+
+procedure TBagelBookmarkMenu.SetBookmark(Value:TBkmkBase);
+begin
+  Self.Clear;
+
+  if Assigned(FBookmark) and (FBookmark is TBookmarkList) then
+    BookmarkObserverService.RemoveObserver(Self, TBookmarkList(FBookmark));
+
+  FBookmark := Value;
+
+  if FBookmark<>nil then begin
+    if FBookmark is TBookmarkList then begin
+      BookmarkObserverService.AddObserver(Self, TBookmarkList(Value));
+    end;
+    Self.Caption := FBookmark.name;
+    CreateChilds;
+  end
+  else begin
+    Self.Caption := '';
+  end;
+end;
+
+procedure TBagelBookmarkMenu.Click;
+begin
+  inherited;
+  if Assigned(FLinkbar) and Assigned(FLinkbar.OnOpenBookmark) then begin
+    FLinkbar.OnOpenBookmark(Self, Self.Bookmark);
+  end;
+end;
+
+procedure TBagelBookmarkToolButton.Deleting(item:TBkmkBase);
+begin
+
+end;
+
+procedure TBagelBookmarkToolButton.Deleted(item:TBkmkBase);
+begin
+
+end;
+
+procedure TBagelBookmarkToolButton.Added(item:TBkmkBase);
+begin
+
+end;
+
+procedure TBagelBookmarkToolButton.Changed(item:TBkmkBase);
+begin
+  if item = FBookmark then
+    Self.Caption := item.name;
+end;
+
+procedure TBagelBookmarkToolButton.SetBookmark(Value:TBkmkBase);
+begin
+  FBookmark := Value;
+  Self.Caption := FBookmark.name;
+  
+  if Value is TBookmarkList then begin
+    Self.ImageIndex := 7;
+    if not Assigned(FMenu) then FMenu := TBagelBookmarkMenu.Create(Self);
+    FMenu.Linkbar := Self.Linkbar;
+    FMenu.Bookmark := FBookmark;
+    Self.MenuItem := FMenu;
+  end
+  else begin
+    if Assigned(FMenu) then begin
+      Self.MenuItem := nil;
+      FMenu.Free;
+      FMenu := nil;
+    end;
+    Self.ImageIndex := 9;
+  end;
+end;
+
+destructor TBagelBookmarkToolButton.Destroy; 
+begin
+  inherited;
+end;
+
+procedure TBagelBookmarkToolButton.Click;
+begin
+  inherited;
+  if Assigned(FLinkbar) and Assigned(FLinkbar.OnOpenBookmark) then begin
+    FLinkbar.OnOpenBookmark(Self, Self.Bookmark);
+  end;
 end;
 
 (*

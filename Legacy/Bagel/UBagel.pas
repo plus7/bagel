@@ -895,7 +895,7 @@ type
     procedure actOpenBookmarkUpdate(Sender: TObject);
     procedure actOpenBookmarkExecute(Sender: TObject);
     procedure AddLinkToBookmarks;
-    procedure OpenAllBookmarks(Sender:TObject);
+    procedure OpenAllBookmarks(Sender:TObject; Item:TBkmkBase);
     procedure OpenAllBookmarksInternal(l:TBookmarkList);
     procedure actPasteBookmarkUpdate(Sender: TObject);
     procedure actCopyBookmarkExecute(Sender: TObject);
@@ -964,6 +964,7 @@ type
     procedure LinkbarResize(Sender: TObject);
     procedure BookmarkMenuClick(Sender: TObject);
     procedure BookmarkItemClick(Sender: TObject);
+    procedure LinkbarItemClick(Sender: TObject; Item: TBkmkBase);
     procedure actEditMainMenuExecute(Sender: TObject);
     procedure actEditCtxMenuExecute(Sender: TObject);
     procedure actEditTabMenuExecute(Sender: TObject);
@@ -2226,12 +2227,10 @@ begin
 end;
 
 //ブックマークをOpenAllBookmarksInternalに渡す
-procedure TBagelMainForm.OpenAllBookmarks(Sender:TObject);
-var
-  l:TBookmarkList;
+procedure TBagelMainForm.OpenAllBookmarks(Sender:TObject; Item:TBkmkBase);
 begin
-  l:=TBookmarkList(TMenuItem(Sender).Tag);
-  OpenAllBookmarksInternal(l);
+  if Item is TBookmarkList then
+    OpenAllBookmarksInternal(TBookmarkList(Item));
 end;
 
 //ページ内で切り取る
@@ -5738,11 +5737,14 @@ procedure TBagelMainForm.FormCreate(Sender: TObject);
     Linkbar.Parent := MainCoolbar;
     //MainCoolbar.Bands[4].Control := Linkbar;
     MainCoolbar.Bands[4].UseChevron := True;
+    Linkbar.List := True;
     Linkbar.Visible := True;
     Linkbar.AutoSize := True;
     Linkbar.Images := Self.ImageList1;
     Linkbar.Wrapable := False;
     Linkbar.OnResize := LinkbarResize;
+    Linkbar.OnOpenBookmark := Self.LinkbarItemClick;
+    Linkbar.OnOpenAllBookmarks := Self.OpenAllBookmarks;
     //TabControl生成
     TabControl := TTabbedToolbar.Create(MainCoolbar);
     TabControl.Parent := MainCoolbar;
@@ -10723,7 +10725,24 @@ begin
   end;
 end;
 
+procedure TBagelMainForm.LinkbarItemClick(Sender: TObject; Item: TBkmkBase);
+begin
+  if Item is TBookmark then
+  begin
+    with TBookmark(Item) do
+    begin
+      Addtab(URI,Pref.OpenModeBookmarks,
+       0,
+       '',
+       StrToIntDef(DocShell,Pref.DocShellDefault),
+       StrToIntDef(ReloadIntv,0));
+    end;
+  end
+  else if Item is TBookmarkList then
+  begin
 
+  end;
+end;
 //procedure TBagelMainForm.BkmkMenuCreate(Sender: TObject);
 (*  procedure AddBkmkItem(bkmkList: TBookmarkList; parent: TMenuItem);
   var

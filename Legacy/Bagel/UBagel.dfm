@@ -355,7 +355,7 @@ object BagelMainForm: TBagelMainForm
             Top = 0
             Width = 200
             Height = 213
-            ActivePage = MemoSheet
+            ActivePage = ClipSheet
             HotTrack = True
             RaggedRight = True
             Style = tsButtons
@@ -794,105 +794,6 @@ object BagelMainForm: TBagelMainForm
                 end
               end
             end
-            object MemoSheet: TTabSheet
-              Caption = #12513#12514
-              ImageIndex = 7
-              TabVisible = False
-              OnShow = MemoSheetShow
-              object Splitter3: TSplitter
-                Left = 0
-                Top = 133
-                Width = 192
-                Height = 5
-                Cursor = crVSplit
-                Align = alTop
-                AutoSnap = False
-                ExplicitWidth = 239
-              end
-              object memoMemo: TMemo
-                Left = 0
-                Top = 159
-                Width = 192
-                Height = 44
-                Align = alClient
-                HideSelection = False
-                ScrollBars = ssVertical
-                TabOrder = 0
-                OnChange = memoMemoChange
-              end
-              object lvMemo: TListView
-                Left = 0
-                Top = 42
-                Width = 192
-                Height = 91
-                Align = alTop
-                Columns = <
-                  item
-                    AutoSize = True
-                  end>
-                HideSelection = False
-                OwnerDraw = True
-                ReadOnly = True
-                RowSelect = True
-                ShowColumnHeaders = False
-                TabOrder = 1
-                ViewStyle = vsReport
-                OnDblClick = lvMemoDblClick
-                OnDrawItem = lvMemoDrawItem
-                OnEditing = lvMemoEditing
-                OnSelectItem = lvMemoSelectItem
-              end
-              object TabControl2: TTabControl
-                Left = 0
-                Top = 21
-                Width = 192
-                Height = 21
-                Align = alTop
-                MultiLine = True
-                TabOrder = 2
-                OnChange = TabControl2Change
-                OnMouseDown = TabControl2MouseDown
-                OnResize = TabControl2Resize
-              end
-              object Panel3: TPanel
-                Left = 0
-                Top = 0
-                Width = 192
-                Height = 21
-                Align = alTop
-                Alignment = taLeftJustify
-                BevelOuter = bvNone
-                Caption = #26908#32034
-                TabOrder = 3
-                object edtMemoSearch: TEdit
-                  Left = 28
-                  Top = 0
-                  Width = 205
-                  Height = 21
-                  TabOrder = 0
-                  OnChange = edtMemoSearchChange
-                  OnKeyPress = edtMemoSearchKeyPress
-                end
-              end
-              object Panel11: TPanel
-                Left = 0
-                Top = 138
-                Width = 192
-                Height = 21
-                Align = alTop
-                Alignment = taLeftJustify
-                BevelOuter = bvNone
-                Caption = #12479#12452#12488#12523
-                TabOrder = 4
-                object edtMemoTitle: TEdit
-                  Left = 44
-                  Top = 0
-                  Width = 193
-                  Height = 21
-                  TabOrder = 0
-                end
-              end
-            end
             object DLSheet: TTabSheet
               Caption = #12480#12454#12531#12525#12540#12480
               ImageIndex = 8
@@ -1198,7 +1099,7 @@ object BagelMainForm: TBagelMainForm
       Width = 671
       Height = 22
       AutoSize = True
-      ButtonWidth = 43
+      ButtonWidth = 24
       Caption = #26908#32034#12496#12540
       GradientEndColor = 14077651
       Images = ImageList1
@@ -1636,14 +1537,6 @@ object BagelMainForm: TBagelMainForm
       Caption = #12463#12522#12483#12503#12508#12540#12489
       GroupIndex = 1
       ImageIndex = 38
-      OnExecute = actSomeSidebarExecute
-      OnUpdate = actSomeSidebarUpdate
-    end
-    object actMemoSidebar: TAction
-      Category = #12469#12452#12489#12496#12540
-      Caption = #12513#12514
-      GroupIndex = 1
-      ImageIndex = 50
       OnExecute = actSomeSidebarExecute
       OnUpdate = actSomeSidebarUpdate
     end
@@ -6635,11 +6528,9 @@ object BagelMainForm: TBagelMainForm
     Top = 228
     object CreateMemoItem: TMenuItem
       Caption = #26032#35215#12450#12452#12486#12512#20316#25104
-      OnClick = CreateMemoItemClick
     end
     object DeleteMemoItem: TMenuItem
       Caption = #21066#38500
-      OnClick = DeleteMemoItemClick
     end
   end
   object SideMemoTabPopup: TPopupMenu
@@ -6647,11 +6538,9 @@ object BagelMainForm: TBagelMainForm
     Top = 228
     object CreateMemo: TMenuItem
       Caption = #26032#35215#12513#12514#20316#25104
-      OnClick = CreateMemoClick
     end
     object DeleteMemo: TMenuItem
       Caption = #21066#38500
-      OnClick = DeleteMemoClick
     end
   end
   object SidebarPopup: TPopupMenu
@@ -6676,7 +6565,9 @@ object BagelMainForm: TBagelMainForm
       Action = actClipboardSidebar
     end
     object N40: TMenuItem
-      Action = actMemoSidebar
+      Caption = #12513#12514
+      ImageIndex = 50
+      OnClick = actSomeSidebarExecute
     end
     object N41: TMenuItem
       Action = actTransferSidebar
@@ -7193,7 +7084,6 @@ object BagelMainForm: TBagelMainForm
       Visible = False
       object AddToMemo: TMenuItem
         Caption = #12513#12514#12395#36861#21152
-        OnClick = AddToMemoClick
         object InsertPointofMemoList1: TMenuItem
           Caption = 'Insert Point of MemoList'
           Visible = False

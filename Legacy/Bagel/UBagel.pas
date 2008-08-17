@@ -227,7 +227,6 @@ type
     LinkListView: TListView;
     LinkSheet: TTabSheet;
     MainMenu1: TMainMenu;
-    MemoSheet: TTabSheet;
     MenuToggleSearchBar: TMenuItem;
     MenuTrackerToolbar: TToolBar;
     N14: TMenuItem;
@@ -273,11 +272,9 @@ type
     OpenLinkListItem: TMenuItem;
     PageControl1: TPageControl;
     Panel10: TPanel;
-    Panel11: TPanel;
     Panel12: TPanel;
     Panel1: TPanel;
     Panel2: TPanel;
-    Panel3: TPanel;
     Panel4: TPanel;
     Panel5: TPanel;
     Panel6: TPanel;
@@ -302,11 +299,9 @@ type
     SidebarPopup: TPopupMenu;
     SidebarSelector: TToolButton;
     SidebarTogglePanel: TPanel;
-    Splitter3: TSplitter;
 
     StatusCheckedImageList: TImageList;
     StatusImageList: TImageList;
-    TabControl2: TTabControl;
     TabSheet1: TTabSheet;
     TaskTrayPopup: TPopupMenu;
     TimerFireSetfocus: TTimer;
@@ -413,7 +408,6 @@ type
     actHistorySidebar: TAction;
     actIEView: TAction;
     actLinkSidebar: TAction;
-    actMemoSidebar: TAction;
     actNextTab: TAction;
     actOpenAboutConfig: TAction;
     actOpenBookmark: TAction;
@@ -493,14 +487,10 @@ type
     cmbGrepKind: TComboBox;
     d1: TMenuItem;
     edtHistorySearch: TEdit;
-    edtMemoSearch: TEdit;
-    edtMemoTitle: TEdit;
     embed1: TMenuItem;
     hiddenMenu: TMenuItem;
     img1: TMenuItem;
     lstOutPut: TListBox;
-    lvMemo: TListView;
-    memoMemo: TMemo;
     miTaskTray: TMenuItem;
     object1: TMenuItem;
     tbCopyExtract: TToolButton;
@@ -768,30 +758,9 @@ type
     procedure Panel7Resize(Sender: TObject);
     procedure SidePanelResize(Sender: TObject);
     procedure SidebarHeaderButtonbarResize(Sender: TObject);
-    procedure lvMemoSelectItem(Sender: TObject; Item: TListItem;
-      Selected: Boolean);
-    procedure TabControl2Change(Sender: TObject);
-    procedure MemoSheetShow(Sender: TObject);
-    procedure CreateMemoClick(Sender: TObject);
-    procedure CreateMemoItemClick(Sender: TObject);
-    procedure lvMemoEditing(Sender: TObject; Item: TListItem;
-      var AllowEdit: Boolean);
-    procedure edtMemoSearchChange(Sender: TObject);
-    procedure memoMemoChange(Sender: TObject);
     procedure GoButtonPopupPopup(Sender: TObject);
     procedure GoButtonExtMenuClick(Sender: TObject);
     procedure actShowExtGoEditorExecute(Sender: TObject);
-    procedure DeleteMemoClick(Sender: TObject);
-    procedure TabControl2MouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
-    procedure DeleteMemoItemClick(Sender: TObject);
-    procedure TabControl2Resize(Sender: TObject);
-    procedure AddToMemoClick(Sender: TObject);
-    procedure AddToMemoItemClick(Sender: TObject);
-    procedure edtMemoSearchKeyPress(Sender: TObject; var Key: Char);
-    procedure lvMemoDrawItem(Sender: TCustomListView; Item: TListItem;
-      Rect: TRect; State: TOwnerDrawState);
-    procedure lvMemoDblClick(Sender: TObject);
     procedure actTaskTrayExecute(Sender: TObject);
     procedure BagelTrayIconDblClick(Sender: TObject);
     procedure ApplySysFontToMenu;
@@ -1129,7 +1098,7 @@ var
 implementation
 
 uses UPageSetup,UPageInfo,PropertiesForm,UCookieMan,
-     UPassman, UCookieP3P, UWebPanelEdit, UBagelMemo,
+     UPassman, UCookieP3P, UWebPanelEdit, 
      UExtGoEdit, BookmarkUnit,  UBookmarkEditor, UBagelPref,
      UImportNetscape, UImportIE, UMenuEdit;
 
@@ -3566,7 +3535,6 @@ begin
     else if PageControl1.ActivePage=WebPanelSheet then actWebPanel.Checked:=true
     else if PageControl1.ActivePage=ScriptSheet then actScriptSidebar.Checked:=true
     else if PageControl1.ActivePage=ClipSheet then actClipboardSidebar.Checked:=true
-    else if PageControl1.ActivePage=MemoSheet then actMemoSidebar.Checked:=true
     else if PageControl1.ActivePage=DLSheet then actTransferSidebar.Checked:=true
     else if PageControl1.ActivePage=TabSheet1 then actOutputSidebar.Checked:=true
     else if PageControl1.ActivePage=UsrTabSheet then actUserDefinedSidebar.Checked:=true;
@@ -3582,7 +3550,6 @@ begin
     else if actWebPanel.Checked then actWebPanel.Checked:=false
     else if actScriptSidebar.Checked then actScriptSidebar.Checked:=false
     else if actClipboardSidebar.Checked then actClipboardSidebar.Checked:=false
-    else if actMemoSidebar.Checked then actMemoSidebar.Checked:=false
     else if actTransferSidebar.Checked then actTransferSidebar.Checked:=false
     else if actOutputSidebar.Checked then actOutputSidebar.Checked:=false
     else if actUserDefinedSidebar.Checked then actUserDefinedSidebar.Checked:=false;
@@ -3760,61 +3727,6 @@ begin
   end;
 
 end;
-procedure TBagelMainForm.AddToMemoClick(Sender: TObject);
-var
-  i:Integer;
-  memo:TBagelMemo;
-  mi:TMenuItem;
-begin
-  if MemoSheet.Tag=0 then MemoSheetShow(nil);
-  while AddToMemo.Count>1 do AddToMemo.Items[1].Free;
-  for i:=0 to TabControl2.Tabs.Count-1 do begin
-    memo:=TBagelmemo(TabControl2.Tabs.Objects[i]);
-    mi:=TMenuItem.Create(Self);
-    mi.Caption:=TabControl2.Tabs.Strings[i]; //memo.Title;
-    mi.Tag:=Integer(Memo);
-    mi.OnClick:=AddToMemoItemClick;
-    AddToMemo.Add(mi);
-  end;
-end;
-
-procedure TBagelMainForm.AddToMemoItemClick(Sender: TObject);
-var
-//  i:Integer;
-  memo:TBagelMemo;
-  item:TBagelMemoItem;
-  litem:TListItem;
-  b:TBagelBrowser;
-  aDOMW:nsIDOMWindow;
-begin
-  if TabControl2.Tabs.Count>0 then begin
-    b:=GetCurrentBrowser;
-    if b=nil then Exit;
-
-    memo:=TBagelMemo(TMenuitem(Sender).Tag);
-
-    if SearchBox.Text<>'' then
-      item:=TBagelmemoItem.Create(FormatDateTime('yyyy/mm/dd hh:nn',Now)+' '+StringReplace(SearchBox.Text,'　',' ',[rfReplaceAll])+':'+b.Title)
-    else item:=TBagelmemoItem.Create(FormatDateTime('yyyy/mm/dd hh:nn',Now)+' '+b.Title);
-
-    aDOMW := (b.WebBrowser as nsIWebBrowserFocus).FocusedWindow;
-    if aDOMW=nil then Exit;
-
-    item.Content:=GetSelectionStrFromWin(aDOMW);
-
-    memo.Add(item);
-
-    if TBagelmemo(TabControl2.Tabs.Objects[TabControl2.TabIndex])=memo then begin
-      lItem:=lvMemo.Items.Add;
-      litem.Caption:=item.Title;
-      litem.Data:=item;
-      lvMemo.Selected:=litem;
-      litem.MakeVisible(true);
-    end;
-  end;
-end;
-
-
 
 procedure TBagelMainForm.ApplySysFontToMenu;
 var
@@ -4360,79 +4272,6 @@ begin
   Clipboard.AsText:=LinkListView.Selected.SubItems.Strings[0];
 end;
 
-procedure TBagelMainForm.CreateMemoClick(Sender: TObject);
-var
-  memoname:String;
-  memo:TBagelMemo;
-  memoitem:TBagelMemoItem;
-  i:Integer;
-  tmpStr:String;
-begin
-  memoname:='New Memo';
-   //<>/\:*|"?
-  while InputQuery('新規メモ作成' ,'名前を入力してください'+#13#10+'(次の文字は使えませんので注意してください : <>/\:*|"? )',memoname) do begin
-    if (Pos('<',memoname)>0) or
-       (Pos('>',memoname)>0) or
-       (Pos('?',memoname)>0) or
-       (Pos('/',memoname)>0) or
-       (Pos('\',memoname)>0) or
-       (Pos('*',memoname)>0) or
-       (Pos(':',memoname)>0) or
-       (Pos('|',memoname)>0) or
-       (Pos('"',memoname)>0) then begin  //無効な名前
-      continue;
-    end
-    else if FileExists(GetSettingDir()+'memo\'+memoname+'.txt') then begin
-    //すでに存在する
-      continue;
-    end
-    else begin
-      memo:=TBagelMemo.Create;
-      memoitem:=TBagelMemoItem.Create(FormatDateTime('yyyy/mm/dd hh:nn',Now)+' 新規アイテム');
-      memo.Path := IncludeTrailingBackslash( GetSettingDir()+'memo')+memoname+'.txt';
-      memo.Add(memoitem);
-      TabControl2.Tabs.AddObject(memoname+'.txt',memo);
-      TabControl2.TabIndex:=TabControl2.Tabs.Count-1;
-      TabControl2Change(nil);
-
-      //TODO:復活
-      //pnlDropTarget.TargetList:=nil;
-      InternalTargetList.Clear;
-      InternalTargetList.Assign(Pref.DropTargetList);
-      if TabControl2.Tabs.Count>0 then
-        for i:=0 to TabControl2.Tabs.Count-1 do begin
-          memo:=TBagelMemo(TabControl2.Tabs.Objects[i]);
-          tmpStr:=ExtractFileName(memo.Path);
-          InternalTargetList.Add('text'+#9+'memo'+#9+memo.Title+#9+tmpStr);
-        end;
-
-      //TODO:復活
-      //pnlDropTarget.TargetList:=InternalTargetList;
-
-      break;
-    end;
-  end;
-end;
-
-procedure TBagelMainForm.CreateMemoItemClick(Sender: TObject);
-var
-  memo:TBagelMemo;
-  item:TBagelMemoitem;
-  litem:TListItem;
-begin
-  if TabControl2.Tabs.Count>0 then begin
-    memo:=TBagelmemo(TabCOntrol2.Tabs.Objects[TabControl2.TabIndex]);
-    item:=TBagelmemoItem.Create(FormatDateTime('yyyy/mm/dd hh:nn',Now)+' 新規アイテム');
-    memo.Add(item);
-    lItem:=lvMemo.Items.Add;
-    litem.Caption:=item.Title;
-    litem.Data:=item;
-    lvMemo.Selected:=litem;
-    litem.MakeVisible(true);
-    edtMemoTitle.SetFocus;
-  end;
-end;
-
 procedure TBagelMainForm.CloneTab(b:TBagelBrowser;loadFlags:Integer=1);    //
 var
   brwsr:TBagelBrowser;
@@ -4695,54 +4534,6 @@ MouseInPane(SidebarTogglepanel) then //サイドバー開閉バーの上
   DelayedSidebarToggler.Enabled:=false;
 end;
 
-procedure TBagelMainForm.DeleteMemoClick(Sender: TObject);
-var
-  memo:TBagelMemo;
-  i:Integer;
-  tmpStr:String;
-begin
-  if (memoBarCtxTarget>=0) and (memoBarCtxTarget<TabControl2.Tabs.Count) then begin
-    memo:=TBagelMemo(TabControl2.Tabs.Objects[memoBarCtxTarget]);
-    DeleteFile(memo.Path);
-    TabControl2.Tabs.Delete(memobarCtxtarget);
-    memo.Free;
-    if TabControl2.TabIndex=-1 then begin
-      if memobarCtxtarget<TabControl2.Tabs.Count then
-      TabControl2.TabIndex:=memobarCtxtarget
-      else TabControl2.TabIndex:=TabControl2.Tabs.Count-1;
-      TabControl2Change(nil);
-    end;
-
-    //TODO:復活
-    //pnlDropTarget.TargetList:=nil;
-    InternalTargetList.Clear;
-    InternalTargetList.Assign(Pref.DropTargetList);
-    if TabControl2.Tabs.Count>0 then
-      for i:=0 to TabControl2.Tabs.Count-1 do begin
-        memo:=TBagelMemo(TabControl2.Tabs.Objects[i]);
-        tmpStr:=ExtractFileName(memo.Path);
-        InternalTargetList.Add('text'+#9+'memo'+#9+memo.Title+#9+tmpStr);
-      end;
-
-    //TODO:復活
-    //pnlDropTarget.TargetList:=InternalTargetList;
-  end;
-end;
-
-procedure TBagelMainForm.DeleteMemoItemClick(Sender: TObject);
-var
-  mitem:TBagelMemoItem;
-  memo:TBagelMemo;
-  litem:TListItem;
-begin
-  litem:=lvMemo.Selected;
-  if litem=nil then exit;
-  mitem:=TBagelMemoItem(litem.Data);
-  memo:=TBagelmemo(TabControl2.Tabs.Objects[TabControl2.TabIndex]);
-  memo.Remove(mitem);
-  mitem.Free;
-  litem.Free;
-end;
 
 
 procedure TBagelMainForm.ApplicationEvents1Message(var Msg: tagMSG;
@@ -5389,7 +5180,6 @@ end;
 {フォームの作成}
 procedure TBagelMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
 var
-  memo:TBagelMemo;
   i:Integer;
   inifile:TIniFile;
 begin
@@ -5421,13 +5211,6 @@ begin
   Pref.TabBarCaption := MainCoolbar.Bands.FindBand(TabControl).Text;
   Pref.TabMiddleClickAct := Pref.TabMiddleClickAct;
   Pref.RememberedEngineIndex:=EngineBox.ItemIndex;
-
-  //Memo
-  for i:=0 to TabControl2.Tabs.Count-1 do begin
-    memo:=TBagelMemo(TabControl2.Tabs.Objects[i]);
-    memo.SaveToFile(memo.Path);
-    memo.Free;
-  end;
 
   //Coolbar
   inifile := TIniFile.Create(GetSettingDir + ExtractFileName(ChangeFileExt(Application.ExeName, '.ini')));
@@ -5496,10 +5279,6 @@ begin
   New(p);
   p^.first := actClipboardSidebar;
   p^.second := ClipSheet;
-  SidebarTuples.Add(p);
-  New(p);
-  p^.first := actMemoSidebar;
-  p^.second := MemoSheet;
   SidebarTuples.Add(p);
   New(p);
   p^.first := actTransferSidebar;
@@ -5942,7 +5721,6 @@ procedure TBagelMainForm.FormCreate(Sender: TObject);
 var
   ASRgn:HRgn;
   tmpStr:String;
-  memo:TBagelMemo;
   i:Integer;
   inifile:TMemIniFile;
   hMen : hMenu;
@@ -6121,12 +5899,6 @@ begin
   //ドロップターゲット
   InternalTargetList := TStringList.Create;
   InternalTargetList.Assign(Pref.DropTargetList);
-  if TabControl2.Tabs.Count>0 then
-    for i := 0 to TabControl2.Tabs.Count-1 do begin
-      memo := TBagelMemo(TabControl2.Tabs.Objects[i]);
-      tmpStr := ExtractFileName(memo.Path);
-      InternalTargetList.Add('text'+#9+'memo'+#9+tmpStr+#9+tmpStr);
-    end;
 
   //アドレスバー拡張
   ExtGolist := TStringList.Create;
@@ -6176,7 +5948,6 @@ begin
     else if PageControl1.ActivePage=WebPanelSheet then actWebPanel.Checked:=true
     else if PageControl1.ActivePage=ScriptSheet then actScriptSidebar.Checked:=true
     else if PageControl1.ActivePage=ClipSheet then actClipboardSidebar.Checked:=true
-    else if PageControl1.ActivePage=MemoSheet then actMemoSidebar.Checked:=true
     else if PageControl1.ActivePage=DLSheet then actTransferSidebar.Checked:=true
     else if PageControl1.ActivePage=TabSheet1 then actOutputSidebar.Checked:=true
     else if PageControl1.ActivePage=UsrTabSheet then actUserDefinedSidebar.Checked:=true;
@@ -6303,37 +6074,6 @@ begin
 end;
 
 {タブが変わった}
-procedure TBagelMainForm.TabControl2Change(Sender: TObject);
-var
-  memo:TBagelMemo;
-  i:Integer;
-  item:TListItem;
-begin
-  memo:=TBagelMemo(TabControl2.Tabs.Objects[TabControl2.TabIndex]);
-  lvMemo.Clear;
-  for i:=0 to memo.Count-1 do begin
-    item:=lvMemo.Items.Add;
-    item.Caption:=memo.Items[i].Title;
-    item.Data:=memo.Items[i];
-  end;
-//  Self.lvMemoSelectItem(nil,memo.Item[0,],true);
-  if lvMemo.Items.Count>0 then
-  lvMemo.Selected:=lvMemo.Items.Item[0];
-  lvMemoSelectItem(nil,lvMemo.Items.Item[0],true);
-
-end;
-
-procedure TBagelMainForm.TabControl2MouseDown(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-begin
-  memoBarCtxTarget:=TabControl2.IndexOfTabAt(X,Y);
-end;
-
-procedure TBagelMainForm.TabControl2Resize(Sender: TObject);
-begin
-  TabControl2.Height:=22*TabControl2.RowCount;
-end;
-
 procedure TBagelMainForm.TabControlChange(Sender: TObject);
 var
   i:integer;
@@ -7162,41 +6902,6 @@ begin
     Print.PrintPreview(ps,nil,nil);
   end;
 end;
-procedure TBagelMainForm.edtMemoSearchChange(Sender: TObject);
-begin
-  if lvMemo.Selected=nil then exit;
-  TBagelMemoItem(lvMemo.Selected.Data).Title:=edtMemoTitle.Text;
-  lvMemo.Selected.Caption:=edtMemoTitle.Text;
-end;
-
-
-procedure TBagelMainForm.edtMemoSearchKeyPress(Sender: TObject; var Key: Char);
-var
-  memo:TBagelMemo;
-  mitem:TBagelMemoItem;
-  litem:TListitem;
-  i:Integer;
-begin
-  if TabControl2.Tabs.Count=0 then Exit;
-  if Key = chr(VK_RETURN) then begin
-    lvMemo.Clear;
-    memo:=TBagelMemo(TabControl2.Tabs.Objects[tabcontrol2.TabIndex]);
-    for i:=0 to memo.Count-1 do begin
-      mitem:=memo.Items[i];
-      if (edtmemoSearch.Text='') or
-         (Pos(edtmemoSearch.Text,mitem.Title)>0) or
-         (Pos(edtmemoSearch.Text,mitem.Content)>0) then begin
-        litem:=lvMemo.Items.Add;
-        litem.Caption:=mitem.Title;
-        litem.Data:=mitem;
-        if lvMemo.Items.Count>0 then
-        lvMemo.Selected:=lvMemo.Items.Item[0];
-        lvMemoSelectItem(nil,lvMemo.Items.Item[0],true);
-      end;
-    end;
-  end;
-end;
-
 
 {Geckoのプリントプレビューを終了}
 procedure TBagelMainForm.ExitPrintPreview;
@@ -7638,97 +7343,6 @@ begin
     GoButtonPopup.Popup(pt2.X,pt2.Y);
     Key:=0;
   end
-end;
-
-
-procedure TBagelMainForm.lvMemoDblClick(Sender: TObject);
-begin
-  if lvMemo.Selected=nil then exit;
-  edtMemoTitle.SetFocus;
-end;
-
-procedure TBagelMainForm.lvMemoDrawItem(Sender: TCustomListView; Item: TListItem;
-  Rect: TRect; State: TOwnerDrawState);
-var
-  tmpIntg:Integer;
-  //rect2:TRect;
-  colonpos:Integer;
-  str:string;
-  content:String;
-  tags:String;
-  title:String;
-
-begin
-  //rect2:=Item.DisplayRect(drLabel);
-  //DefaultDraw := false;
-  str:=TBagelMemoitem(item.data).Title;
-  content:=Copy(TBagelMemoitem(item.data).Content,1,16);
-  colonpos:=Pos(':',str);
-  tags:=Copy(str,1,colonPos-1);
-  Delete(str,1,colonPos);
-  title:=str;
-  if odSelected in State then begin
-    lvMemo.Canvas.Brush.Color:=clHighlight;
-    lvMemo.Canvas.FillRect(Rect);
-    lvMemo.Canvas.Font.Style:=[];
-    lvMemo.Canvas.Font.Color := clyellow;
-    lvMemo.Canvas.TextOut(rect.Left+5,rect.Top,tags);
-    tmpIntg:=lvMemo.Canvas.TextWidth(tags);
-    lvMemo.Canvas.Font.Style := [fsBold];
-    lvMemo.Canvas.Font.Color := clHighlightText;
-    lvMemo.Canvas.TextOut(rect.Left+tmpIntg+10,rect.Top,title);
-    tmpIntg:=tmpIntg + lvMemo.Canvas.TextWidth(title);
-    lvMemo.Canvas.Font.Style := [];
-    lvMemo.Canvas.Font.Color := clHighlightText;
-    lvMemo.Canvas.TextOut(rect.Left+tmpIntg + 15,rect.Top,content);
-  end
-  else begin
-    lvMemo.Canvas.Brush.Color:=clWindow;
-    lvMemo.Canvas.FillRect(Rect);
-    lvMemo.Canvas.Font.Style:=[];
-    lvMemo.Canvas.Font.Color := clGreen;
-    lvMemo.Canvas.TextOut(rect.Left+5,rect.Top,tags);
-    tmpIntg:=lvMemo.Canvas.TextWidth(tags);
-    lvMemo.Canvas.Font.Style := [fsBold];
-    lvMemo.Canvas.Font.Color := clWindowText;
-    lvMemo.Canvas.TextOut(rect.Left+tmpIntg+10,rect.Top,title);
-    tmpIntg:=tmpIntg + lvMemo.Canvas.TextWidth(title);
-    lvMemo.Canvas.Font.Style := [];
-    lvMemo.Canvas.Font.Color := clInactiveCaption;
-    lvMemo.Canvas.TextOut(rect.Left+tmpIntg + 15,rect.Top,content);
-  end;
-end;
-
-procedure TBagelMainForm.lvMemoEditing(Sender: TObject; Item: TListItem;
-  var AllowEdit: Boolean);
-begin
-  AllowEdit:=False;
-end;
-
-procedure TBagelMainForm.lvMemoSelectItem(Sender: TObject; Item: TListItem;
-  Selected: Boolean);
-var
-  myitem:TBagelMemoItem;
-begin
-  if (not Selected) or (Item=nil) then begin
-    edtMemoTitle.Enabled:=False;
-    edtMemoTitle.Text:='';
-    memoMemo.Enabled:=false;
-    memoMemo.Text:='';
-  end
-  else begin
-    edtMemoTitle.Enabled:=True;
-    memoMemo.Enabled:=True;
-    myitem:=TBagelMemoItem(Item.data);
-    memoMemo.Text:=myitem.Content;
-    edtMemoTitle.Text:=myitem.Title;
-  end;
-end;
-
-procedure TBagelMainForm.memoMemoChange(Sender: TObject);
-begin
-  if lvMemo.Selected=nil then exit;
-  TBagelMemoItem(lvMemo.Selected.Data).Content:=memoMemo.Text;
 end;
 
 {サイドバーのリサイズ処理}
@@ -8281,62 +7895,7 @@ begin
 end;
 
 //移動の処理
-procedure TBagelMainForm.MemoSheetShow(Sender: TObject);
-var
-  memo:TBagelMemo;
-  memoitem:TBagelMemoItem;
-//  i:Integer;
-//  item:TListItem;
-  DirectoryName:String;
-  SearchRec: TSearchRec;
-begin
-  if MemoSheet.Tag=0 then begin
-    DirectoryName:=GetSettingDir()+'memo';
-    // 一番後ろに '\' がついていなければ付ける
-      DirectoryName:= IncludeTrailingBackslash(DirectoryName);
 
-    // FindFirst が成功した場合のみ FindClose を呼ぶ必要がある
-    if 0=FindFirst(DirectoryName+'*.*', faAnyFile, SearchRec) then try
-      repeat
-        if SearchRec.Attr and faDirectory <> 0 then begin
-          // カレントディレクトリや親ディレクトリをスキップ
-          if (SearchRec.Name='.') and (SearchRec.Name='..') then
-            Continue;
-          // ディレクトリに対する処理
-          // SearchRec.Name にディレクトリ名が入っている
-          // たとえば、Memo1.Lines.Add('Dir :'+DirectoryName+SearchRec.Name);
-        end else begin
-          // ファイルに対する処理
-          // SearchRec.Name にファイル名が入っている
-          // たとえば、Memo1.Lines.Add('File:'+DirectoryName+SearchRec.Name);
-
-          memo:=TBagelMemo.Create;
-          memo.LoadFromFile(DirectoryName+SearchRec.Name);
-          TabControl2.Tabs.AddObject(SearchRec.Name,memo);
-{          lvMemo.Clear;
-          for i:=0 to memo.Count-1 do begin
-            item:=lvMemo.Items.Add;
-            item.Caption:=memo.Items[i].Title;
-            item.Data:=memo.Items[i];
-          end;}
-        end;
-      until 0<>FindNext(SearchRec);
-    finally
-      FindClose(SearchRec);
-    end;
-    if TabControl2.Tabs.Count=0 then begin
-      memo:=TBagelMemo.Create;
-      memo.Path:=DirectoryName+'Memo.txt';
-      memoitem:=TBagelMemoItem.Create(FormatDateTime('yyyy/mm/dd hh:nn',Now)+' 新規アイテム');
-      memo.Add(memoitem);
-      TabControl2.Tabs.AddObject('Memo.txt',memo);
-    end;
-    MemoSheet.Tag:=1;
-    if TabControl2.Tabs.Count>0 then
-    TabControl2.TabIndex:=0;
-    TabControl2Change(nil);
-  end;
-end;
 
 procedure TBagelMainForm.MenuToolbarMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -8384,7 +7943,6 @@ begin
     prevPoint := pt;
   end;
 end;
-
 
 procedure TBagelMainForm.ExtAppMenuClick(Sender: TObject);
 var

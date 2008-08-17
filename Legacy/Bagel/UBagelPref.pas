@@ -1447,7 +1447,6 @@ begin
   lstSidebarHeaderHiddenItem.Items.AddObject(BagelMainForm.actWebPanel.Caption,BagelMainForm.actWebPanel);
   lstSidebarHeaderHiddenItem.Items.AddObject(BagelMainForm.actScriptSidebar.Caption,BagelMainForm.actScriptSidebar);
   lstSidebarHeaderHiddenItem.Items.AddObject(BagelMainForm.actClipboardSidebar.Caption,BagelMainForm.actClipboardSidebar);
-  lstSidebarHeaderHiddenItem.Items.AddObject(BagelMainForm.actMemoSidebar.Caption,BagelMainForm.actMemoSidebar);
   lstSidebarHeaderHiddenItem.Items.AddObject(BagelMainForm.actTransferSidebar.Caption,BagelMainForm.actTransferSidebar);
   lstSidebarHeaderHiddenItem.Items.AddObject(BagelMainForm.actUserDefinedSidebar.Caption,BagelMainForm.actUserDefinedSidebar);
 

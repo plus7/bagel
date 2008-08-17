@@ -127,6 +127,7 @@ type
     property Root:TBookmarkList read FRoot write SetRoot;
     property OnOpenBookmark:TOpenBookmarkEvent read FOnOpenBookmark write FOnOpenBookmark;
     property OnOpenAllBookmarks:TOpenBookmarkEvent read FOnOpenAllBookmarks write FOnOpenAllBookmarks;
+    function GetAllButtonsWidth:Integer;
   end;
 
   TBagelBookmarkMenu = class (TMenuItem, IBookmarkObserver)
@@ -594,6 +595,7 @@ begin
       btn.Bookmark := Value.Items[i];
       btn.AutoSize := True;
       btn.Grouped := True;
+      btn.Left := GetAllButtonsWidth;
       btn.Parent := Self;
     end;
     BookmarkObserverService.AddObserver(Self,Value);
@@ -629,6 +631,17 @@ end;
 procedure TBagelLinkbar.RefreshLinkbar;
 begin
   //
+end;
+
+function TBagelLinkbar.GetAllButtonsWidth:Integer;
+var
+  i,w:Integer;
+begin
+  w := 0;
+  for i := 0 to Self.ControlCount - 1 do begin
+    w := w + Self.Controls[i].Width;
+  end;
+  Result := w;
 end;
 
 procedure TBagelBookmarkMenu.CreateChilds;

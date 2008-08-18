@@ -611,13 +611,39 @@ begin
 end;
 
 procedure TBagelLinkbar.Deleted(item:TBkmkBase);
+var
+  i:Integer;
+  tb:TBagelBookmarkToolButton;
 begin
-  //
+  if item.parent <> Root then Exit;
+  for i := 0 to Self.ButtonCount - 1 do begin
+    if not (Self.Buttons[i] is TBagelBookmarkToolButton) then continue;
+    tb := TBagelBookmarkToolButton(Self.Buttons[i]);
+    if (tb.Bookmark = item) then begin
+      Self.RemoveControl(tb);
+      tb.Free;
+      Exit;
+    end;
+  end;
 end;
 
 procedure TBagelLinkbar.Added(item:TBkmkBase);
+var
+  pos:Integer;
+  btn:TBagelBookmarkToolButton;
 begin
-  //
+  if item.parent <> Root then Exit;
+  Self.RefreshLinkbar; //TODO í«â¡Ç∑ÇÈÇΩÇ—Ç…Ç∑Ç◊Çƒçƒê∂ê¨Ç∑ÇÈÇÃÇÕó«Ç≠Ç»Ç¢
+  {pos := Root.IndexOf(item);
+  
+  btn := TBagelBookmarkToolButton.Create(Self);
+  btn.Style := tbsButton;
+  btn.Linkbar := Self;
+  btn.Bookmark := item;
+  btn.AutoSize := True;
+  btn.Grouped := True;
+  btn.Left := GetAllButtonsWidth;
+  btn.Parent := Self;}
 end;
 
 procedure TBagelLinkbar.Changed(item:TBkmkBase);
@@ -631,7 +657,7 @@ end;
 
 procedure TBagelLinkbar.RefreshLinkbar;
 begin
-  //
+  Self.Root := Self.Root;
 end;
 
 function TBagelLinkbar.GetAllButtonsWidth:Integer;

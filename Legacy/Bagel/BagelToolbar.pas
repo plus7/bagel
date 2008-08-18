@@ -219,6 +219,7 @@ begin
     end;
   end
   else begin
+    FContainer.Click;
     For i := 0 To FContainer.Count-1 do begin
       if (FContainer.Item[i].Caption<>'-') and
          (Self.ShowFlags > 0) and

@@ -10257,10 +10257,12 @@ end;
 
 procedure TBagelMainForm.BookmarkItemClick(Sender: TObject);
 var
+  i,j:Integer;
   b:TBkmkBase;
-  cbitem: TBagelBookmarkContainer;
+  bitem,cbitem: TBagelBookmarkContainer;
 begin
-  b := TBagelBookmarkContainer(Sender).Bookmark;
+  bitem := TBagelBookmarkContainer(Sender);
+  b := bitem.Bookmark;
   if b is TBookmark then
   begin
     with TBookmark(b) do
@@ -10274,7 +10276,19 @@ begin
   end
   else if b is TBookmarkList then
   begin
-
+    for i := 0 to bitem.Count - 1 do begin
+      if (bitem.Item[i] is TBagelBookmarkContainer) and
+         (TBagelBookmarkContainer(bitem.Item[i]).Bookmark is TBookmarkList) then begin
+        bitem.Item[i].Clear;
+        for j := 0 to TBookmarkList(TBagelBookmarkContainer(bitem.Item[i]).Bookmark).Count - 1 do begin
+          cbitem := TBagelBookmarkContainer.Create(Self);
+          cbitem.OnClick := BookmarkItemClick;
+          cbitem.Bookmark := TBookmarkList(TBagelBookmarkContainer(bitem.Item[i]).Bookmark).Items[j];
+          cbitem.Caption := cbitem.Bookmark.name;
+          bitem.Item[i].Add(cbitem);
+        end;
+      end;
+    end;
   end;
 end;
 
